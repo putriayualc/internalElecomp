@@ -11,6 +11,8 @@
 
     <meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
+    <!-- Favicons -->
+    <link href="<?= base_url('assets/img/logo_elecomp.png')?>" rel="icon">
 
     <!-- FontAwesome JS-->
     <script defer src="<?= base_url('assets/plugins/fontawesome/js/all.min.js') ?>"></script>
