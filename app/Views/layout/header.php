@@ -17,7 +17,7 @@
                     </div><!--//col-->
                     <div class="app-utilities col-auto">
                         <div class="app-utility-item app-user-dropdown dropdown">
-                            <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><img src="<?= base_url('assets/admin/images/user.png') ?>" alt="user profile"></a>
+                            <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false"><img src="<?= base_url('assets/img/user.png') ?>" alt="user profile"></a>
                             <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
                                 <li><a class="dropdown-item" href="<?= site_url('logout') ?>">Log Out</a></li>
                             </ul>

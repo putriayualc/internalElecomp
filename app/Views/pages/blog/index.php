@@ -5,11 +5,11 @@
     <div class="container-xl">
         <div class="row g-3 mb-4 align-items-center justify-content-between">
             <div class="col-auto">
-                <h1 class="app-page-title mb-0">Data Email</h1>
+                <h1 class="app-page-title mb-0">Data Blog <?= $email['email']; ?></h1>
             </div>
             </br>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="<?= route_to('email.tambah') ?>" class="btn btn-primary me-md-2"> + Tambah Email</a>
+                <a href="<?= route_to('email.tambah') ?>" class="btn btn-primary me-md-2"> + Tambah Blog</a>
             </div>
         </div>
         <div class="tab-content" id="orders-table-tab-content">
@@ -26,26 +26,23 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center" valign="middle">No</th>
-                                        <th class="text-center" valign="middle">Email</th>
-                                        <th class="text-center" valign="middle">Password</th>
-                                        <!-- <th class="text-center" valign="middle">User</th> -->
+                                        <th class="text-center" valign="middle">Alamat Blog</th>
                                         <th class="text-center" valign="middle">Aksi</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <?php foreach ($allEmail as $i => $email) : ?>
+                                    <?php foreach ($allBlog as $i => $blog) : ?>
                                         <tr>
                                             <td><?= $i + 1 ?></td>
-                                            <td><?= $email['email'] ?></td>
-                                            <td><?= $email['password'] ?></td>
+                                            <td><?= $blog['domain_blog'] ?></td>
                                             <td valign="middle">
                                                 <div class="d-grid gap-2">
-                                                    <a href="<?= route_to('blog', $email['id_email']) ?>" class="btn btn-success">Blog</a>
-                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $email['id_email'] ?>">
+                                                    <a href="<?= route_to('artikel', $blog['id_email'], $blog['id_blog']) ?>" class="btn btn-success">Artikel</a>
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $blog['id_blog'] ?>">
                                                         Hapus
                                                     </button>
-                                                    <a href="<?= base_url('admin/meta/edit') . '/' . $email['id_email'] ?>" class="btn btn-primary">Ubah</a>
+                                                    <a href="<?= base_url('admin/meta/edit') . '/' . $blog['id_blog'] ?>" class="btn btn-primary">Ubah</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -61,8 +58,8 @@
 </div><!--//app-wrapper-->
 
 <!-- Modal Konfirmasi Hapus -->
-<?php foreach ($allEmail as $email) : ?>
-    <div class="modal fade" id="deleteModal<?= $email['id_email'] ?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<?php foreach ($allBlog as $blog) : ?>
+    <div class="modal fade" id="deleteModal<?= $blog['id_blog'] ?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -74,7 +71,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <a href="<?= base_url('admin/meta/delete') . '/' . $email['id_email'] ?>" class="btn btn-danger">Hapus</a>
+                    <a href="<?= base_url('admin/meta/delete') . '/' . $blog['id_blog'] ?>" class="btn btn-danger">Hapus</a>
                 </div>
             </div>
         </div>
