@@ -40,6 +40,13 @@ $routes->group('backlink', function ($routes) {
 });
 
 // MENU SOP
-$routes->group('sop', function ($routes){
-    $routes->get('/', 'SOPController::index');
+$routes->group('sop', function ($routes) {
+    $routes->get('/', 'SopController::index');
+    $routes->get('tambah', 'SopController::tambah', ['as' => 'sop.tambah']);
+    $routes->post('simpan', 'SopController::simpan');
+    $routes->get('edit/(:num)', 'SopController::edit/$1', ['as' => 'sop.edit']);
+    $routes->post('update/(:num)', 'SopController::update/$1');
+    $routes->get('delete/(:num)', 'SopController::delete/$1', ['as' => 'sop.delete']);
+    $routes->get('detail/(:num)', 'SopController::detail/$1', ['as' => 'sop.detail']);
 });
+
