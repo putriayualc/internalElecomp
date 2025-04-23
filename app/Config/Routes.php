@@ -50,3 +50,14 @@ $routes->group('sop', function ($routes) {
     $routes->get('detail/(:num)', 'SopController::detail/$1', ['as' => 'sop.detail']);
 });
 
+// MENU HOSTING
+$routes->group('hosting', function ($routes) {
+    $routes->get('/', 'HostingController::index');
+    $routes->get('tambah', 'HostingController::tambah', ['as' => 'hosting.tambah']);
+    $routes->post('simpan', 'HostingController::simpan'); // Pastikan ini ada
+    $routes->get('edit/(:num)', 'HostingController::edit/$1', ['as' => 'hosting.edit']);
+    $routes->post('update/(:num)', 'HostingController::update/$1');
+    $routes->get('delete/(:num)', 'HostingController::delete/$1', ['as' => 'hosting.delete']);
+});
+
+
