@@ -11,3 +11,8 @@ $routes->get('/', 'Home::index');
 $routes->group('backlink', function ($routes){
     $routes->get('/', 'BacklinkController::index');
 });
+
+// MENU SOP
+$routes->group('sop', function ($routes){
+    $routes->get('/', 'SOPController::index');
+});
