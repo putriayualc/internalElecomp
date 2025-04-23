@@ -1,0 +1,177 @@
+/* Styling untuk body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+
+/* Styling untuk sidebar */
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    background-color: #e0e0e0;
+    padding: 20px;
+    position: fixed;
+}
+
+.sidebar h2 {
+    color: #d46ac2;
+}
+
+.sidebar a {
+    display: block;
+    color: #000;
+    margin: 10px 0;
+    text-decoration: none;
+}
+
+/* Styling untuk konten utama */
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+/* Styling untuk container piket */
+.piket {
+    background-color: #f5f5f5;
+    padding: 40px; /* Menambah ruang dalam elemen */
+    min-height: 300px; /* Menambah tinggi minimum */
+    min-width: 300px; /* Menambah lebar minimum */
+    border-radius: 12px; /* Tambahan: buat sudut lebih membulat */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Tambahan: efek bayangan */
+}
+
+.piket-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    flex-wrap: wrap; /* Agar elemen bisa terbungkus saat lebar tidak cukup */
+    margin-top: 20px; /* Memberikan jarak dari bagian atas */
+}
+
+.piket-box {
+    background-color: #ddd;
+    padding: 30px; /* Meningkatkan padding untuk memperbesar isi box */
+    border-radius: 12px; /* Menambah border-radius agar lebih elegan */
+    min-width: 300px; /* Memperbesar lebar minimum */
+    min-height: 250px; /* Menambah tinggi minimum agar box terlihat lebih besar */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Menambahkan shadow untuk kesan 3D */
+    margin: 10px; /* Memberikan margin agar box tidak terlalu rapat */
+}
+
+.piket-box h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0;
+    font-size: 1.3em; /* Meningkatkan ukuran font pada judul */
+    color: #333;
+}
+
+.piket-box span {
+    font-size: 1.2em; /* Menambah ukuran ikon */
+    cursor: pointer;
+    color: #000;
+}
+
+/* Styling untuk daftar nama dalam piket */
+.piket-box ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.piket-box ul li {
+    margin: 8px 0; /* Memberikan jarak lebih pada item list */
+    color: #555;
+}
+
+/* Styling untuk masing-masing hari */
+.piket-box.senin {
+    background-color: #f8d7da; /* pink */
+}
+
+.piket-box.selasa {
+    background-color: #d1ecf1; /* blue */
+}
+
+.piket-box.rabu {
+    background-color: #d4edda; /* green */
+}
+
+.piket-box.kamis {
+    background-color: #fff3cd; /* yellow */
+}
+
+.piket-box.jumat {
+    background-color: #cce5ff; /* light blue */
+}
+
+.piket-box.sabtu {
+    background-color: #e2e3e5; /* light gray */
+}
+
+.form-edit-piket {
+    background: #fff;
+    padding: 20px;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.form-edit-piket label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-edit-piket textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.form-edit-piket button {
+    margin-top: 15px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.form-edit-piket button:hover {
+    background-color: #45a049;
+}
+
+.rotate-icon {
+    transition: transform 0.3s ease;
+}
+.rotate-icon.rotate {
+    transform: rotate(180deg);
+}
+
+/* Responsive styling untuk perangkat mobile */
+@media screen and (max-width: 768px) {
+    .piket-container {
+        flex-direction: column; /* Stack vertical pada layar kecil */
+        gap: 15px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
