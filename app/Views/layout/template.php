@@ -12,13 +12,15 @@
     <meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
     <!-- Favicons -->
-    <link href="<?= base_url('assets/img/logo_elecomp.png')?>" rel="icon">
+    <link href="<?= base_url('assets/img/logo_elecomp.png') ?>" rel="icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- FontAwesome JS-->
     <script defer src="<?= base_url('assets/plugins/fontawesome/js/all.min.js') ?>"></script>
 
     <!-- App CSS -->
     <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/portal.css') ?>">
+    <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/piket.css') ?>">
 
     <!-- test -->
     <!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
@@ -78,6 +80,21 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdown = document.getElementById('adminDropdown');
+            const arrow = document.getElementById('dropdownArrow');
+
+            dropdown.addEventListener('show.bs.collapse', function() {
+                arrow.classList.add('rotate');
+            });
+
+            dropdown.addEventListener('hide.bs.collapse', function() {
+                arrow.classList.remove('rotate');
+            });
+        });
+    </script>
+
 </body>
 
 </html>
