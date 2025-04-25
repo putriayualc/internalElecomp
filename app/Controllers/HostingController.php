@@ -34,18 +34,15 @@ class HostingController extends BaseController
 
     public function simpan()
     {
-        // Ambil data dari form
         $domainUtama = $this->request->getPost('domain_utama');
         $usernameHosting = $this->request->getPost('username_hosting');
         $passwordHosting = $this->request->getPost('password_hosting');
-        $addOnDomain = $this->request->getPost('add_on_domain');
+        $addOnDomains = $this->request->getPost('add_on_domain');
 
-        // Validasi data jika perlu
         if (!$domainUtama || !$usernameHosting || !$passwordHosting) {
             return redirect()->back()->with('error', 'Semua kolom wajib diisi!');
         }
 
-        // Simpan data ke database
         $hostingModel = new HostingModel();
         $hostingModel->save([
             'domain_utama' => $domainUtama,
@@ -53,16 +50,16 @@ class HostingController extends BaseController
             'password_hosting' => $passwordHosting,
         ]);
 
-        // Simpan add_on_domain jika ada
-        if (!empty($addOnDomain)) {
-            $idHosting = $hostingModel->getInsertID(); // Mendapatkan id_hosting yang baru saja disimpan
-            $domains = explode(',', $addOnDomain); // Pisahkan add_on_domain dengan koma
+        $idHosting = $hostingModel->getInsertID();
 
-            foreach ($domains as $domain) {
-                $hostingModel->db->table('tb_domains')->insert([
-                    'id_hosting' => $idHosting,
-                    'add_on_domain' => trim($domain),
-                ]);
+        if (!empty($addOnDomains) && is_array($addOnDomains)) {
+            foreach ($addOnDomains as $domain) {
+                if (!empty(trim($domain))) {
+                    $hostingModel->db->table('tb_domains')->insert([
+                        'id_hosting' => $idHosting,
+                        'add_on_domain' => trim($domain),
+                    ]);
+                }
             }
         }
 
