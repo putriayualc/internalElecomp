@@ -28,13 +28,13 @@ $routes->group('backlink', function ($routes) {
 
         // ARTIKEL DALAM BLOG PER EMAIL
         $routes->group('(:num)/artikel', function($routes) {
-            // $1 = id_email, $2 = id_blog, $4 = id_artikel
+            // $1 = id_email, $2 = id_blog, $3 = id_artikel
             $routes->get('/', 'ArtikelController::index/$1/$2', ['as' => 'artikel']);
             $routes->get('tambah', 'ArtikelController::tambah/$1/$2', ['as' => 'artikel.tambah']);
-            $routes->post('simpan', 'ArtikelController::simpan/$1/$2', ['as' => 'artikel.simpan']);
+            $routes->post('simpan', 'ArtikelController::proses_tambah/$1/$2', ['as' => 'artikel.simpan']);
             $routes->get('edit/(:num)', 'ArtikelController::edit/$1/$2/$3', ['as' => 'artikel.edit']);
             $routes->post('update/(:num)', 'ArtikelController::update/$1/$2/$3', ['as' => 'artikel.update']);
-            $routes->get('hapus/(:num)', 'ArtikelController::hapus/$1/$2/$3', ['as' => 'artikel.hapus']);
+            $routes->get('hapus/(:num)', 'ArtikelController::delete/$1/$2/$3', ['as' => 'artikel.hapus']);
         });
     });    
 });

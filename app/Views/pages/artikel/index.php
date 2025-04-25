@@ -9,7 +9,7 @@
             </div>
             </br>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="<?= route_to('email.tambah') ?>" class="btn btn-primary me-md-2"> + Tambah Artikel</a>
+                <a href="<?= route_to('artikel.tambah', $email['id_email'], $blog['id_blog']) ?>" class="btn btn-primary me-md-2"> + Tambah Artikel</a>
             </div>
         </div>
         <div class="tab-content" id="orders-table-tab-content">
@@ -78,7 +78,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <a href="<?= base_url('admin/meta/delete') . '/' . $artikel['id_artikel'] ?>" class="btn btn-danger">Hapus</a>
+                    <a href="<?= route_to('artikel.hapus', $email['id_email'], $blog['id_blog'], $artikel['id_artikel'])?>" class="btn btn-danger">Hapus</a>
                 </div>
             </div>
         </div>
