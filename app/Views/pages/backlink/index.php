@@ -45,7 +45,7 @@
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $email['id_email'] ?>">
                                                         Hapus
                                                     </button>
-                                                    <a href="<?= base_url('admin/meta/edit') . '/' . $email['id_email'] ?>" class="btn btn-primary">Ubah</a>
+                                                    <a href="<?= route_to('email.edit', $email['id_email']) ?>" class="btn btn-primary">Ubah</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <a href="<?= base_url('admin/meta/delete') . '/' . $email['id_email'] ?>" class="btn btn-danger">Hapus</a>
+                    <a href="<?= route_to('email.delete', $email['id_email']) ?>" class="btn btn-danger">Hapus</a>
                 </div>
             </div>
         </div>
