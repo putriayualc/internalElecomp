@@ -16,12 +16,22 @@ class ArtikelController extends BaseController
         $blogModel = new BlogModel();
         $emailModel = new EmailModel();
 
+        $lastArtikel = $artikelModel
+            ->where('id_blog', $id_blog)
+            ->orderBy('id_artikel', 'DESC')
+            ->first();
+
+        $addText = 'Tambah Artikel <br>/ Backlink';
+        if ($lastArtikel && $lastArtikel['jenis'] === 'backlink') {
+            $addText = 'Tambah Artikel'; // Hanya boleh tambah artikel
+        };
+
         $allArtikel = $artikelModel->where('id_blog', $id_blog)->findAll();
 
         $data = [
             'allArtikel' => $allArtikel,
             'blog' => $blogModel->find($id_blog),
-            'email' => $emailModel->find($id_email),
+            'addText' => $addText
         ];
 
         return view('pages/artikel/index', $data);
@@ -29,19 +39,29 @@ class ArtikelController extends BaseController
 
     public function tambah($id_email, $id_blog)
     {
-        $blogModel = new BlogModel();
+        $artikelModel = new ArtikelModel();
+        // Ambil artikel terakhir dari blog ini
+        $lastArtikel = $artikelModel
+            ->where('id_blog', $id_blog)
+            ->orderBy('id_artikel', 'DESC')
+            ->first();
 
-        $blog = $blogModel->find($id_blog);
+        // dd($lastArtikel);
+
+        $allowedJenis = ['artikel', 'backlink'];
+        if ($lastArtikel && $lastArtikel['jenis'] === 'backlink') {
+            $allowedJenis = ['artikel']; // Hanya boleh tambah artikel
+        }
 
         return view('pages/artikel/tambah', [
-            'blog' => $blog
+            'id_blog' => $id_blog,
+            'id_email' => $id_email,
+            'jenis' => $allowedJenis
         ]);
     }
 
     public function proses_tambah($id_email, $id_blog)
     {
-        // dd($id_email);
-
         // Validasi form
         $validation = \Config\Services::validation();
 
@@ -83,6 +103,73 @@ class ArtikelController extends BaseController
 
         return redirect()->to(route_to('artikel', $id_email, $id_blog))->with('success', 'Artikel berhasil ditambahkan!');
     }
+
+    public function edit($id_email, $id_blog, $id_artikel)
+    {
+        $artikelModel = new ArtikelModel();
+        $artikel = $artikelModel->find($id_artikel);
+
+        if (!$artikel) {
+            session()->setFlashdata('error', 'Artikel tidak ditemukan');
+            return redirect()->to(route_to('artikel', $id_email, $id_blog));
+        }
+
+        return view('pages/artikel/edit', [
+            'artikel' => $artikel,
+            'id_email' => $id_email,
+            'id_blog' => $id_blog
+        ]);
+    }
+
+    public function update($id_email, $id_blog, $id_artikel)
+    {
+        $artikelModel = new ArtikelModel();
+        $artikelLama = $artikelModel->find($id_artikel);
+
+        if (!$artikelLama) {
+            session()->setFlashdata('error', 'Artikel tidak ditemukan');
+            return redirect()->to(route_to('artikel', $id_email, $id_blog));
+        }
+
+        // Validasi input
+        $validationRules = [
+            'judul_artikel' => 'required|alpha_numeric_space',
+            'deskripsi_artikel' => 'required',
+            'tanggal_upload' => 'required',
+            'jenis' => 'required|in_list[artikel,backlink]',
+            'foto_artikel' => 'is_image[foto_artikel]|mime_in[foto_artikel,image/jpg,image/jpeg,image/png]'
+        ];
+
+        if (!$this->validate($validationRules)) {
+            return redirect()->back()->withInput()->with('error', $this->validator->listErrors());
+        }
+
+        $data = [
+            'judul_artikel' => $this->request->getPost('judul_artikel'),
+            'deskripsi_artikel' => $this->request->getPost('deskripsi_artikel'),
+            'tgl_upload' => $this->request->getPost('tanggal_upload'),
+            'jenis' => $this->request->getPost('jenis')
+        ];
+
+        // Cek jika ada gambar baru
+        $fileGambar = $this->request->getFile('foto_artikel');
+        if ($fileGambar && $fileGambar->isValid() && !$fileGambar->hasMoved()) {
+            // Hapus gambar lama
+            if (!empty($artikelLama['foto']) && file_exists(FCPATH . 'assets/img/artikel/' . $artikelLama['foto'])) {
+                unlink(FCPATH . 'assets/img/artikel/' . $artikelLama['foto']);
+            }
+
+            $namaGambarBaru = $fileGambar->getRandomName();
+            $fileGambar->move(FCPATH . 'assets/img/artikel/', $namaGambarBaru);
+            $data['foto'] = $namaGambarBaru;
+        }
+
+        $artikelModel->update($id_artikel, $data);
+
+        session()->setFlashdata('success', 'Artikel berhasil diperbarui!');
+        return redirect()->to(route_to('artikel', $id_email, $id_blog));
+    }
+
 
     public function delete($id_email, $id_blog, $id_artikel = false)
     {

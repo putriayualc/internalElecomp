@@ -46,4 +46,14 @@ class BlogModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getAllBlogWithCountArticle()
+    {
+        return $this->select(
+            'tb_blog.*, ' .
+            'COUNT(tb_artikel.id_artikel) AS jumlah_artikel'
+        )->join('tb_artikel', 'tb_blog.id_blog = tb_artikel.id_blog', 'left')
+        ->groupBy('tb_blog.id_blog')
+        ->findAll();
+    }
 }

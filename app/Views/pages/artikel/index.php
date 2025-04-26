@@ -3,82 +3,146 @@
 
 <div class="app-content pt-3 p-md-3 p-lg-4">
     <div class="container-xl">
-        <div class="row g-3 mb-4 align-items-center justify-content-between">
-            <div class="col-auto"> 
-                <h1 class="app-page-title mb-0">Data Artikel</h1>
-            </div>
-            </br>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="<?= route_to('artikel.tambah', $email['id_email'], $blog['id_blog']) ?>" class="btn btn-primary me-md-2"> + Tambah Artikel</a>
+        <!-- Back Navigation -->
+        <div class="col-md-4 text-lg mt-3 mt-md-0">
+            <a href="<?= route_to('backlink') ?>" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-arrow-left me-1"></i> Kembali
+            </a>
+        </div>
+
+        <!-- Header Section -->
+        <div class="app-card shadow-sm mb-4">
+            <div class="app-card-body p-3 p-lg-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="app-page-title mb-0">Data Artikel</h1>
+                        <div class="d-flex align-items-center mt-2">
+                            <span class="badge bg-primary me-2">Blog:</span>
+                            <h5 class="mb-0"><?= $blog['domain_blog'] ?? 'Untitled Blog' ?></h5>
+                        </div>
+                        <p class="text-muted mt-2 mb-0">
+                            <i class="fas fa-info-circle me-1"></i> 
+                            Kelola semua artikel untuk blog "<?= $blog['domain_blog'] ?? 'Untitled Blog' ?>"
+                        </p>
+                    </div>
+                    <div class="d-flex">
+                        <a href="<?= route_to('artikel.tambah', $blog['id_email'], $blog['id_blog']) ?>" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i> <?= $addText ?>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="tab-content" id="orders-table-tab-content">
-            <?php if (session()->has('success')) : ?>
-                <div class="alert alert-success">
-                    <?= session('success') ?>
-                </div>
-            <?php endif; ?>
-            <div class="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
-                <div class="app-card app-card-orders-table shadow-sm mb-5">
-                    <div class="app-card-body">
-                        <div class="table-responsive">
-                            <table class="table app-table-hover mb-0 text-left">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" valign="middle">No</th>
-                                        <th class="text-center" valign="middle">Judul Artikel</th>
-                                        <th class="text-center" valign="middle">Deskripsi Artikel</th>
-                                        <th class="text-center" valign="middle">Foto Artikel</th>
-                                        <th class="text-center" valign="middle">Tanggal Upload</th>
-                                        <th class="text-center" valign="middle">Jenis</th>
-                                        <th class="text-center" valign="middle">Aksi</th>
-                                    </tr>
-                                </thead>
 
-                                <tbody>
-                                    <?php foreach ($allArtikel as $i => $artikel) : ?>
-                                        <tr>
-                                            <td><?= $i + 1 ?></td>
-                                            <td><?= $artikel['judul_artikel'] ?></td>
-                                            <td><?= $artikel['deskripsi_artikel'] ?></td>
-                                            <td><img src="<?= base_url() . 'assets/img/artikel/' . $artikel['foto'] ?>" class="img-fluid" alt="Foto artikel"></td>
-                                            <td><?= $artikel['tgl_upload'] ?></td>
-                                            <td><?= $artikel['jenis'] ?></td>
-                                            <td valign="middle">
-                                                <div class="d-grid gap-2">
-                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $artikel['id_artikel'] ?>">
-                                                        Hapus
-                                                    </button>
-                                                    <a href="<?= base_url('admin/meta/edit') . '/' . $artikel['id_artikel'] ?>" class="btn btn-primary">Ubah</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div><!--//table-responsive-->
-                    </div><!--//app-card-body-->
-                </div><!--//app-card-->
-            </div><!--//tab-pane-->
-        </div><!--//container-fluid-->
-    </div><!--//app-content-->
-</div><!--//app-wrapper-->
+        <!-- Notifikasi sukses -->
+        <?php if (session()->has('success')) : ?>
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                <i class="fas fa-check-circle me-2"></i> <?= session('success') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
+        <!-- Tabel Artikel -->
+        <div class="app-card app-card-orders-table shadow-sm mb-5">
+            <div class="app-card-header p-3 p-lg-4 border-bottom">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <h4 class="app-card-title mb-0"><i class="fas fa-newspaper text-primary me-2"></i>Daftar Artikel</h4>
+                    </div>
+                    <div class="col text-end">
+                        <span class="badge bg-primary rounded-pill"><?= count($allArtikel) ?> Artikel</span>
+                    </div>
+                </div>
+            </div>
+            <div class="app-card-body p-3 p-lg-4">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 text-left">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center" width="5%">No</th>
+                                <th width="20%">Judul Artikel</th>
+                                <th width="20%">Deskripsi</th>
+                                <th class="text-center" width="15%">Foto</th>
+                                <th class="text-center" width="12%">Tanggal Upload</th>
+                                <th class="text-center" width="10%">Jenis</th>
+                                <th class="text-center" width="18%">Aksi</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <?php if (empty($allArtikel)) : ?>
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <div class="py-3">
+                                            <i class="fas fa-info-circle text-info mb-2 fa-2x"></i>
+                                            <p class="mb-0">Belum ada artikel yang ditambahkan</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php else : ?>
+                                <?php foreach ($allArtikel as $i => $artikel) : ?>
+                                    <tr>
+                                        <td class="text-center"><?= $i + 1 ?></td>
+                                        <td class="fw-bold"><?= $artikel['judul_artikel'] ?></td>
+                                        <td>
+                                            <?= strlen($artikel['deskripsi_artikel']) > 100 ? substr($artikel['deskripsi_artikel'], 0, 100) . '...' : $artikel['deskripsi_artikel'] ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <img src="<?= base_url() . 'assets/img/artikel/' . $artikel['foto'] ?>" class="img-thumbnail" alt="Foto artikel" style="max-width: 100px; max-height: 70px; object-fit: cover;">
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge text-body">
+                                                <?= date('d M Y', strtotime($artikel['tgl_upload'])) ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge bg-<?= $artikel['jenis'] == 'backlink' ? 'info' : 'success' ?>">
+                                                <?= $artikel['jenis'] ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <a href="<?= route_to('artikel.edit', $blog['id_email'], $blog['id_blog'], $artikel['id_artikel']) ?>" class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-edit me-1"></i> Ubah
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $artikel['id_artikel'] ?>">
+                                                    <i class="fas fa-trash me-1"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div><!--//table-responsive-->
+            </div><!--//app-card-body-->
+        </div><!--//app-card-->
+    </div><!--//container-fluid-->
+</div><!--//app-content-->
 
 <!-- Modal Konfirmasi Hapus -->
 <?php foreach ($allArtikel as $artikel) : ?>
     <div class="modal fade" id="deleteModal<?= $artikel['id_artikel'] ?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Konfirmasi Hapus
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    Apakah Anda yakin ingin menghapus data ini?
+                <div class="modal-body py-4">
+                    <p class="mb-0">Apakah Anda yakin ingin menghapus artikel <strong>"<?= $artikel['judul_artikel'] ?>"</strong>?</p>
+                    <p class="text-muted small mt-2 mb-0">Tindakan ini tidak dapat dibatalkan.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <a href="<?= route_to('artikel.hapus', $email['id_email'], $blog['id_blog'], $artikel['id_artikel'])?>" class="btn btn-danger">Hapus</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Batal
+                    </button>
+                    <a href="<?= route_to('artikel.hapus', $blog['id_email'], $blog['id_blog'], $artikel['id_artikel']) ?>" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i> Hapus
+                    </a>
                 </div>
             </div>
         </div>

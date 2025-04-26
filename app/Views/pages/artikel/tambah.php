@@ -16,7 +16,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <form action="<?= route_to('artikel.simpan', $blog['id_email'], $blog['id_blog']) ?>" method="POST" enctype="multipart/form-data">
+                    <form action="<?= route_to('artikel.simpan', $id_email, $id_blog) ?>" method="POST" enctype="multipart/form-data">
                         <?= csrf_field(); ?>
                         <div class="row">
                             <div class="col">
@@ -50,8 +50,11 @@
                                 <div class="mb-3">
                                     <label class="form-label">Jenis</label>
                                     <select class="form-select" id="jenis_artikel" name="jenis_artikel">
-                                        <option value="artikel" <?= old('jenis_artikel') == 'artikel' ? 'selected' : '' ?>>Artikel</option>
-                                        <option value="backlink" <?= old('jenis_artikel') == 'backlink' ? 'selected' : '' ?>>Backlink</option>
+                                        <?php foreach ($jenis as $j) : ?>
+                                            <option value="<?= $j ?>" <?= old('jenis') == $j ? 'selected' : '' ?>>
+                                                <?= ucfirst($j) ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>

@@ -10,11 +10,11 @@ $routes->get('/', 'Home::index');
 // MENU BACKLINK
 $routes->group('backlink', function ($routes) {
     $routes->get('/', 'BacklinkController::index', ['as' => 'backlink']);
-    $routes->get('/tambah', 'BacklinkController::tambah', ['as' => 'email.tambah']);
-    $routes->post('/proses_tambah', 'BacklinkController::proses_tambah', ['as' => 'email.simpan']);
-    $routes->get('/edit/(:num)', 'BacklinkController::edit/$1', ['as' => 'email.edit']);
-    $routes->post('/proses_edit/(:num)', 'BacklinkController::proses_edit/$1', ['as' => 'email.update']);
-    $routes->get('/delete/(:any)', 'BacklinkController::delete/$1', ['as' => 'email.delete']);
+    $routes->get('tambah', 'BacklinkController::tambah', ['as' => 'email.tambah']);
+    $routes->post('proses_tambah', 'BacklinkController::proses_tambah', ['as' => 'email.simpan']);
+    $routes->get('edit/(:num)', 'BacklinkController::edit/$1', ['as' => 'email.edit']);
+    $routes->post('proses_edit/(:num)', 'BacklinkController::proses_edit/$1', ['as' => 'email.update']);
+    $routes->get('delete/(:any)', 'BacklinkController::delete/$1', ['as' => 'email.hapus']);
 
     // BLOG PER EMAIL
     $routes->group('(:num)/blog', function($routes) {
