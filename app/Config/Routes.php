@@ -17,7 +17,7 @@ $routes->group('backlink', function ($routes) {
     $routes->get('delete/(:any)', 'BacklinkController::delete/$1', ['as' => 'email.hapus']);
 
     // BLOG PER EMAIL
-    $routes->group('(:num)/blog', function($routes) {
+    $routes->group('(:num)/blog', function ($routes) {
         $routes->get('/', 'BlogController::index/$1', ['as' => 'blog']);
         $routes->get('tambah', 'BlogController::tambah/$1', ['as' => 'blog.tambah']);
         $routes->post('proses_tambah', 'BlogController::proses_tambah/$1', ['as' => 'blog.simpan']);
@@ -36,7 +36,7 @@ $routes->group('backlink', function ($routes) {
             $routes->post('update/(:num)', 'ArtikelController::update/$1/$2/$3', ['as' => 'artikel.update']);
             $routes->get('hapus/(:num)', 'ArtikelController::delete/$1/$2/$3', ['as' => 'artikel.hapus']);
         });
-    });    
+    });
 });
 
 // MENU SOP

@@ -34,19 +34,62 @@ class BacklinkController extends BaseController
 
         return view('pages/backlink/index', $data);
     }
-
-    public function delete($id_email)
+    public function tambah()
     {
-        $email = $this->emailModel->find($id_email);
+        $emailModel = new EmailModel();
 
-        if ($email) {
-            // Hapus data dari database
-            $this->emailModel->delete($id_email);
+        $allEmail = $emailModel->findAll();
 
-            session()->setFlashdata('success', 'Data berhasil dihapus');
-        } else {
-            session()->setFlashdata('error', 'Data tidak ditemukan');
-        }
+        $data = [
+            'allEmail' => $allEmail,
+        ];
+
+        // dd($data);
+
+        return view('pages/backlink/tambah', $data);
+    }
+    public function proses_tambah()
+    {
+        $email = $this->request->getVar('email');
+        $password = $this->request->getVar('password');
+        $data = [
+            'email' => $email,
+            'password' => $password
+        ];
+        $emailModel = new EmailModel();
+        $emailModel->insert($data);
+
+        return redirect()->to(route_to('backlink'));
+    }
+    public function edit($id_email)
+    {
+        $emailModel = new EmailModel();
+
+        $allEmail = $emailModel->find($id_email);
+
+
+        // dd($data);
+
+        return view('pages/backlink/edit', ['allEmail' => $allEmail]);
+    }
+    public function proses_edit($id_email)
+    {
+        $email = $this->request->getVar('email');
+        $password = $this->request->getVar('password');
+        $data = [
+            'email' => $email,
+            'password' => $password
+        ];
+        $emailModel = new EmailModel();
+        $emailModel->update($id_email, $data);
+        return redirect()->to(route_to('backlink'));
+    }
+    public function delete($id = false)
+    {
+        $emailModel = new EmailModel();
+        $allEmail = $emailModel->find($id);
+        // dd($allEmail);
+        $emailModel->delete($id);
 
         return redirect()->to(route_to('backlink'));
     }
