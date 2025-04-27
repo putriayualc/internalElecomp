@@ -17,7 +17,7 @@ $routes->group('backlink', function ($routes) {
     $routes->get('/delete/(:any)', 'BacklinkController::delete/$1', ['as' => 'email.delete']);
 
     // BLOG PER EMAIL
-    $routes->group('(:num)/blog', function($routes) {
+    $routes->group('(:num)/blog', function ($routes) {
         $routes->get('/', 'BlogController::index/$1', ['as' => 'blog']);
         $routes->get('tambah', 'BlogController::tambah/$1', ['as' => 'blog.tambah']);
         $routes->post('proses_tambah', 'BlogController::proses_tambah/$1', ['as' => 'blog.simpan']);
@@ -27,7 +27,7 @@ $routes->group('backlink', function ($routes) {
         // $1 = id_email, $2 = id_blog
 
         // ARTIKEL DALAM BLOG PER EMAIL
-        $routes->group('(:num)/artikel', function($routes) {
+        $routes->group('(:num)/artikel', function ($routes) {
             // $1 = id_email, $2 = id_blog, $4 = id_artikel
             $routes->get('/', 'ArtikelController::index/$1/$2', ['as' => 'artikel']);
             $routes->get('tambah', 'ArtikelController::tambah/$1/$2', ['as' => 'artikel.tambah']);
@@ -36,7 +36,7 @@ $routes->group('backlink', function ($routes) {
             $routes->post('update/(:num)', 'ArtikelController::update/$1/$2/$3', ['as' => 'artikel.update']);
             $routes->get('hapus/(:num)', 'ArtikelController::hapus/$1/$2/$3', ['as' => 'artikel.hapus']);
         });
-    });    
+    });
 });
 
 // MENU SOP
@@ -48,5 +48,14 @@ $routes->group('sop', function ($routes) {
     $routes->post('update/(:num)', 'SopController::update/$1');
     $routes->get('delete/(:num)', 'SopController::delete/$1', ['as' => 'sop.delete']);
     $routes->get('detail/(:num)', 'SopController::detail/$1', ['as' => 'sop.detail']);
+});
+
+
+//MENU PIKET
+$routes->group('piket', function ($routes) {
+    $routes->get('/', 'PiketController::index');
+    $routes->get('edit/(:segment)', 'PiketController::edit/$1');
+    $routes->post('update', 'PiketController::update'); // tanpa slash depan
+    $routes->get('delete/(:any)/(:any)', 'PiketController::delete/$1/$2'); // tanpa 'piket/' depan
 });
 

@@ -18,9 +18,15 @@
     <!-- FontAwesome JS-->
     <script defer src="<?= base_url('assets/plugins/fontawesome/js/all.min.js') ?>"></script>
 
+    <!-- Select -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <!-- App CSS -->
     <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/portal.css') ?>">
     <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/piket.css') ?>">
+
+    <!-- Link CDN FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- test -->
     <!-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
@@ -94,6 +100,17 @@
             });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        function toggleForm(e) {
+            e.preventDefault();
+            const form = document.getElementById('addForm');
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';
+            $('.nama-dropdown').select2(); // aktifkan select2
+        }
+    </script>
+
 
 </body>
 
