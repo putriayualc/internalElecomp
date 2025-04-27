@@ -10,11 +10,11 @@ $routes->get('/', 'Home::index');
 // MENU BACKLINK
 $routes->group('backlink', function ($routes) {
     $routes->get('/', 'BacklinkController::index', ['as' => 'backlink']);
-    $routes->get('/tambah', 'BacklinkController::tambah', ['as' => 'email.tambah']);
-    $routes->post('/proses_tambah', 'BacklinkController::proses_tambah', ['as' => 'email.simpan']);
-    $routes->get('/edit/(:num)', 'BacklinkController::edit/$1', ['as' => 'email.edit']);
-    $routes->post('/proses_edit/(:num)', 'BacklinkController::proses_edit/$1', ['as' => 'email.update']);
-    $routes->get('/delete/(:any)', 'BacklinkController::delete/$1', ['as' => 'email.delete']);
+    $routes->get('tambah', 'BacklinkController::tambah', ['as' => 'email.tambah']);
+    $routes->post('proses_tambah', 'BacklinkController::proses_tambah', ['as' => 'email.simpan']);
+    $routes->get('edit/(:num)', 'BacklinkController::edit/$1', ['as' => 'email.edit']);
+    $routes->post('proses_edit/(:num)', 'BacklinkController::proses_edit/$1', ['as' => 'email.update']);
+    $routes->get('delete/(:any)', 'BacklinkController::delete/$1', ['as' => 'email.hapus']);
 
     // BLOG PER EMAIL
     $routes->group('(:num)/blog', function ($routes) {
@@ -27,14 +27,14 @@ $routes->group('backlink', function ($routes) {
         // $1 = id_email, $2 = id_blog
 
         // ARTIKEL DALAM BLOG PER EMAIL
-        $routes->group('(:num)/artikel', function ($routes) {
+        $routes->group('(:num)/artikel', function($routes) {
             // $1 = id_email, $2 = id_blog, $4 = id_artikel
             $routes->get('/', 'ArtikelController::index/$1/$2', ['as' => 'artikel']);
             $routes->get('tambah', 'ArtikelController::tambah/$1/$2', ['as' => 'artikel.tambah']);
-            $routes->post('simpan', 'ArtikelController::simpan/$1/$2', ['as' => 'artikel.simpan']);
+            $routes->post('simpan', 'ArtikelController::proses_tambah/$1/$2', ['as' => 'artikel.simpan']);
             $routes->get('edit/(:num)', 'ArtikelController::edit/$1/$2/$3', ['as' => 'artikel.edit']);
             $routes->post('update/(:num)', 'ArtikelController::update/$1/$2/$3', ['as' => 'artikel.update']);
-            $routes->get('hapus/(:num)', 'ArtikelController::hapus/$1/$2/$3', ['as' => 'artikel.hapus']);
+            $routes->get('hapus/(:num)', 'ArtikelController::delete/$1/$2/$3', ['as' => 'artikel.hapus']);
         });
     });
 });
@@ -49,13 +49,21 @@ $routes->group('sop', function ($routes) {
     $routes->get('delete/(:num)', 'SopController::delete/$1', ['as' => 'sop.delete']);
     $routes->get('detail/(:num)', 'SopController::detail/$1', ['as' => 'sop.detail']);
 });
-
-
 //MENU PIKET
 $routes->group('piket', function ($routes) {
     $routes->get('/', 'PiketController::index');
     $routes->get('edit/(:segment)', 'PiketController::edit/$1');
     $routes->post('update', 'PiketController::update'); // tanpa slash depan
     $routes->get('delete/(:any)/(:any)', 'PiketController::delete/$1/$2'); // tanpa 'piket/' depan
+});
+
+// MENU HOSTING
+$routes->group('hosting', function ($routes) {
+    $routes->get('/', 'HostingController::index');
+    $routes->get('tambah', 'HostingController::tambah', ['as' => 'hosting.tambah']);
+    $routes->post('simpan', 'HostingController::simpan'); // Pastikan ini ada
+    $routes->get('edit/(:num)', 'HostingController::edit/$1', ['as' => 'hosting.edit']);
+    $routes->post('update/(:num)', 'HostingController::update/$1');
+    $routes->get('delete/(:num)', 'HostingController::delete/$1', ['as' => 'hosting.delete']);
 });
 

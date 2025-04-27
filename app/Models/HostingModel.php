@@ -4,18 +4,23 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class BlogModel extends Model
+class HostingModel extends Model
 {
-    protected $table            = 'tb_blog';
-    protected $primaryKey       = 'id_blog';
+    protected $table            = 'tb_hosting';
+    protected $primaryKey       = 'id_hosting';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_email',
-        'domain_blog'
-    ];
+    protected $allowedFields    = ['domain_utama', 'username_hosting', 'password_hosting'];
+
+    // Join dengan tb_domains
+    public function getAllWithAddon(){
+        return $this->select('tb_hosting.*, GROUP_CONCAT(tb_domains.add_on_domain SEPARATOR ", ") as add_on_domain')
+            ->join('tb_domains', 'tb_domains.id_hosting = tb_hosting.id_hosting', 'left')
+            ->groupBy('tb_hosting.id_hosting')
+            ->findAll();
+    }
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -46,14 +51,4 @@ class BlogModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function getAllBlogWithCountArticle()
-    {
-        return $this->select(
-            'tb_blog.*, ' .
-            'COUNT(tb_artikel.id_artikel) AS jumlah_artikel'
-        )->join('tb_artikel', 'tb_blog.id_blog = tb_artikel.id_blog', 'left')
-        ->groupBy('tb_blog.id_blog')
-        ->findAll();
-    }
 }

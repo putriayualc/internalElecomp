@@ -4,18 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class BlogModel extends Model
+class DomainModel extends Model
 {
-    protected $table            = 'tb_blog';
-    protected $primaryKey       = 'id_blog';
+    protected $table            = 'tb_domains';
+    protected $primaryKey       = 'id_domains';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_email',
-        'domain_blog'
-    ];
+    protected $allowedFields    = ['id_hosting', 'add_on_domains'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -46,14 +43,4 @@ class BlogModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function getAllBlogWithCountArticle()
-    {
-        return $this->select(
-            'tb_blog.*, ' .
-            'COUNT(tb_artikel.id_artikel) AS jumlah_artikel'
-        )->join('tb_artikel', 'tb_blog.id_blog = tb_artikel.id_blog', 'left')
-        ->groupBy('tb_blog.id_blog')
-        ->findAll();
-    }
 }

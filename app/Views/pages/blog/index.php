@@ -9,7 +9,11 @@
             </div>
             </br>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a href="<?= route_to('email.tambah') ?>" class="btn btn-primary me-md-2"> + Tambah Blog</a>
+                <!-- <a href="" class="btn btn-primary me-md-2"> + Tambah Blog</a> -->
+                <button type="button" class="btn btn-primary me-md-2" data-bs-toggle="modal" data-bs-target="#tambahBlogModal">
+                    + Tambah Blog
+                </button>
+
             </div>
         </div>
         <div class="tab-content" id="orders-table-tab-content">
@@ -77,5 +81,50 @@
         </div>
     </div>
 <?php endforeach; ?>
+
+<!-- Modal Tambah Blog -->
+<div class="modal fade" id="tambahBlogModal" tabindex="-1" aria-labelledby="tambahBlogModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="<?= route_to('blog.simpan', $email['id_email']) ?>" method="POST">
+            <?= csrf_field(); ?>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahBlogModalLabel">Tambah Blog Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    <?php if (session('errors.domain_blog')) : ?>
+                        <div class="text-danger small mt-1"><?= session('errors.domain_blog') ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Email</label>
+                        <input type="text" class="form-control-plaintext" readonly value="<?= $email['email'] ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="domain_blog" class="form-label">Alamat Blog</label>
+                        <input type="text" class="form-control" id="domain_blog" name="domain_blog" required>
+                    </div>
+                    <!-- Tambahkan input lain jika diperlukan -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<?php if (session()->has('openModal')) : ?>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const modalId = "<?= session('openModal') ?>";
+            const modal = new bootstrap.Modal(document.getElementById(modalId));
+            modal.show();
+        });
+    </script>
+<?php endif; ?>
+
+
 
 <?= $this->endSection('content') ?>
