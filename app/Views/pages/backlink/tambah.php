@@ -28,6 +28,16 @@
                                     <label class="form-label">Password <br></label>
                                     <input type="text" class="form-control" id="password" name="password" value="<?= old('password') ?>">
                                 </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Domain Blog <br></label>
+                                    <div id="domain-container">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" name="domain_blog[]" placeholder="ex : coba.blogspot.com">
+                                            <button class="btn btn-success add-domain" type="button">+</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -50,5 +60,29 @@
         <hr class="my-4">
     </div><!--//container-fluid-->
 </div><!--//app-content-->
+
+<!-- JavaScript for dynamic domain inputs -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add new domain input
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('add-domain')) {
+            const container = document.getElementById('domain-container');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'input-group mb-2';
+            newGroup.innerHTML = `
+                <input type="text" class="form-control" name="domain_blog[]" placeholder="Masukkan domain blog">
+                <button class="btn btn-danger remove-domain" type="button">-</button>
+            `;
+            container.appendChild(newGroup);
+        }
+        
+        // Remove domain input
+        if (e.target && e.target.classList.contains('remove-domain')) {
+            e.target.closest('.input-group').remove();
+        }
+    });
+});
+</script>
 
 <?= $this->endSection('content'); ?>

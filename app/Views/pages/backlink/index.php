@@ -96,20 +96,15 @@
                                             <td class="cell fw-bold">
                                                 <a href="https://<?= $blog['domain_blog'] ?>" target="_blank" class="text-decoration-none text-secondary">
                                                     <?= $blog['domain_blog'] ?>
-                                                    <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i>
                                                 </a>
                                             </td>
                                             <td class="cell">
                                                 <div class="d-flex flex-column">
-                                                    <span class="badge bg-info text-dark">
+                                                    <a href="<?= route_to('artikel', $email['id_email'], $blog['id_blog']) ?>" class="badge bg-info text-dark text-decoration-none">
                                                         <?= isset($blog['jumlah_artikel']) ? $blog['jumlah_artikel'] : 0 ?>
-                                                    </span>
-
-                                                    <a href="<?= route_to('artikel', $email['id_email'], $blog['id_blog']) ?>" class="mt-1 small text-secondary">
-                                                        Lihat artikel
                                                     </a>
-
                                                 </div>
+
                                             </td>
                                             <?php if ($blogIndex === 0) : ?>
                                                 <td class="cell" <?= $rowCount > 1 ? 'rowspan="' . $rowCount . '"' : '' ?> style="vertical-align: top;">

@@ -23,7 +23,7 @@
 
     <!-- App CSS -->
     <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/portal.css') ?>">
-    <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/piket.css') ?>">
+    <!-- <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/piket.css') ?>"> -->
 
     <!-- Link CDN FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -40,6 +40,7 @@
     </script>
     <!-- end test -->
 
+    <?= $this->renderSection('css'); ?>
 </head>
 
 <body class="app">
