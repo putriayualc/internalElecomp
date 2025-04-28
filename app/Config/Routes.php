@@ -41,7 +41,7 @@ $routes->group('backlink', function ($routes) {
 
 // MENU SOP
 $routes->group('sop', function ($routes) {
-    $routes->get('/', 'SopController::index');
+    $routes->get('/', 'SopController::index', ['as' => 'sop']);
     $routes->get('tambah', 'SopController::tambah', ['as' => 'sop.tambah']);
     $routes->post('simpan', 'SopController::simpan');
     $routes->get('edit/(:num)', 'SopController::edit/$1', ['as' => 'sop.edit']);
@@ -51,7 +51,7 @@ $routes->group('sop', function ($routes) {
 });
 //MENU PIKET
 $routes->group('piket', function ($routes) {
-    $routes->get('/', 'PiketController::index');
+    $routes->get('/', 'PiketController::index', ['as' => 'piket']);
     $routes->get('edit/(:segment)', 'PiketController::edit/$1');
     $routes->post('update', 'PiketController::update'); // tanpa slash depan
     $routes->get('delete/(:any)/(:any)', 'PiketController::delete/$1/$2'); // tanpa 'piket/' depan
@@ -59,11 +59,21 @@ $routes->group('piket', function ($routes) {
 
 // MENU HOSTING
 $routes->group('hosting', function ($routes) {
-    $routes->get('/', 'HostingController::index');
+    $routes->get('/', 'HostingController::index', ['as' => 'hosting']);
     $routes->get('tambah', 'HostingController::tambah', ['as' => 'hosting.tambah']);
     $routes->post('simpan', 'HostingController::simpan'); // Pastikan ini ada
     $routes->get('edit/(:num)', 'HostingController::edit/$1', ['as' => 'hosting.edit']);
     $routes->post('update/(:num)', 'HostingController::update/$1');
     $routes->get('delete/(:num)', 'HostingController::delete/$1', ['as' => 'hosting.delete']);
+});
+
+// MENU DATA SISWA MAGANG
+$routes->group('siswa', function ($routes) {
+    $routes->get('/', 'SiswaController::index', ['as' => 'siswa']);
+    $routes->get('tambah', 'SiswaController::tambah', ['as' => 'siswa.tambah']);
+    $routes->post('simpan', 'SiswaController::simpan', ['as' => 'siswa.simpan']); // Pastikan ini ada
+    $routes->get('edit/(:num)', 'SiswaController::edit/$1', ['as' => 'siswa.edit']);
+    $routes->post('update/(:num)', 'SiswaController::update/$1', ['as' => 'siswa.update']);
+    $routes->get('delete/(:num)', 'SiswaController::delete/$1', ['as' => 'siswa.delete']);
 });
 
