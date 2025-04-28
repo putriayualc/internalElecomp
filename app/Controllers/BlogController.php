@@ -51,4 +51,13 @@ class BlogController extends BaseController
 
         return redirect()->to(route_to('backlink'))->with('success', 'Blog berhasil ditambahkan!');
     }
+
+    public function delete($id_email, $id_blog)
+    {
+        $blogModel = new BlogModel();
+
+        $blogModel->delete($id_blog);
+
+        return redirect()->to(route_to('email.edit', $id_email));
+    }
 }
