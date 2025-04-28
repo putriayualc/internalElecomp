@@ -39,13 +39,28 @@
                                     <td class="text-center"><?= esc($host['domain_utama']) ?></td>
                                     <td class="text-center"><?= esc($host['username_hosting']) ?></td>
                                     <td class="text-center"><?= esc($host['password_hosting']) ?></td>
-                                    <td class="text-center">
+                                    <td class="text-start">
                                         <?php if (!empty($host['add_on_domain'])): ?>
-                                            <?= esc($host['add_on_domain']) ?>
+                                            <?php
+                                            $addOnDomains = explode(',', $host['add_on_domain']);
+                                            foreach ($addOnDomains as $index => $domain) :
+                                                $trimmedDomain = trim($domain);
+                                            ?>
+                                                <div class="mb-1">
+                                                    🔗 <a href="http://<?= esc($trimmedDomain) ?>" target="_blank" rel="noopener noreferrer">
+                                                        <?= esc($trimmedDomain) ?>
+                                                    </a>
+                                                </div>
+                                                <?php if ($index < count($addOnDomains) - 1): ?>
+                                                    <hr class="my-1">
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
                                         <?php else: ?>
                                             <em>Tidak ada</em>
                                         <?php endif; ?>
                                     </td>
+
+
                                     <td class="text-center">
                                         <div class="d-grid gap-2">
                                             <a href="<?= route_to('hosting.detail', $host['id_hosting']) ?>" class="btn btn-info">Lihat</a>

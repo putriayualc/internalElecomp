@@ -34,17 +34,17 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="fas fa-save"></i> Simpan
-                                    </button>
-                                </div>
-                                <div class="col-md-2">
                                     <button type="button" class="btn btn-danger w-100" onclick="removeRow(this)">
                                         <i class="fas fa-trash-alt"></i> Hapus
                                     </button>
                                 </div>
                             </div>
                         <?php endforeach; ?>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
                     </div>
                 </form>
             </div>
