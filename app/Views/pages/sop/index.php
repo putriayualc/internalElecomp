@@ -36,11 +36,13 @@
                                 <tr>
                                     <td class="text-center"><?= $i + 1 ?></td>
                                     <td class="text-center"><?= $sop['judul_sop'] ?></td>
-                                    <td class="text-center"><?= $sop['detail_sop'] ?></td>
+                                    <td class="text-center">
+                                        <?= strlen($sop['detail_sop']) > 50 ? substr($sop['detail_sop'], 0, 50) . '...' : $sop['detail_sop'] ?>
+                                    </td>
                                     <td class="text-center">
                                         <div class="d-grid gap-2">
                                             <a href="<?= route_to('sop.detail', $sop['id_sop']) ?>" class="btn btn-info">Lihat</a>
-                                            <a href="<?= route_to('sop.edit', $sop['id_sop']) ?>" class="btn btn-primary">Ubah</a>
+                                            <a href="<?= route_to('sop.edit', $sop['id_sop']) ?>" class="btn btn-primary">Edit</a>
                                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $sop['id_sop'] ?>">
                                                 Hapus
                                             </button>
