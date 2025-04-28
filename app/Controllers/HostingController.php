@@ -65,4 +65,63 @@ class HostingController extends BaseController
 
         return redirect()->to('hosting')->with('success', 'Hosting berhasil ditambahkan');
     }
+
+    public function delete($id)
+    {
+        $this->hostingModel->delete($id);
+        return redirect()->to('hosting')->with('success', 'Data Hosting berhasil dihapus.');
+    }
+
+    public function edit($id)
+    {
+        $data = [
+            'hosting' => $this->hostingModel->find($id)
+        ];
+
+        return view('pages/hosting/edit', $data);
+    }
+
+    // Update data SOP
+    public function update($id)
+{
+    // Update data hosting utama
+    $this->hostingModel->update($id, [
+        'domain_utama'      => $this->request->getPost('domain_utama'),
+        'username_hosting'  => $this->request->getPost('username_hosting'),
+        'password_hosting'  => $this->request->getPost('password_hosting'),
+    ]);
+
+    // Ambil data add-on domain yang dikirim dari form
+    $addOnDomains = $this->request->getPost('add_on_domain');
+
+    // Hapus semua add-on domain lama untuk hosting ini
+    // $this->hostingModel->db->table('tb_domains')->where('id_hosting', $id)->delete();
+
+    // Tambahkan add-on domain baru (kalau ada)
+    if (!empty($addOnDomains) && is_array($addOnDomains)) {
+        foreach ($addOnDomains as $domain) {
+            if (!empty(trim($domain))) {
+                $this->hostingModel->db->table('tb_domains')->insert([
+                    'id_hosting' => $id,
+                    'add_on_domain' => trim($domain),
+                ]);
+            }
+        }
+    }
+
+    return redirect()->to('hosting')->with('success', 'Data Hosting berhasil diperbarui.');
+}
+
+
+    // Detail SOP (opsional)
+    public function detail($id)
+    {
+        $data = [
+            'hosting' => $this->hostingModel->find($id)
+        ];
+
+        return view('pages/hosting/detail', $data);
+    }
+
+
 }
