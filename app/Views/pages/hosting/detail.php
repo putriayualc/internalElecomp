@@ -26,6 +26,11 @@
                             <p><?= esc($hosting['password_hosting']) ?></p>
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Add On Domain:</label>
+                            <p><?= esc($addons['add_on_domain']) ?></p> 
+                        </div>
+
                         <a href="<?= base_url('hosting') ?>" class="btn btn-secondary">Kembali</a>
 
                     </div><!--//app-card-body-->

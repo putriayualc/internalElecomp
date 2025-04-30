@@ -48,7 +48,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-grid gap-2">
-                                            <a href="<?= route_to('hosting.detail', $host['id_hosting']) ?>" class="btn btn-info">Lihat</a>
+                                            <!-- <a href="<?= route_to('hosting.detail', $host['id_hosting']) ?>" class="btn btn-info">Lihat</a> -->
                                             <a href="<?= route_to('hosting.edit', $host['id_hosting']) ?>" class="btn btn-primary">Ubah</a>
                                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $host['id_hosting'] ?>">
                                                 Hapus

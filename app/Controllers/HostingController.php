@@ -74,54 +74,91 @@ class HostingController extends BaseController
 
     public function edit($id)
     {
+        // Get hosting data with add-on domains
+        $hostingData = $this->hostingModel->getHostingWithAddons($id);
+        $data['addon'] = $this->hostingModel->getAddonsByHostingId($id);
+
+        if (empty($hostingData)) {
+            return redirect()->to('hosting')->with('error', 'Hosting tidak ditemukan');
+        }
+
+        // Ambil data hosting utama dari baris pertama
+        $hosting = [
+            'id_hosting' => $hostingData[0]['id_hosting'],
+            'domain_utama' => $hostingData[0]['domain_utama'],
+            'username_hosting' => $hostingData[0]['username_hosting'],
+            'password_hosting' => $hostingData[0]['password_hosting'],
+        ];
+
+        // Kumpulkan semua add-on domains
+        $addons = [];
+        foreach ($hostingData as $row) {
+            if (!empty($row['add_on_domain'])) {
+                $addons[] = [
+                    'id_domains' => $row['id_domains'],
+                    'id_hosting' => $row['id_hosting'],
+                    'add_on_domain' => $row['add_on_domain'],
+                ];
+            }
+        }
+
         $data = [
-            'hosting' => $this->hostingModel->find($id)
+            'hosting' => $hosting,
+            'addons' => $addons, // ← ini buat tampil di form
         ];
 
         return view('pages/hosting/edit', $data);
     }
 
-    // Update data SOP
+
     public function update($id)
-{
-    // Update data hosting utama
-    $this->hostingModel->update($id, [
-        'domain_utama'      => $this->request->getPost('domain_utama'),
-        'username_hosting'  => $this->request->getPost('username_hosting'),
-        'password_hosting'  => $this->request->getPost('password_hosting'),
-    ]);
+    {
+        // Update data hosting utama
+        $this->hostingModel->update($id, [
+            'domain_utama'      => $this->request->getPost('domain_utama'),
+            'username_hosting'  => $this->request->getPost('username_hosting'),
+            'password_hosting'  => $this->request->getPost('password_hosting'),
+        ]);
 
-    // Ambil data add-on domain yang dikirim dari form
-    $addOnDomains = $this->request->getPost('add_on_domain');
+        // Add-on Domains
+        $addOnDomains = $this->request->getPost('add_on_domain');
+        $domainIds = $this->request->getPost('domains_id');
 
-    // Hapus semua add-on domain lama untuk hosting ini
-    // $this->hostingModel->db->table('tb_domains')->where('id_hosting', $id)->delete();
-
-    // Tambahkan add-on domain baru (kalau ada)
-    if (!empty($addOnDomains) && is_array($addOnDomains)) {
-        foreach ($addOnDomains as $domain) {
-            if (!empty(trim($domain))) {
-                $this->hostingModel->db->table('tb_domains')->insert([
-                    'id_hosting' => $id,
-                    'add_on_domain' => trim($domain),
-                ]);
+        if (!empty($addOnDomains) && is_array($addOnDomains)) {
+            foreach ($addOnDomains as $key => $domain) {
+                $domain = trim($domain);
+                if (!empty($domain)) {
+                    if (isset($domainIds[$key]) && $domainIds[$key] != '0') {
+                        // Update jika id_domains ada
+                        $this->hostingModel->db->table('tb_domains')->update([
+                            'add_on_domain' => $domain
+                        ], [
+                            'id_domains' => $domainIds[$key]
+                        ]);
+                    } else {
+                        // Insert jika domain baru
+                        $this->hostingModel->db->table('tb_domains')->insert([
+                            'id_hosting' => $id,
+                            'add_on_domain' => $domain,
+                        ]);
+                    }
+                }
             }
         }
+
+        return redirect()->to('hosting')->with('success', 'Data Hosting berhasil diperbarui.');
     }
 
-    return redirect()->to('hosting')->with('success', 'Data Hosting berhasil diperbarui.');
-}
-
-
-    // Detail SOP (opsional)
+   
     public function detail($id)
     {
         $data = [
-            'hosting' => $this->hostingModel->find($id)
+            'hosting' => $this->hostingModel->find($id),
         ];
+
+        $data['addon'] = $this->hostingModel->findAll($id);
 
         return view('pages/hosting/detail', $data);
     }
-
-
+    
 }

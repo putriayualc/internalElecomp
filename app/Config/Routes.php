@@ -68,3 +68,6 @@ $routes->group('hosting', function ($routes) {
     $routes->get('detail/(:num)', 'HostingController::detail/$1', ['as' => 'hosting.detail']);
 });
 
+$routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);
+
+

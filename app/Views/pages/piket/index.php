@@ -135,7 +135,9 @@
     }
 
     .piket-box.sabtu {
-        background-color: #e2e3e5;
+        background-color: #e7ddff 
+        
+        "";
         /* light gray */
     }
 
