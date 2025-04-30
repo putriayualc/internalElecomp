@@ -20,8 +20,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="detail_sop" class="form-label">Detail SOP</label>
-                                <textarea class="form-control" id="detail_sop" name="detail_sop" rows="5" required><?= esc($sop['detail_sop']) ?></textarea>
+                                <label class="form-label">Detail SOP</label>
+                                <textarea class="form-control tiny" id="detail_sop" name="detail_sop"><?= old('detail_sop', $sop['detail_sop']) ?></textarea>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Update</button>
