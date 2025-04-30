@@ -70,3 +70,27 @@ $routes->group('piket', function ($routes) {
     $routes->get('delete/(:any)/(:any)', 'PiketController::delete/$1/$2'); // tanpa 'piket/' depan
 });
 
+// MENU HOSTING
+$routes->group('hosting', function ($routes) {
+    $routes->get('/', 'HostingController::index');
+    $routes->get('tambah', 'HostingController::tambah', ['as' => 'hosting.tambah']);
+    $routes->post('simpan', 'HostingController::simpan'); 
+    $routes->get('edit/(:num)', 'HostingController::edit/$1', ['as' => 'hosting.edit']);
+    $routes->post('update/(:num)', 'HostingController::update/$1');
+    $routes->get('delete/(:num)', 'HostingController::delete/$1', ['as' => 'hosting.delete']);
+    $routes->get('detail/(:num)', 'HostingController::detail/$1', ['as' => 'hosting.detail']);
+});
+
+// MENU DATA SISWA MAGANG
+$routes->group('siswa', function ($routes) {
+    $routes->get('/', 'SiswaController::index', ['as' => 'siswa']);
+    $routes->get('tambah', 'SiswaController::tambah', ['as' => 'siswa.tambah']);
+    $routes->post('simpan', 'SiswaController::simpan', ['as' => 'siswa.simpan']); // Pastikan ini ada
+    $routes->get('edit/(:num)', 'SiswaController::edit/$1', ['as' => 'siswa.edit']);
+    $routes->post('update/(:num)', 'SiswaController::update/$1', ['as' => 'siswa.update']);
+    $routes->get('delete/(:num)', 'SiswaController::delete/$1', ['as' => 'siswa.delete']);
+});
+
+$routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);
+
+
