@@ -78,3 +78,13 @@ $routes->group('siswa', function ($routes) {
     $routes->get('delete/(:num)', 'SiswaController::delete/$1', ['as' => 'siswa.delete']);
 });
 
+// MENU PROSPEK
+$routes->group('prospek', function ($routes) {
+    $routes->get('/', 'ProspekController::index', ['as' => 'prospek']);
+    $routes->get('tambah', 'ProspekController::tambah', ['as' => 'prospek.tambah']);
+    $routes->post('simpan', 'ProspekController::simpan', ['as' => 'prospek.simpan']); // Pastikan ini ada
+    $routes->get('edit/(:num)', 'ProspekController::edit/$1', ['as' => 'prospek.edit']);
+    $routes->post('update/(:num)', 'ProspekController::update/$1', ['as' => 'prospek.update']);
+    $routes->get('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
+    $routes->get('detail', 'ProspekController::detail', ['as' => 'prospek.detail']);
+});
