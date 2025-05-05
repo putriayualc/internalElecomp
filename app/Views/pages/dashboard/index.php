@@ -3,7 +3,8 @@
 
 <div class="app-content pt-3 p-md-3 p-lg-4">
     <div class="container-xl">
-        <h1 class="app-page-title">Dashboard</h1>
+        <!-- <h1 class="app-page-title">Dashboard</h1> -->
+        <h1 class="app-page-title">Halo <?= session()->get('role') ?></h1>
 
         <div class="row mb-4">
             <!-- Piket Hari Ini - Left Side -->

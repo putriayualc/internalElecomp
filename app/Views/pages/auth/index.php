@@ -18,8 +18,9 @@
 							Anda telah login. Silakan logout terlebih dahulu.
 						</div>
 					<?php endif; ?>
-					<form class="auth-form login-form" method="post" action="<?php echo base_url('login/process'); ?>">
+					<form class="auth-form login-form" method="post" action="<?php echo base_url('login/proses'); ?>">
 						<?= csrf_field(); ?>
+
 						<div class="email mb-3">
 							<label class="sr-only" for="username">Username</label>
 							<input id="username" name="username" type="text" class="form-control username" placeholder="username" required="required">

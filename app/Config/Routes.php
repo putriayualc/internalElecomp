@@ -6,6 +6,9 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
+$routes->get('/login', 'AuthController::index');
+$routes->get('/logout', 'AuthController::logout');
+$routes->post('/login/proses', 'AuthController::proses_login');
 
 // MENU BACKLINK
 $routes->group('backlink', function ($routes) {
@@ -50,17 +53,6 @@ $routes->group('sop', function ($routes) {
     $routes->get('detail/(:num)', 'SopController::detail/$1', ['as' => 'sop.detail']);
 });
 
-// MENU HOSTING
-$routes->group('hosting', function ($routes) {
-    $routes->get('/', 'HostingController::index');
-    $routes->get('tambah', 'HostingController::tambah', ['as' => 'hosting.tambah']);
-    $routes->post('simpan', 'HostingController::simpan'); // Pastikan ini ada
-    $routes->get('edit/(:num)', 'HostingController::edit/$1', ['as' => 'hosting.edit']);
-    $routes->post('update/(:num)', 'HostingController::update/$1');
-    $routes->get('delete/(:num)', 'HostingController::delete/$1', ['as' => 'hosting.delete']);
-});
-
-
 
 //MENU PIKET
 $routes->group('piket', function ($routes) {
@@ -90,9 +82,6 @@ $routes->group('siswa', function ($routes) {
     $routes->post('update/(:num)', 'SiswaController::update/$1', ['as' => 'siswa.update']);
     $routes->get('delete/(:num)', 'SiswaController::delete/$1', ['as' => 'siswa.delete']);
 });
-
-$routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);
-
 
 $routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);
 
