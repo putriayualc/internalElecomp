@@ -34,8 +34,8 @@ class EmailModel extends Model
     // Validation
     protected $validationRules = [
         'id_email' => 'permit_empty',
-        'email'    => 'required|valid_email|is_unique[tb_email.email,id_email,{id_email}]',
-        'password' => 'required|min_length[5]',
+        'email'    => 'required|valid_email',
+        'password' => 'required|min_length[4]',
         'id_user'  => 'required|is_natural_no_zero',
     ];
 
@@ -44,11 +44,10 @@ class EmailModel extends Model
         'email' => [
             'required'    => 'Email tidak boleh kosong',
             'valid_email' => 'Format email tidak valid',
-            'is_unique'   => 'Email sudah terdaftar'
         ],
         'password' => [
             'required'    => 'Password tidak boleh kosong',
-            'min_length'  => 'Password minimal 6 karakter'
+            'min_length'  => 'Password minimal 4 karakter'
         ],
         'id_user' => [
             'required'           => 'User wajib diisi',

@@ -113,7 +113,6 @@ class BacklinkController extends BaseController
     {
         $data = $this->request->getPost();
         $data['id_email'] = $id_email;
-
         // dd($data);
         if (!$this->emailModel->validate($data)) {
             return redirect()->back()->withInput()->with('error', $this->emailModel->errors());

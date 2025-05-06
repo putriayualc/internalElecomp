@@ -36,7 +36,7 @@
 
             <div class="mb-3">
                 <label class="form-label">Nama User <br></label>
-                <select class="form-select select2" name="id_user">
+                <select class="form-select" name="id_user">
                     <option value="">-- Pilih User --</option>
                     <?php foreach ($allUsers as $user): ?>
                         <option value="<?= $user['id_user']; ?>" <?= ($user['id_user'] == $email['id_user']) ? 'selected' : ''; ?>>
