@@ -83,9 +83,10 @@ class Filters extends BaseFilters
             'userFilter' => [
                 'except' => [
                     '/',
-                    'dashboard',
-                    'user/*',
-                    'profile/*'
+                    'piket',
+                    'sop',
+                    'backlink',
+                    'backlink/*',
                 ]
             ]
         ],
