@@ -33,11 +33,13 @@ class CreateTableArtikel extends Migration
             'link_to' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
+                'null'       => true,
             ],
             'link_type' => [
                 'type'       => 'ENUM',
                 'constraint' => ['img', 'video', 'naked_url', 'text'],
-                'default'    => 'text'
+                'default'    => 'text',
+                'null'       => true,
             ],
             'keywords' => [
                 'type'       => 'VARCHAR',
@@ -46,6 +48,7 @@ class CreateTableArtikel extends Migration
             'anchor_text' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
+                'null'       => true,
             ],
             'indexed' => [
                 'type'       => 'ENUM',

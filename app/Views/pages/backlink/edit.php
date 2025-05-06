@@ -7,8 +7,15 @@
         <hr class="mb-4">
 
         <?php if (!empty(session()->getFlashdata('error'))) : ?>
-            <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    <?php foreach (session()->getFlashdata('error') as $err) : ?>
+                        <li><?= esc($err) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         <?php endif; ?>
+
 
         <?php if (!empty(session()->getFlashdata('success'))) : ?>
             <div class="alert alert-success"><?= session()->getFlashdata('success'); ?></div>
@@ -25,6 +32,18 @@
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="text" class="form-control" id="password" name="password" value="<?= old('password', $email['password']) ?>">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nama User <br></label>
+                <select class="form-select select2" name="id_user">
+                    <option value="">-- Pilih User --</option>
+                    <?php foreach ($allUsers as $user): ?>
+                        <option value="<?= $user['id_user']; ?>" <?= ($user['id_user'] == $email['id_user']) ? 'selected' : ''; ?>>
+                            <?= $user['nama'] ?? $user['username']; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
 
             <div class="mb-3">

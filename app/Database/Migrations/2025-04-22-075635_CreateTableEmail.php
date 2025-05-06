@@ -30,6 +30,7 @@ class CreateTableEmail extends Migration
         ]);
 
         $this->forge->addKey('id_email', true);
+        $this->forge->addForeignKey('id_user', 'tb_users', 'id_user', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tb_email');
     }
 
