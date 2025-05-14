@@ -19,9 +19,18 @@ class CreateTableSosmed extends Migration
                 'type'          => 'INT',
                 'unsigned'      => true,
             ],
-            'nama_akun' => [
+            'username' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
+            ],
+            'platform' => [
+                'type'       => 'ENUM',
+                'constraint' => ['instagram', 'tiktok', 'facebook', 'linkedin'],
+                'null'       => true,
+                'default'    => null,
+            ],
+            'updated_at' => [
+                'type'      => 'DATE'
             ],
             'platform' => [
                 'type'       => 'ENUM',

@@ -96,3 +96,35 @@ $routes->group('prospek', function ($routes) {
     $routes->get('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
     $routes->get('detail', 'ProspekController::detail', ['as' => 'prospek.detail']);
 });
+
+// MENU Bisnis
+$routes->group('bisnis', function ($routes) {
+    $routes->get('/', 'BisnisController::index', ['as' => 'bisnis']);
+    $routes->get('tambah', 'BisnisController::tambah', ['as' => 'bisnis.tambah']);
+    $routes->post('simpan', 'BisnisController::simpan', ['as' => 'bisnis.simpan']); // Pastikan ini ada
+    
+});
+
+// MENU SOSMED
+$routes->group('sosmed', function ($routes) {
+    $routes->get('/', 'SosmedController::index', ['as' => 'sosmed']);
+    $routes->get('(:num)', 'SosmedController::index/$1', ['as' => 'sosmed.filter']);
+    $routes->get('tambah', 'SosmedController::tambah', ['as' => 'sosmed.tambah']);
+    $routes->post('simpan', 'SosmedController::simpan', ['as' => 'sosmed.simpan']); // Pastikan ini ada
+    $routes->get('edit/(:num)', 'SosmedController::edit/$1', ['as' => 'sosmed.edit']);
+    $routes->post('update/(:num)', 'SosmedController::update/$1', ['as' => 'sosmed.update']);
+    $routes->get('delete/(:num)', 'SosmedController::delete/$1', ['as' => 'sosmed.delete']);
+    $routes->get('detail', 'SosmedController::detail', ['as' => 'sosmed.detail']);
+});
+
+// MENU Konten
+$routes->group('konten', function ($routes) {
+    $routes->get('/', 'KontenController::index', ['as' => 'konten']);
+    $routes->get('(:num)', 'KontenController::index/$1', ['as' => 'konten.filter']);
+    $routes->get('tambah', 'KontenController::tambah', ['as' => 'konten.tambah']);
+    $routes->post('simpan', 'KontenController::simpan', ['as' => 'konten.simpan']); // Pastikan ini ada
+    $routes->get('edit/(:num)', 'KontenController::edit/$1', ['as' => 'konten.edit']);
+    $routes->post('update/(:num)', 'KontenController::update/$1', ['as' => 'konten.update']);
+    $routes->get('delete/(:num)', 'KontenController::delete/$1', ['as' => 'konten.delete']);
+    $routes->get('detail', 'KontenController::detail', ['as' => 'konten.detail']);
+});

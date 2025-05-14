@@ -4,33 +4,29 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateTableBisnis extends Migration
+class CreateTableHari extends Migration
 {
     public function up()
     {
-        $this->forge->addField([
-            'id_bisnis' => [
+         $this->forge->addField([
+            'id_hari' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'nama_bisnis' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'website' => [
+            'hari' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
             ],
         ]);
 
-        $this->forge->addKey('id_bisnis', true);
-        $this->forge->createTable('tb_bisnis');
+        $this->forge->addKey('id_hari', true);
+        $this->forge->createTable('tb_hari');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tb_bisnis');
+        $this->forge->dropTable('tb_hari');
     }
 }

@@ -23,14 +23,9 @@ class CreateTableEmail extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'id_user' => [
-                'type'          => 'INT',
-                'unsigned'      => true,
-            ],
         ]);
 
         $this->forge->addKey('id_email', true);
-        $this->forge->addForeignKey('id_user', 'tb_users', 'id_user', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tb_email');
     }
 

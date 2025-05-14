@@ -15,9 +15,12 @@ class CreateTableKonten extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'caption' => [
+            'tajuk' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
+            ],
+            'caption' => [
+                'type'       => 'TEXT',
             ],
             'cover' => [
                 'type'       => 'VARCHAR',
