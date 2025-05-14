@@ -69,12 +69,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="nav-link d-flex align-items-center">
+                                <a href="<?= route_to('email') ?>" class="nav-link d-flex align-items-center">
                                     <i class="bi bi-envelope-fill me-2"></i> Kirim Email
                                 </a>
                             </li>
                             <li>
-                                <a href="" class="nav-link d-flex align-items-center">
+                                <a href="<?= route_to('whatsapp') ?>" class="nav-link d-flex align-items-center">
                                     <i class="bi bi-file-earmark-text me-2"></i> Kirim WhatsApp
                                 </a>
                             </li>

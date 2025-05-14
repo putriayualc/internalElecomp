@@ -15,4 +15,9 @@ class ProspekController extends BaseController
     {
         return view('pages/prospek/detail');
     }
+
+    public function tambah()
+    {
+        return view('pages/prospek/tambah');
+    }
 }

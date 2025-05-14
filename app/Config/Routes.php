@@ -96,8 +96,7 @@ $routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as'
 
 $routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);
 
-
-// MENU PROSPEK
+// MENU LIST PROSPEK
 $routes->group('prospek', function ($routes) {
     $routes->get('/', 'ProspekController::index', ['as' => 'prospek']);
     $routes->get('tambah', 'ProspekController::tambah', ['as' => 'prospek.tambah']);
@@ -106,4 +105,16 @@ $routes->group('prospek', function ($routes) {
     $routes->post('update/(:num)', 'ProspekController::update/$1', ['as' => 'prospek.update']);
     $routes->get('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
     $routes->get('detail', 'ProspekController::detail', ['as' => 'prospek.detail']);
+});
+
+// MENU KIRIM EMAIL
+$routes->group('email', function ($routes) {
+    $routes->get('/', 'EmailController::index', ['as' => 'email']);
+    $routes->get('detail', 'EmailController::detail', ['as' => 'email.detail']);
+});
+
+// MENU KIRIM WHATSAPP
+$routes->group('whatsapp', function ($routes) {
+    $routes->get('/', 'WhatsappController::index', ['as' => 'whatsapp']);
+    $routes->get('email', 'WhatsappController::detail', ['as' => 'whatsapp.detail']);
 });
