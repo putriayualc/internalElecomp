@@ -4,26 +4,18 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class SiswaModel extends Model
+class UsersModel extends Model
 {
-    protected $table            = 'tb_siswa';
-    protected $primaryKey       = 'id_siswa';
+    protected $table            = 'tb_users';
+    protected $primaryKey       = 'id_user';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'nama',
-        'alamat',
-        'jurusan',
-        'asal_instansi',
-        'no_telepon',
-        'jenis_kelamin',
-        'foto',
-        'tgl_masuk',
-        'tgl_keluar',
-        'status',
-        'id_user'
+        'username',
+        'password',
+        'role'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -56,12 +48,13 @@ class SiswaModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function updateStatusSiswa()
+    public function getUsersWithNamaSiswa()
     {
-        $today = date('Y-m-d');
-        $this->where('tgl_keluar <', $today)
-            ->where('status !=', 'Selesai')
-            ->set(['status' => 'Selesai'])
-            ->update();
+        return $this->db->table('tb_users')
+            ->select('tb_users.id_user, tb_users.username, tb_siswa.nama')
+            ->join('tb_siswa', 'tb_siswa.id_user = tb_users.id_user', 'left')
+            ->orderBy('tb_users.id_user', 'ASC') // urutkan berdasarkan id_user
+            ->get()
+            ->getResultArray();
     }
 }

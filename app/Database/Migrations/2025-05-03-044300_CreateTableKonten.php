@@ -4,40 +4,36 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateTableUsers extends Migration
+class CreateTableKonten extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id_user' => [
+            'id_konten' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'username' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-                'unique' => true
-            ],
-            'password' => [
+            'tajuk' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'role' => [
-                'type'       => 'ENUM',
-                'constraint' => ['admin','user'],
-                'default'    => 'user'
+            'caption' => [
+                'type'       => 'TEXT',
             ],
-            
+            'cover' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+            ],
         ]);
 
-        $this->forge->addKey('id_user', true);
-        $this->forge->createTable('tb_users');
+        $this->forge->addKey('id_konten', true);
+        $this->forge->createTable('tb_konten');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tb_users');
+        $this->forge->dropTable('tb_konten');
     }
 }

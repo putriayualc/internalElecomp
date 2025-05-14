@@ -4,26 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class SiswaModel extends Model
+class BisnisModel extends Model
 {
-    protected $table            = 'tb_siswa';
-    protected $primaryKey       = 'id_siswa';
+    protected $table            = 'tb_bisnis';
+    protected $primaryKey       = 'id_bisnis';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'nama',
-        'alamat',
-        'jurusan',
-        'asal_instansi',
-        'no_telepon',
-        'jenis_kelamin',
-        'foto',
-        'tgl_masuk',
-        'tgl_keluar',
-        'status',
-        'id_user'
+        'nama_bisnis',
+        'website'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -56,12 +47,11 @@ class SiswaModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function updateStatusSiswa()
+    public function getBisnisWithJumlahSosmed()
     {
-        $today = date('Y-m-d');
-        $this->where('tgl_keluar <', $today)
-            ->where('status !=', 'Selesai')
-            ->set(['status' => 'Selesai'])
-            ->update();
+        return $this->select('tb_bisnis.*, COUNT(tb_sosmed.id_sosmed) as jumlah_sosmed')
+                    ->join('tb_sosmed', 'tb_sosmed.id_bisnis = tb_bisnis.id_bisnis', 'left')
+                    ->groupBy('tb_bisnis.id_bisnis')
+                    ->findAll();
     }
 }

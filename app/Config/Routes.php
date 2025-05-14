@@ -6,6 +6,9 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
+$routes->get('/login', 'AuthController::index');
+$routes->get('/logout', 'AuthController::logout');
+$routes->post('/login/proses', 'AuthController::proses_login');
 
 // MENU BACKLINK
 $routes->group('backlink', function ($routes) {
@@ -13,7 +16,7 @@ $routes->group('backlink', function ($routes) {
     $routes->get('tambah', 'BacklinkController::tambah', ['as' => 'email.tambah']);
     $routes->post('proses_tambah', 'BacklinkController::proses_tambah', ['as' => 'email.simpan']);
     $routes->get('edit/(:num)', 'BacklinkController::edit/$1', ['as' => 'email.edit']);
-    $routes->post('proses_edit/(:num)', 'BacklinkController::proses_edit/$1', ['as' => 'email.update']);
+    $routes->post('proses_edit/(:num)', 'BacklinkController::update/$1', ['as' => 'email.update']);
     $routes->get('delete/(:any)', 'BacklinkController::delete/$1', ['as' => 'email.hapus']);
 
     // BLOG PER EMAIL
@@ -23,7 +26,7 @@ $routes->group('backlink', function ($routes) {
         $routes->post('proses_tambah', 'BlogController::proses_tambah/$1', ['as' => 'blog.simpan']);
         $routes->get('edit/(:num)', 'BlogController::edit/$1/$2', ['as' => 'blog.edit']);
         $routes->post('proses_edit/(:num)', 'BlogController::proses_edit/$1/$2', ['as' => 'blog.update']);
-        $routes->get('hapus/(:num)', 'BlogController::hapus/$1/$2', ['as' => 'blog.hapus']);
+        $routes->get('delete/(:num)', 'BlogController::delete/$1/$2', ['as' => 'blog.hapus']);
         // $1 = id_email, $2 = id_blog
 
         // ARTIKEL DALAM BLOG PER EMAIL
@@ -31,10 +34,10 @@ $routes->group('backlink', function ($routes) {
             // $1 = id_email, $2 = id_blog, $3 = id_artikel
             $routes->get('/', 'ArtikelController::index/$1/$2', ['as' => 'artikel']);
             $routes->get('tambah', 'ArtikelController::tambah/$1/$2', ['as' => 'artikel.tambah']);
-            $routes->post('simpan', 'ArtikelController::simpan/$1/$2', ['as' => 'artikel.simpan']);
+            $routes->post('simpan', 'ArtikelController::proses_tambah/$1/$2', ['as' => 'artikel.simpan']);
             $routes->get('edit/(:num)', 'ArtikelController::edit/$1/$2/$3', ['as' => 'artikel.edit']);
             $routes->post('update/(:num)', 'ArtikelController::update/$1/$2/$3', ['as' => 'artikel.update']);
-            $routes->get('hapus/(:num)', 'ArtikelController::hapus/$1/$2/$3', ['as' => 'artikel.hapus']);
+            $routes->get('delete/(:num)', 'ArtikelController::delete/$1/$2/$3', ['as' => 'artikel.hapus']);
         });
     });
 });
@@ -49,17 +52,6 @@ $routes->group('sop', function ($routes) {
     $routes->get('delete/(:num)', 'SopController::delete/$1', ['as' => 'sop.delete']);
     $routes->get('detail/(:num)', 'SopController::detail/$1', ['as' => 'sop.detail']);
 });
-
-// MENU HOSTING
-$routes->group('hosting', function ($routes) {
-    $routes->get('/', 'HostingController::index');
-    $routes->get('tambah', 'HostingController::tambah', ['as' => 'hosting.tambah']);
-    $routes->post('simpan', 'HostingController::simpan'); // Pastikan ini ada
-    $routes->get('edit/(:num)', 'HostingController::edit/$1', ['as' => 'hosting.edit']);
-    $routes->post('update/(:num)', 'HostingController::update/$1');
-    $routes->get('delete/(:num)', 'HostingController::delete/$1', ['as' => 'hosting.delete']);
-});
-
 
 
 //MENU PIKET
@@ -93,9 +85,6 @@ $routes->group('siswa', function ($routes) {
 
 $routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);
 
-
-$routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);
-
 // MENU LIST PROSPEK
 $routes->group('prospek', function ($routes) {
     $routes->get('/', 'ProspekController::index', ['as' => 'prospek']);
@@ -105,6 +94,38 @@ $routes->group('prospek', function ($routes) {
     $routes->post('update/(:num)', 'ProspekController::update/$1', ['as' => 'prospek.update']);
     $routes->get('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
     $routes->get('detail', 'ProspekController::detail', ['as' => 'prospek.detail']);
+});
+
+// MENU Bisnis
+$routes->group('bisnis', function ($routes) {
+    $routes->get('/', 'BisnisController::index', ['as' => 'bisnis']);
+    $routes->get('tambah', 'BisnisController::tambah', ['as' => 'bisnis.tambah']);
+    $routes->post('simpan', 'BisnisController::simpan', ['as' => 'bisnis.simpan']); // Pastikan ini ada
+    
+});
+
+// MENU SOSMED
+$routes->group('sosmed', function ($routes) {
+    $routes->get('/', 'SosmedController::index', ['as' => 'sosmed']);
+    $routes->get('(:num)', 'SosmedController::index/$1', ['as' => 'sosmed.filter']);
+    $routes->get('tambah', 'SosmedController::tambah', ['as' => 'sosmed.tambah']);
+    $routes->post('simpan', 'SosmedController::simpan', ['as' => 'sosmed.simpan']); // Pastikan ini ada
+    $routes->get('edit/(:num)', 'SosmedController::edit/$1', ['as' => 'sosmed.edit']);
+    $routes->post('update/(:num)', 'SosmedController::update/$1', ['as' => 'sosmed.update']);
+    $routes->get('delete/(:num)', 'SosmedController::delete/$1', ['as' => 'sosmed.delete']);
+    $routes->get('detail', 'SosmedController::detail', ['as' => 'sosmed.detail']);
+});
+
+// MENU Konten
+$routes->group('konten', function ($routes) {
+    $routes->get('/', 'KontenController::index', ['as' => 'konten']);
+    $routes->get('(:num)', 'KontenController::index/$1', ['as' => 'konten.filter']);
+    $routes->get('tambah', 'KontenController::tambah', ['as' => 'konten.tambah']);
+    $routes->post('simpan', 'KontenController::simpan', ['as' => 'konten.simpan']); // Pastikan ini ada
+    $routes->get('edit/(:num)', 'KontenController::edit/$1', ['as' => 'konten.edit']);
+    $routes->post('update/(:num)', 'KontenController::update/$1', ['as' => 'konten.update']);
+    $routes->get('delete/(:num)', 'KontenController::delete/$1', ['as' => 'konten.delete']);
+    $routes->get('detail', 'KontenController::detail', ['as' => 'konten.detail']);
 });
 
 // MENU KIRIM EMAIL

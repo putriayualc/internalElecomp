@@ -21,7 +21,7 @@
                             <h5 class="mb-0"><?= $blog['domain_blog'] ?? 'Untitled Blog' ?></h5>
                         </div>
                         <p class="text-muted mt-2 mb-0">
-                            <i class="fas fa-info-circle me-1"></i> 
+                            <i class="fas fa-info-circle me-1"></i>
                             Kelola semua artikel untuk blog "<?= $blog['domain_blog'] ?? 'Untitled Blog' ?>"
                         </p>
                     </div>
@@ -59,20 +59,24 @@
                     <table class="table table-hover mb-0 text-left">
                         <thead class="table-light">
                             <tr>
-                                <th class="text-center" width="5%">No</th>
-                                <th width="20%">Judul Artikel</th>
-                                <th width="20%">Deskripsi</th>
-                                <th class="text-center" width="15%">Foto</th>
-                                <th class="text-center" width="12%">Tanggal Upload</th>
-                                <th class="text-center" width="10%">Jenis</th>
-                                <th class="text-center" width="18%">Aksi</th>
+                                <th class="text-center" style="white-space: nowrap;">No</th>
+                                <th style="min-width: 200px;">Judul Artikel</th>
+                                <th style="white-space: nowrap;">Tanggal Upload</th>
+                                <th style="min-width: 150px;">Link</th>
+                                <th style="min-width: 100px;">Link To</th>
+                                <th style="min-width: 80px;">Link Type</th>
+                                <th style="min-width: 110px;">Keywords</th>
+                                <th style="min-width: 110px;">Anchor Text</th>
+                                <th class="text-center" style="white-space: nowrap;">Indexed</th>
+                                <th class="text-center" style="white-space: nowrap;">Jenis</th>
+                                <th class="text-center" style="white-space: nowrap;">Aksi</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <?php if (empty($allArtikel)) : ?>
                                 <tr>
-                                    <td colspan="7" class="text-center py-4">
+                                    <td colspan="11" class="text-center py-4">
                                         <div class="py-3">
                                             <i class="fas fa-info-circle text-info mb-2 fa-2x"></i>
                                             <p class="mb-0">Belum ada artikel yang ditambahkan</p>
@@ -83,25 +87,25 @@
                                 <?php foreach ($allArtikel as $i => $artikel) : ?>
                                     <tr>
                                         <td class="text-center"><?= $i + 1 ?></td>
-                                        <td class="fw-bold"><?= $artikel['judul_artikel'] ?></td>
-                                        <td>
-                                            <?= strlen($artikel['deskripsi_artikel']) > 100 ? substr($artikel['deskripsi_artikel'], 0, 100) . '...' : $artikel['deskripsi_artikel'] ?>
-                                        </td>
+                                        <td class="fw-bold text-break"><?= $artikel['judul_artikel'] ?></td>
+                                        <td class="text-center"><?= date('d M Y', strtotime($artikel['tgl_upload'])) ?></td>
+                                        <td class="text-break" style="max-width: 200px;" title="<?= $artikel['link'] ?>"><?= $artikel['link'] ?></td>
+                                        <td class="text-break"><?= $artikel['link_to'] ?></td>
+                                        <td class="text-break"><?= $artikel['link_type'] ?></td>
+                                        <td class="text-break" style="max-width: 200px;" title="<?= $artikel['keywords'] ?>"><?= $artikel['keywords'] ?></td>
+                                        <td class="text-break"><?= $artikel['anchor_text'] ?></td>
                                         <td class="text-center">
-                                            <img src="<?= base_url() . 'assets/img/artikel/' . $artikel['foto'] ?>" class="img-thumbnail" alt="Foto artikel" style="max-width: 100px; max-height: 70px; object-fit: cover;">
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge text-body">
-                                                <?= date('d M Y', strtotime($artikel['tgl_upload'])) ?>
+                                            <span class="badge bg-<?= $artikel['indexed'] == 'sudah' ? 'success' : 'danger' ?>">
+                                                <?= ucfirst($artikel['indexed']) ?>
                                             </span>
                                         </td>
                                         <td class="text-center">
                                             <span class="badge bg-<?= $artikel['jenis'] == 'backlink' ? 'info' : 'success' ?>">
-                                                <?= $artikel['jenis'] ?>
+                                                <?= ucfirst($artikel['jenis']) ?>
                                             </span>
                                         </td>
                                         <td class="text-center">
-                                            <div class="d-flex justify-content-center gap-2">
+                                            <div class="d-flex justify-content-center gap-2 flex-wrap">
                                                 <a href="<?= route_to('artikel.edit', $blog['id_email'], $blog['id_blog'], $artikel['id_artikel']) ?>" class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit me-1"></i> Ubah
                                                 </a>
@@ -114,6 +118,7 @@
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tbody>
+
                     </table>
                 </div><!--//table-responsive-->
             </div><!--//app-card-body-->

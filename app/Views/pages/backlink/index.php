@@ -1,4 +1,19 @@
 <?= $this->extend('layout/template'); ?>
+
+<?= $this->Section('css'); ?>
+<style>
+    .hover-badge {
+        background-color:rgb(0, 144, 216) !important;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .hover-badge:hover {
+        background-color:rgb(59, 190, 255) !important;
+        color: #fff !important;
+    }
+</style>
+
+<?= $this->endSection('css'); ?>
+
 <?= $this->Section('content'); ?>
 
 <div class="app-content pt-3 p-md-3 p-lg-4">
@@ -52,6 +67,7 @@
                                 <th class="cell" width="5%">No</th>
                                 <th class="cell" width="20%">Email</th>
                                 <th class="cell" width="15%">Password</th>
+                                <th class="cell" width="15%">User</th>
                                 <th class="cell" width="20%">Blog</th>
                                 <th class="cell" width="10%">Jumlah Artikel</th>
                                 <th class="cell" width="25%">Aksi</th>
@@ -92,7 +108,9 @@
                                                         </button>
                                                     </div>
                                                 </td>
+                                                <td class="cell fw-bold" <?= $rowCount > 1 ? 'rowspan="' . $rowCount . '"' : '' ?>><?= $email['nama_user'] ?></td>
                                             <?php endif; ?>
+
                                             <td class="cell fw-bold">
                                                 <a href="https://<?= $blog['domain_blog'] ?>" target="_blank" class="text-decoration-none text-secondary">
                                                     <?= $blog['domain_blog'] ?>
@@ -100,12 +118,13 @@
                                             </td>
                                             <td class="cell">
                                                 <div class="d-flex flex-column">
-                                                    <a href="<?= route_to('artikel', $email['id_email'], $blog['id_blog']) ?>" class="badge bg-info text-dark text-decoration-none">
+                                                    <a href="<?= route_to('artikel', $email['id_email'], $blog['id_blog']) ?>"
+                                                        class="badge text-dark text-decoration-none hover-badge">
                                                         <?= isset($blog['jumlah_artikel']) ? $blog['jumlah_artikel'] : 0 ?>
                                                     </a>
                                                 </div>
-
                                             </td>
+
                                             <?php if ($blogIndex === 0) : ?>
                                                 <td class="cell" <?= $rowCount > 1 ? 'rowspan="' . $rowCount . '"' : '' ?> style="vertical-align: top;">
                                                     <div class="d-flex gap-1">
@@ -136,6 +155,7 @@
                                                 </button>
                                             </div>
                                         </td>
+                                        <td class="cell fw-bold"><?= $email['nama_user'] ?></td>
                                         <td class="cell text-muted" colspan="2">Tidak ada blog</td>
                                         <td class="cell">
                                             <div class="d-flex gap-1">

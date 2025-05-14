@@ -4,26 +4,19 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class SiswaModel extends Model
+class KontenSosmedModel extends Model
 {
-    protected $table            = 'tb_siswa';
-    protected $primaryKey       = 'id_siswa';
+    protected $table            = 'tb_konten_sosmed';
+    protected $primaryKey       = 'id_konten_sosmed';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'nama',
-        'alamat',
-        'jurusan',
-        'asal_instansi',
-        'no_telepon',
-        'jenis_kelamin',
-        'foto',
-        'tgl_masuk',
-        'tgl_keluar',
-        'status',
-        'id_user'
+        'id_sosmed',
+        'id_konten',
+        'id_user',
+        'tgl_upload'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -55,13 +48,4 @@ class SiswaModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function updateStatusSiswa()
-    {
-        $today = date('Y-m-d');
-        $this->where('tgl_keluar <', $today)
-            ->where('status !=', 'Selesai')
-            ->set(['status' => 'Selesai'])
-            ->update();
-    }
 }

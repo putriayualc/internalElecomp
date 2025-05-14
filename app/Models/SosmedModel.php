@@ -4,26 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class SiswaModel extends Model
+class SosmedModel extends Model
 {
-    protected $table            = 'tb_siswa';
-    protected $primaryKey       = 'id_siswa';
+    protected $table            = 'tb_sosmed';
+    protected $primaryKey       = 'id_sosmed';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'nama',
-        'alamat',
-        'jurusan',
-        'asal_instansi',
-        'no_telepon',
-        'jenis_kelamin',
-        'foto',
-        'tgl_masuk',
-        'tgl_keluar',
-        'status',
-        'id_user'
+        'id_bisnis',
+        'username',
+        'platform',
+        'updated_at',
+        'status'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -56,12 +50,16 @@ class SiswaModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function updateStatusSiswa()
+    public function getSosmedWithJumlahKonten($id_bisnis = null)
     {
-        $today = date('Y-m-d');
-        $this->where('tgl_keluar <', $today)
-            ->where('status !=', 'Selesai')
-            ->set(['status' => 'Selesai'])
-            ->update();
+        $builder = $this->select('tb_sosmed.*, COUNT(tb_konten_sosmed.id_konten_sosmed) as jumlah_konten')
+            ->join('tb_konten_sosmed', 'tb_konten_sosmed.id_sosmed = tb_sosmed.id_sosmed', 'left')
+            ->groupBy('tb_sosmed.id_sosmed');
+
+        if (!empty($id_bisnis)) {
+            $builder->where('tb_sosmed.id_bisnis', $id_bisnis);
+        }
+
+        return $builder->findAll();
     }
 }

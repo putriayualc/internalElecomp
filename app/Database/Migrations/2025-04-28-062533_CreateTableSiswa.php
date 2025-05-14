@@ -55,10 +55,15 @@ class CreateTableSiswa extends Migration
                 'constraint' => ['Aktif', 'Selesai'],
                 'default'    => 'Aktif',
             ],
+            'id_user' => [
+                'type'          => 'INT',
+                'unsigned'      => true,
+            ],
 
         ]);
 
         $this->forge->addKey('id_siswa', true);
+        $this->forge->addForeignKey('id_user', 'tb_users', 'id_user', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tb_siswa');
     }
 

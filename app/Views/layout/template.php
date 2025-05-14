@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <meta name="robots" content="noindex">
     <title>Internal Elecomp</title>
 
     <!-- Meta -->
