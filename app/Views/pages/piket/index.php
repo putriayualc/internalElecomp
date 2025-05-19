@@ -135,9 +135,7 @@
     }
 
     .piket-box.sabtu {
-        background-color: #e7ddff 
-        
-        "";
+        background-color: #e7ddff "";
         /* light gray */
     }
 
@@ -329,9 +327,11 @@
             <div class="<?= $class ?>">
                 <h3>
                     <?= $hari ?>
-                    <a href="<?= base_url('piket/edit/' . strtolower($hari)) ?>" title="Edit">
-                        <span>✎</span>
-                    </a>
+                    <?php if (session()->get('role')  === 'admin') : ?>
+                        <a href="<?= base_url('piket/edit/' . strtolower($hari)) ?>" title="Edit">
+                            <span>✎</span>
+                        </a>
+                    <?php endif; ?>
                 </h3>
                 <ul>
                     <?php foreach ($namaList as $nama): ?>

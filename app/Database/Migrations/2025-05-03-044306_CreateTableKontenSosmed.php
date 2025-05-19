@@ -23,10 +23,6 @@ class CreateTableKontenSosmed extends Migration
                 'type'          => 'INT',
                 'unsigned'      => true,
             ],
-            'id_user' => [
-                'type'          => 'INT',
-                'unsigned'      => true,
-            ],
             'tgl_upload' => [
                 'type'       => 'date',
             ],
@@ -35,7 +31,6 @@ class CreateTableKontenSosmed extends Migration
         $this->forge->addKey('id_konten_sosmed', true);
         $this->forge->addForeignKey('id_sosmed', 'tb_sosmed', 'id_sosmed', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_konten', 'tb_konten', 'id_konten', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('id_user', 'tb_users', 'id_user', 'CASCADE', 'CASCADE');
         $this->forge->createTable('tb_konten_sosmed');
     }
 

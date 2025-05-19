@@ -35,8 +35,8 @@
     <script>
         tinymce.init({
             selector: 'textarea.tiny',
-            plugins: 'powerpaste advcode table lists checklist link image media',
-            toolbar: 'undo redo | blocks | bold italic | bullist numlist checklist | code | table | link image media'
+            plugins: 'powerpaste advcode code table lists checklist link image media',
+            toolbar: 'undo redo | blocks | bold italic | bullist numlist checklist | code | table | link image media',
         });
     </script>
     <!-- end test -->

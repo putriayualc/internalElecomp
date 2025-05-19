@@ -6,7 +6,7 @@
         <!-- Judul dan Tombol Tambah -->
         <div class="row g-3 mb-4 align-items-center justify-content-between">
             <div class="col-auto">
-                <h1 class="app-page-title mb-0">Prospek Elecomp</h1>
+                <h1 class="app-page-title mb-0">Prospek Kirim WhatsApp</h1>
             </div>
             <div class="col-auto">
                 <div class="d-flex gap-2">
@@ -46,10 +46,10 @@
                             <!-- Data Statis -->
                             <tr>
                                 <td class="cell">1</td>
-                                <td class="cell fw-bold">Prospek ECP</td>
+                                <td class="cell fw-bold">Prospek Digifusion</td>
                                 <td class="cell">
                                     <div class="d-flex gap-1">
-                                        <a href="<?= route_to('prospek.detail') ?>" class="btn btn-sm btn-info">
+                                        <a href="<?= route_to('whatsapp.detail') ?>" class="btn btn-sm btn-info">
                                             <i class="fas fa-eye me-1"></i> Detail
                                         </a>
                                         <a href="#" class="btn btn-sm btn-warning">
@@ -63,7 +63,7 @@
                             </tr>
                             <tr>
                                 <td class="cell">2</td>
-                                <td class="cell fw-bold">Prospek Promosi Beauty</td>
+                                <td class="cell fw-bold">Prospek Promosi Competent Academy</td>
                                 <td class="cell">
                                     <div class="d-flex gap-1">
                                         <a href="#" class="btn btn-sm btn-info">
@@ -80,7 +80,7 @@
                             </tr>
                             <tr>
                                 <td class="cell">3</td>
-                                <td class="cell fw-bold">Prospek Promosi Rendang</td>
+                                <td class="cell fw-bold">Prospek Sitti Nurbaya</td>
                                 <td class="cell">
                                     <div class="d-flex gap-1">
                                         <a href="#" class="btn btn-sm btn-info">

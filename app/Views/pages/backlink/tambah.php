@@ -12,9 +12,14 @@
                     <?php if (!empty(session()->getFlashdata('error'))) : ?>
                         <div class="alert alert-danger" role="alert">
                             <h4>Error</h4>
-                            <p><?php echo session()->getFlashdata('error'); ?></p>
+                            <ul>
+                                <?php foreach (session()->getFlashdata('error') as $err) : ?>
+                                    <li><?= esc($err) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
                         </div>
                     <?php endif; ?>
+
 
                     <form action="<?= route_to('email.simpan') ?>" method="POST" enctype="multipart/form-data">
                         <?= csrf_field(); ?>
@@ -28,17 +33,20 @@
                                     <label class="form-label">Password <br></label>
                                     <input type="text" class="form-control" id="password" name="password" value="<?= old('password') ?>">
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Nama User <br></label>
-                                    <select class="form-select select2" name="id_user">
-                                        <option value="">-- Pilih User --</option>
-                                        <?php foreach ($allUsers as $user): ?>
-                                            <option value="<?= $user['id_user']; ?>">
-                                                <?= $user['nama'] ?? $user['username']; ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
+
+                                <?php if (session()->get('role')  === 'admin') : ?>
+                                    <div class="mb-3">
+                                        <label class="form-label">Nama User <br></label>
+                                        <select class="form-select select2" name="id_user">
+                                            <option value="">-- Pilih User --</option>
+                                            <?php foreach ($allUsers as $user): ?>
+                                                <option value="<?= $user['id_user']; ?>">
+                                                    <?= $user['nama'] ?? $user['username']; ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                <?php endif; ?>
 
                                 <div class="mb-3">
                                     <label class="form-label">Domain Blog <br></label>

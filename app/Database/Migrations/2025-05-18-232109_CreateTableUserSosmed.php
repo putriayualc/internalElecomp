@@ -4,27 +4,20 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateTableKonten extends Migration
+class CreateTableUserSosmed extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id_konten' => [
+            'id_user_sosmed' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'judul' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'caption' => [
-                'type'       => 'TEXT',
-            ],
-            'cover' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
+            'id_sosmed' => [
+                'type'          => 'INT',
+                'unsigned'      => true,
             ],
             'id_user' => [
                 'type'          => 'INT',
@@ -32,13 +25,14 @@ class CreateTableKonten extends Migration
             ],
         ]);
 
-        $this->forge->addKey('id_konten', true);
+        $this->forge->addKey('id_user_sosmed', true);
+        $this->forge->addForeignKey('id_sosmed', 'tb_sosmed', 'id_sosmed', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_user', 'tb_users', 'id_user', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('tb_konten');
+        $this->forge->createTable('tb_user_sosmed');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tb_konten');
+        $this->forge->dropTable('tb_user_sosmed');
     }
 }

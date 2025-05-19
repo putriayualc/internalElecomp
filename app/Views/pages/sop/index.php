@@ -8,13 +8,15 @@
             <div class="col-auto">
                 <h1 class="app-page-title mb-0">SOP Elecomp</h1>
             </div>
-            <div class="col-auto">
-                <div class="d-flex gap-2">
-                    <a href="<?= route_to('sop.tambah') ?>" class="btn btn-primary">
-                        <i class="fas fa-plus-circle me-2"></i>Tambah SOP
-                    </a>
+            <?php if (session()->get('role')  === 'admin') : ?>
+                <div class="col-auto">
+                    <div class="d-flex gap-2">
+                        <a href="<?= route_to('sop.tambah') ?>" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i>Tambah SOP
+                        </a>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
 
         <!-- Notifikasi -->
@@ -69,17 +71,19 @@
                                             <a href="<?= route_to('sop.detail', $sop['id_sop']) ?>" class="btn btn-sm btn-info">
                                                 <i class="fas fa-eye me-1"></i> Lihat
                                             </a>
-                                            <a href="<?= route_to('sop.edit', $sop['id_sop']) ?>" class="btn btn-sm btn-warning">
-                                                <i class="fas fa-edit me-1"></i> Edit
-                                            </a>
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $sop['id_sop'] ?>">
-                                                <i class="fas fa-trash me-1"></i> Hapus
-                                            </button>
+                                            <?php if (session()->get('role')  === 'admin') : ?>
+                                                <a href="<?= route_to('sop.edit', $sop['id_sop']) ?>" class="btn btn-sm btn-warning">
+                                                    <i class="fas fa-edit me-1"></i> Edit
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $sop['id_sop'] ?>">
+                                                    <i class="fas fa-trash me-1"></i> Hapus
+                                                </button>
+                                            <?php endif; ?>
                                         </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
-                            
+
                             <?php if (empty($allSop)) : ?>
                                 <tr>
                                     <td colspan="4" class="text-center py-3">Tidak ada data yang tersedia</td>
