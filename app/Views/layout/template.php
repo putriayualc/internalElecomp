@@ -52,7 +52,8 @@
         <?= $this->renderSection('content'); ?>
 
     </div>
-
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="<?= base_url('assets/plugins/popper.min.js') ?>"></script>
     <script src="<?= base_url('assets/plugins/bootstrap/js/bootstrap.min.js') ?>"></script>
 

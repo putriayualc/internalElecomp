@@ -128,3 +128,14 @@ $routes->group('konten', function ($routes) {
     $routes->get('delete/(:num)', 'KontenController::delete/$1', ['as' => 'konten.delete']);
     $routes->get('detail', 'KontenController::detail', ['as' => 'konten.detail']);
 });
+
+// Absen
+$routes->group('absen', function ($routes) {
+    $routes->get('/', 'AbsenController::index');
+    $routes->post('/', 'AbsenController::index');
+    $routes->post('terima/(:num)', 'AbsenController::terima/$1');
+    $routes->post('tolak/(:num)', 'AbsenController::tolak/$1');
+    $routes->post('reset/(:num)', 'AbsenController::reset/$1');
+});
+
+
