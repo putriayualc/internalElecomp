@@ -12,13 +12,14 @@ class KontenModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'judul',
+        'caption',
+        'cover'
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
 
     // Dates
     protected $useTimestamps = false;
@@ -27,9 +28,24 @@ class KontenModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
+    // Validation Rules
+    protected $validationRules = [
+        'judul'   => 'required|min_length[3]|max_length[255]',
+        'caption' => 'required',
+        'cover'   => 'permit_empty',
+    ];
+
+    protected $validationMessages = [
+        'judul' => [
+            'required'    => 'Judul konten wajib diisi.',
+            'min_length'  => 'Judul konten minimal 3 karakter.',
+            'max_length'  => 'Judul konten maksimal 255 karakter.'
+        ],
+        'caption' => [
+            'required'    => 'Caption wajib diisi.',
+        ],
+    ];
+
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
@@ -49,7 +65,7 @@ class KontenModel extends Model
         $builder = $this->db->table('tb_konten')
             ->select('
             tb_konten.id_konten,
-            tb_konten.tajuk,
+            tb_konten.judul,
             tb_konten.caption,
             tb_konten.cover,
             GROUP_CONCAT(tb_sosmed.platform) as platforms,

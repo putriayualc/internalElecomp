@@ -34,8 +34,8 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-        'adminFilter'   => \App\Filters\AdminFilter::class,
-        'userFilter'    => \App\Filters\UserFilter::class
+        'role'   => \App\Filters\RoleFilter::class,
+        'auth'   => \App\Filters\AuthFilter::class,
     ];
 
     /**
@@ -71,24 +71,12 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            'adminFilter' => [
+            'auth' => [
                 'except' => ['login', 'login/*']
             ],
-            'userFilter' => [
-                'except' => ['login', 'login/*']
-            ]
         ],
         'after' => [
             'toolbar',
-            'userFilter' => [
-                'except' => [
-                    '/',
-                    'piket',
-                    'sop',
-                    'backlink',
-                    'backlink/*',
-                ]
-            ]
         ],
     ];
 

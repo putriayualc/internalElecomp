@@ -21,18 +21,20 @@ class BacklinkController extends BaseController
 
     public function index()
     {
-        $allEmail = $this->emailModel->getEmailUserWithNama();
-        // dd($allEmail);
+        if (session()->get('role') === 'user') {
+            $allEmail = $this->emailModel->getEmailUserWithNama(session()->get('id_user'));
+            $allBlogs = $this->blogModel->getAllBlogWithCountArticle(session()->get('id_user'));
 
-        // Ambil semua blog dan hitung jumlah artikel per blog
-        $allBlogs = $this->blogModel->getAllBlogWithCountArticle();
+        } else {
+            $allEmail = $this->emailModel->getEmailUserWithNama(); // Semua
+            $allBlogs = $this->blogModel->getAllBlogWithCountArticle();
+
+        }
 
         $data = [
             'allEmail' => $allEmail,
             'allBlogs' => $allBlogs
         ];
-
-        // dd($data);
 
         return view('pages/backlink/index', $data);
     }
@@ -46,8 +48,6 @@ class BacklinkController extends BaseController
             'allUsers' => $allUsers
         ];
 
-        // dd($data);
-
         return view('pages/backlink/tambah', $data);
     }
     public function proses_tambah()
@@ -57,8 +57,12 @@ class BacklinkController extends BaseController
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $domains = $this->request->getPost('domain_blog');
-        $user = $this->request->getPost('id_user');
-
+        if (session()->get('role') === 'admin'){
+            $user = $this->request->getPost('id_user');
+        }else{
+            $user = session()->get('id_user');
+        }
+        
         // Simpan data email ke database
         $emailData = [
             'email' => $email,

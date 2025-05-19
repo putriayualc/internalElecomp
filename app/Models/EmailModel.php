@@ -69,15 +69,19 @@ class EmailModel extends Model
     protected $afterDelete    = [];
 
     // Method untuk mengambil email, username, dan nama
-    public function getEmailUserWithNama()
+    public function getEmailUserWithNama($id_user = null)
     {
-        return $this->db->table('tb_email')
+        $builder = $this->db->table('tb_email')
             ->select('tb_email.id_email, tb_email.email, tb_email.password, tb_users.id_user, COALESCE(tb_siswa.nama, tb_users.username) AS nama_user')
             ->join('tb_users', 'tb_users.id_user = tb_email.id_user', 'left')
             ->join('tb_siswa', 'tb_siswa.id_user = tb_users.id_user', 'left')
-            ->orderBy('tb_email.id_email', 'ASC')  // urutkan berdasarkan id_email
-            ->get()
-            ->getResultArray();
+            ->orderBy('tb_email.id_email', 'ASC');
+
+        if ($id_user !== null) {
+            $builder->where('tb_email.id_user', $id_user);
+        }
+
+        return $builder->get()->getResultArray();
     }
 
     public function getOneEmailUserWithNama($id_email)

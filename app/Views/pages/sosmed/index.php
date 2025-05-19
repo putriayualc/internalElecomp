@@ -382,16 +382,6 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="col-md-4">
-                        <div class="ms-md-3">
-                            <label for="statusFilter" class="form-label"><i class="fas fa-toggle-on me-2"></i>Status:</label>
-                            <select id="statusFilter" class="form-select" onchange="filterByStatus(this.value)">
-                                <option value="all" selected>Semua Status</option>
-                                <option value="aktif">Aktif</option>
-                                <option value="tdk_aktif">Tidak Aktif</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="col-md-2 mt-3 mt-md-0">
                         <div class="d-grid">
                             <button type="button" class="btn btn-secondary" onclick="resetFilters()">
@@ -427,6 +417,7 @@
                                 <th class="cell" width="5%">No</th>
                                 <th class="cell" width="20%">Platform</th>
                                 <th class="cell" width="20%">Username</th>
+                                <th class="cell" width="20%">User</th>
                                 <th class="cell" width="10%">Total Konten</th>
                                 <th class="cell" width="10%">Status</th>
                                 <th class="cell" width="15%">Terakhir Diupdate</th>
@@ -478,6 +469,7 @@
                                         </div>
                                     </td>
                                     <td class="cell">@<?= $sosmed['username']; ?></td>
+                                    <!-- <td class="cell">@<?= $sosmed['user']; ?></td> -->
                                     <td class="cell">
                                         <a href="#" class="badge text-decoration-none hover-badge">
                                             <i class="fas fa-file-alt me-1"></i>
@@ -597,7 +589,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i> Batal
                     </button>
-                    <a href="<?= route_to('sosmed.hapus', $sosmed['id_sosmed']) ?>" class="btn btn-danger">
+                    <a href="<?= route_to('sosmed.delete', $sosmed['id_sosmed']) ?>" class="btn btn-danger">
                         <i class="fas fa-trash me-1"></i> Hapus
                     </a>
                 </div>

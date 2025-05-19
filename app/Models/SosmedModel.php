@@ -33,9 +33,31 @@ class SosmedModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
+    // Validation rules
+    protected $validationRules = [
+        'id_bisnis' => 'required|integer',
+        'username'  => 'required',
+        'platform'  => 'required|in_list[ig,fb,tiktok,linkedin]',
+        'status'    => 'permit_empty|in_list[aktif,tdk_aktif]' // jika kolom status digunakan
+    ];
+
+    protected $validationMessages = [
+        'id_bisnis' => [
+            'required' => 'Nama bisnis wajib dipilih.',
+            'integer'  => 'ID bisnis tidak valid.'
+        ],
+        'username' => [
+            'required'    => 'Username tidak boleh kosong.',
+        ],
+        'platform' => [
+            'required' => 'Platform wajib dipilih.',
+            'in_list'  => 'Platform tidak valid (hanya ig, fb, tiktok, atau linkedin).'
+        ],
+        'status' => [
+            'in_list' => 'Status harus "aktif" atau "tdk_aktif".'
+        ]
+    ];
+
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
@@ -61,5 +83,12 @@ class SosmedModel extends Model
         }
 
         return $builder->findAll();
+    }
+
+    public function getSosmedByBisnis($id_bisnis)
+    {
+        return $this->where('id_bisnis', $id_bisnis)
+            ->where('status', 'aktif')
+            ->findAll();
     }
 }

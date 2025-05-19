@@ -4,17 +4,18 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class BlogModel extends Model
+class DetailKontenModel extends Model
 {
-    protected $table            = 'tb_blog';
-    protected $primaryKey       = 'id_blog';
+    protected $table            = 'tb_detail_konten';
+    protected $primaryKey       = 'id_detail_konten';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_email',
-        'domain_blog'
+        'id_konten',
+        'media',
+        'tipe_media'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -30,9 +31,28 @@ class BlogModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
+    // Validation rules
+    protected $validationRules = [
+        'id_konten'  => 'required|integer',
+        'media'      => 'required|string|max_length[255]',
+        'tipe_media' => 'required|in_list[foto,video]'
+    ];
+
+    protected $validationMessages = [
+        'id_konten' => [
+            'required' => 'ID konten harus diisi.',
+            'integer'  => 'ID konten harus berupa angka.'
+        ],
+        'media' => [
+            'required'   => 'Nama media harus diisi.',
+            'max_length' => 'Nama media maksimal 255 karakter.'
+        ],
+        'tipe_media' => [
+            'required' => 'Tipe media harus diisi.',
+            'in_list'  => 'Tipe media harus berupa foto atau video.'
+        ],
+    ];
+
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
@@ -46,21 +66,4 @@ class BlogModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function getAllBlogWithCountArticle($id_user = null)
-    {
-        $builder = $this->select(
-            'tb_blog.*, ' .
-                'COUNT(tb_artikel.id_artikel) AS jumlah_artikel'
-        )
-            ->join('tb_artikel', 'tb_blog.id_blog = tb_artikel.id_blog', 'left')
-            ->join('tb_email', 'tb_blog.id_email = tb_email.id_email', 'left')
-            ->groupBy('tb_blog.id_blog');
-
-        if ($id_user !== null) {
-            $builder->where('tb_email.id_user', $id_user);
-        }
-
-        return $builder->findAll();
-    }
 }

@@ -3,11 +3,12 @@
 <?= $this->Section('css'); ?>
 <style>
     .hover-badge {
-        background-color:rgb(0, 144, 216) !important;
+        background-color: rgb(0, 144, 216) !important;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
+
     .hover-badge:hover {
-        background-color:rgb(59, 190, 255) !important;
+        background-color: rgb(59, 190, 255) !important;
         color: #fff !important;
     }
 </style>
@@ -67,7 +68,9 @@
                                 <th class="cell" width="5%">No</th>
                                 <th class="cell" width="20%">Email</th>
                                 <th class="cell" width="15%">Password</th>
-                                <th class="cell" width="15%">User</th>
+                                <?php if (session()->get('role')  === 'admin') : ?>
+                                    <th class="cell" width="15%">User</th>
+                                <?php endif; ?>
                                 <th class="cell" width="20%">Blog</th>
                                 <th class="cell" width="10%">Jumlah Artikel</th>
                                 <th class="cell" width="25%">Aksi</th>
@@ -108,7 +111,9 @@
                                                         </button>
                                                     </div>
                                                 </td>
-                                                <td class="cell fw-bold" <?= $rowCount > 1 ? 'rowspan="' . $rowCount . '"' : '' ?>><?= $email['nama_user'] ?></td>
+                                                <?php if (session()->get('role')  === 'admin') : ?>
+                                                    <td class="cell fw-bold" <?= $rowCount > 1 ? 'rowspan="' . $rowCount . '"' : '' ?>><?= $email['nama_user'] ?></td>
+                                                <?php endif; ?>
                                             <?php endif; ?>
 
                                             <td class="cell fw-bold">
@@ -155,7 +160,9 @@
                                                 </button>
                                             </div>
                                         </td>
-                                        <td class="cell fw-bold"><?= $email['nama_user'] ?></td>
+                                        <?php if (session()->get('role')  === 'admin') : ?>
+                                            <td class="cell fw-bold"><?= $email['nama_user'] ?></td>
+                                        <?php endif; ?>
                                         <td class="cell text-muted" colspan="2">Tidak ada blog</td>
                                         <td class="cell">
                                             <div class="d-flex gap-1">
