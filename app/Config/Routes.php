@@ -7,6 +7,8 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
+$routes->get('/dashboard', 'HomeUser::index');
+
 // MENU BACKLINK
 $routes->group('backlink', function ($routes) {
     $routes->get('/', 'BacklinkController::index', ['as' => 'backlink']);
@@ -89,6 +91,7 @@ $routes->group('siswa', function ($routes) {
     $routes->get('edit/(:num)', 'SiswaController::edit/$1', ['as' => 'siswa.edit']);
     $routes->post('update/(:num)', 'SiswaController::update/$1', ['as' => 'siswa.update']);
     $routes->get('delete/(:num)', 'SiswaController::delete/$1', ['as' => 'siswa.delete']);
+    $routes->get('detail/(:num)', 'SiswaController::detail/$1', ['as' => 'siswa.detail']);
 });
 
 $routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);

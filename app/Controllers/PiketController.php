@@ -2,83 +2,103 @@
 
 namespace App\Controllers;
 
+use App\Models\PiketModel;
+use App\Models\HariModel;
+    use App\Models\SiswaModel;
+
 class PiketController extends BaseController
 {
     public function index()
     {
-        $session = session();
+        $piketModel = new PiketModel();
+        $results = $piketModel->getPiketWithJoin();
 
-        // Inisialisasi data dummy jika belum ada
-        if (!$session->has('piket_data')) {
-            $session->set('piket_data', [
-                'Senin' => ['Ayu', 'Budi', 'Citra', 'Dewi', 'Eko', 'Fajar', 'Gina', 'Dito'],
-                'Selasa' => ['Hani', 'Irfan', 'Joko', 'Kiki', 'Lina', 'Mira', 'Nina', 'Budi'],
-                'Rabu' => ['Oscar', 'Putri', 'Qori', 'Rina', 'Siska', 'Tari', 'Udin', 'Vina'],
-                'Kamis' => ['Oscar', 'Putri', 'Qori', 'Rina', 'Siska', 'Tari', 'Udin', 'Vina'],
-                'Jumat' => ['Oscar', 'Putri', 'Qori', 'Rina', 'Siska', 'Tari', 'Udin', 'Vina'],
-                'Sabtu' => ['Oscar', 'Putri', 'Qori', 'Rina', 'Siska', 'Tari', 'Udin', 'Vina'],
-            ]);
+        $piketData = [];
+
+        foreach ($results as $row) {
+            $hari = $row['hari'];
+            $siswa = $row['nama'];
+
+            if (!isset($piketData[$hari])) {
+                $piketData[$hari] = [];
+            }
+
+            $piketData[$hari][] = $siswa;
         }
 
-        $data = $session->get('piket_data');
-
         return view('pages/piket/index', [
-            'piketData' => $data
+            'piketData' => $piketData
         ]);
     }
 
-
     public function edit($hari)
     {
-        $session = session();
+        $piketModel = new PiketModel();
+        $hariModel = new HariModel();
+        $siswaModel = new SiswaModel();
+
         $hariCapital = ucfirst(strtolower($hari));
 
-        $dataPiket = $session->get('piket_data');
-        $namaList = $dataPiket[$hariCapital] ?? [];
+        // Cari ID hari berdasarkan nama
+        $hariRow = $hariModel->where('hari', $hariCapital)->first();
 
-        $semuaNama = ['Ayu', 'Budi', 'Citra', 'Dewi', 'Eko', 'Fajar', 'Gina', 'Dito', 'Hani', 'Irfan', 'Joko', 'Kiki', 'Lina', 'Mira', 'Nina', 'Oscar', 'Putri', 'Qori', 'Rina', 'Siska', 'Tari', 'Udin', 'Vina'];
+        if (!$hariRow) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException("Hari $hariCapital tidak ditemukan");
+        }
+
+        $idHari = $hariRow['id_hari'];
+
+        // Ambil siswa yang piket di hari ini
+        $piketRows = $piketModel->where('id_hari', $idHari)->findAll();
+
+        $namaList = [];
+        foreach ($piketRows as $piket) {
+            $siswa = $siswaModel->find($piket['id_siswa']);
+            if ($siswa) {
+                $namaList[] = $siswa['nama'];
+            }
+        }
+
+        $semuaNama = $siswaModel->findAll(); // Semua siswa dari database
 
         return view('pages/piket/edit', [
             'hari' => $hariCapital,
             'namaList' => $namaList,
-            'semuaNama' => $semuaNama
+            'semuaNama' => array_column($semuaNama, 'nama') // array hanya nama
         ]);
     }
 
 
     public function update()
     {
-        $session = session();
+        $piketModel = new PiketModel();
+        $hariModel = new HariModel();
+        $siswaModel = new SiswaModel();
 
-        $hari = $this->request->getPost('hari');
-        $namaArray = $this->request->getPost('nama'); // Ini bentuknya array dari semua baris yang ada
+        $hari = $this->request->getPost('hari'); // e.g. "Senin"
+        $namaArray = $this->request->getPost('nama'); // Array of names
 
-        $dataPiket = $session->get('piket_data');
-        $dataPiket[$hari] = $namaArray; // Replace data untuk hari tersebut
+        // Cari ID hari
+        $hariRow = $hariModel->where('hari', $hari)->first();
+        if (!$hariRow) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException("Hari $hari tidak ditemukan");
+        }
 
-        $session->set('piket_data', $dataPiket);
+        $idHari = $hariRow['id_hari'];
 
-        return redirect()->to(base_url('piket/edit/' . strtolower($hari)));
+        // Hapus semua data piket untuk hari itu dulu
+        $piketModel->where('id_hari', $idHari)->delete();
+
+        // Masukkan data baru
+        foreach ($namaArray as $nama) {
+            $siswa = $siswaModel->where('nama', $nama)->first();
+            if ($siswa) {
+                $piketModel->insert([
+                    'id_hari' => $idHari,
+                    'id_siswa' => $siswa['id_siswa']
+                ]);
+            }
+        }
+        return redirect()->to(base_url('piket'));
     }
-
-
-    // public function delete($hari, $nama)
-    // {
-    //     $session = session();
-    //     $hariCapital = ucfirst(strtolower($hari));
-    //     $nama = urldecode($nama);
-
-    //     $dataPiket = $session->get('piket_data');
-
-    //     if (isset($dataPiket[$hariCapital])) {
-    //         $index = array_search($nama, $dataPiket[$hariCapital]);
-    //         if ($index !== false) {
-    //             unset($dataPiket[$hariCapital][$index]);
-    //             $dataPiket[$hariCapital] = array_values($dataPiket[$hariCapital]); // Reset index
-    //             $session->set('piket_data', $dataPiket);
-    //         }
-    //     }
-
-    //     return redirect()->to(base_url('piket/edit/' . strtolower($hari)));
-    // }
 }

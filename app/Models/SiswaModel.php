@@ -18,11 +18,13 @@ class SiswaModel extends Model
         'jurusan',
         'asal_instansi',
         'no_telepon',
+        'email',
         'jenis_kelamin',
         'foto',
         'tgl_masuk',
         'tgl_keluar',
         'status',
+        'keterangan',
     ];
 
     protected bool $allowEmptyInserts = false;

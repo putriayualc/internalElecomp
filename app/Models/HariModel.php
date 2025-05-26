@@ -4,24 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PiketModel extends Model
+class HariModel extends Model
 {
-    protected $table            = 'tb_piket';
-    protected $primaryKey       = 'id_piket';
+    protected $table            = 'tb_hari';
+    protected $primaryKey       = 'id_hari';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_hari', 'id_siswa'];
-
-    public function getPiketWithJoin()
-    {
-        return $this->select('tb_hari.hari, tb_siswa.nama')
-                    ->join('tb_hari', 'tb_hari.id_hari = tb_piket.id_hari')
-                    ->join('tb_siswa', 'tb_siswa.id_siswa = tb_piket.id_siswa')
-                    ->orderBy('tb_hari.id_hari')
-                    ->findAll();
-    }
+    protected $allowedFields    = ['hari'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
