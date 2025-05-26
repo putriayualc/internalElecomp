@@ -23,7 +23,7 @@
     <div class="mb-3">
         <strong>Platform:</strong>
         <div id="platformTags">
-            <?php foreach (['ig' => 'Instagram', 'fb' => 'Facebook', 'linkedin' => 'LinkedIn', 'tiktok' => 'TikTok'] as $key => $name): ?>
+            <?php foreach (['instagram' => 'Instagram', 'facebook' => 'Facebook', 'linkedin' => 'LinkedIn', 'tiktok' => 'TikTok'] as $key => $name): ?>
                 <span class="badge me-2 platform-badge <?= (in_array($key, explode(',', $platformFilter ?? ''))) ? 'bg-primary' : 'bg-secondary' ?>"
                     data-platform="<?= $key ?>" style="cursor:pointer;">
                     <?= $name ?>
@@ -46,6 +46,7 @@
             <thead class="table-light">
                 <tr>
                     <th>Konten</th>
+                    <th>Bisnis</th>
                     <th>Platform</th>
                     <th>Tanggal Upload</th>
                     <th>Aksi</th>
@@ -72,6 +73,7 @@
                                     </div>
                                 </div>
                             </td>
+                            <td><?= $k['nama_bisnis']; ?></td>
                             <td>
                                 <?php foreach ($k['platforms'] as $plat): ?>
                                     <i class="fab fa-<?= $plat ?> me-2"></i>
@@ -79,7 +81,6 @@
                             </td>
                             <td>
                                 <?= date('Y-m-d', strtotime($k['tgl_upload'])) ?><br>
-                                <small><?= date('H:i', strtotime($k['tgl_upload'])) ?></small>
                             </td>
                             <td>
                                 <a href="<?= route_to('konten.view', $k['id_konten']) ?>" class="text-primary me-2"><i class="fas fa-eye"></i></a>

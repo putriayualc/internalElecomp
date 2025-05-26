@@ -52,7 +52,7 @@ class UsersModel extends Model
     {
         return $this->db->table('tb_users')
             ->select('tb_users.id_user, tb_users.username, tb_siswa.nama')
-            ->join('tb_siswa', 'tb_siswa.id_user = tb_users.id_user', 'left')
+            ->join('tb_siswa', 'tb_siswa.id_user = tb_users.id_user')
             ->orderBy('tb_users.id_user', 'ASC') // urutkan berdasarkan id_user
             ->get()
             ->getResultArray();

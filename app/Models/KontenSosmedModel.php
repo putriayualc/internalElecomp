@@ -15,7 +15,6 @@ class KontenSosmedModel extends Model
     protected $allowedFields    = [
         'id_sosmed',
         'id_konten',
-        'id_user',
         'tgl_upload'
     ];
 
@@ -48,4 +47,32 @@ class KontenSosmedModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    // Ambil id_sosmed dan id_bisnis yang terhubung dengan konten tertentu
+    public function getSosmedByKonten($id_konten)
+    {
+        return $this->db->table('tb_konten_sosmed')
+            ->select('tb_konten_sosmed.id_sosmed, tb_sosmed.id_bisnis')
+            ->join('tb_sosmed', 'tb_sosmed.id_sosmed = tb_konten_sosmed.id_sosmed')
+            ->where('tb_konten_sosmed.id_konten', $id_konten)
+            ->get()
+            ->getResultArray();
+    }
+
+    // Hapus relasi sosmed
+    public function deleteSosmedRelation($id_konten)
+    {
+        return $this->db->table('tb_konten_sosmed')
+            ->where('id_konten', $id_konten)
+            ->delete();
+    }
+
+    // Tambah relasi sosmed
+    public function insertSosmedRelation($id_konten, $id_sosmed)
+    {
+        return $this->db->table('tb_konten_sosmed')->insert([
+            'id_konten' => $id_konten,
+            'id_sosmed' => $id_sosmed
+        ]);
+    }
 }

@@ -23,9 +23,6 @@ class CreateTableKontenSosmed extends Migration
                 'type'          => 'INT',
                 'unsigned'      => true,
             ],
-            'tgl_upload' => [
-                'type'       => 'date',
-            ],
         ]);
 
         $this->forge->addKey('id_konten_sosmed', true);

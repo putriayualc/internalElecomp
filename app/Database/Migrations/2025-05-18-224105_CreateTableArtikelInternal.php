@@ -28,7 +28,7 @@ class CreateTableArtikelInternal extends Migration
                 'constraint' => 255,
             ],            
             'tgl_upload' => [
-                'type'       => 'DATETIME',
+                'type'       => 'DATE',
             ],
             'link' => [
                 'type'       => 'VARCHAR',

@@ -63,26 +63,26 @@
                             <i class="bi bi-chevron-down ms-auto rotate-icon" id="dropdownArrow"></i>
                         </a>
 
-<div id="adminDropdown" class="collapse" data-bs-parent="#sidebarMenu">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li>
-                                <a href="<?= route_to('prospek') ?>" class="nav-link d-flex align-items-center">
-                                    <i class="bi bi-pencil-square me-2"></i> List Prospek
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?= route_to('email') ?>" class="nav-link d-flex align-items-center">
-                                    <i class="bi bi-envelope-fill me-2"></i> Kirim Email
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?= route_to('whatsapp') ?>" class="nav-link d-flex align-items-center">
-                                    <i class="bi bi-file-earmark-text me-2"></i> Kirim WhatsApp
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                        <div id="adminDropdown" class="collapse" data-bs-parent="#sidebarMenu">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li>
+                                    <a href="<?= route_to('prospek') ?>" class="nav-link d-flex align-items-center">
+                                        <i class="bi bi-pencil-square me-2"></i> List Prospek
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?= route_to('email') ?>" class="nav-link d-flex align-items-center">
+                                        <i class="bi bi-envelope-fill me-2"></i> Kirim Email
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?= route_to('whatsapp') ?>" class="nav-link d-flex align-items-center">
+                                        <i class="bi bi-file-earmark-text me-2"></i> Kirim WhatsApp
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
 
                 <?php endif; ?>
 
@@ -141,11 +141,13 @@
 
                     <div id="sosmedDropdown" class="collapse" data-bs-parent="#sidebarMenu">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <?php if ($role === 'admin') : ?>
                             <li>
                                 <a href="<?= route_to('sosmed') ?>" class="nav-link d-flex align-items-center">
                                     <i class="bi bi-pencil-square me-2"></i> Akun Sosmed
                                 </a>
                             </li>
+                            <?php endif; ?>
                             <li>
                                 <a href="<?= route_to('konten') ?>" class="nav-link d-flex align-items-center">
                                     <i class="bi bi-envelope-fill me-2"></i> Konten Sosmed
