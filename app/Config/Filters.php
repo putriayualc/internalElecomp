@@ -34,6 +34,8 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'role'   => \App\Filters\RoleFilter::class,
+        'auth'   => \App\Filters\AuthFilter::class,
     ];
 
     /**
@@ -69,15 +71,15 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            // 'honeypot',
-            // 'csrf',
-            // 'invalidchars',
+            'auth' => [
+                'except' => ['login', 'login/*']
+            ],
         ],
         'after' => [
-            // 'honeypot',
-            // 'secureheaders',
+            'toolbar',
         ],
     ];
+
 
     /**
      * List of filter aliases that works on a

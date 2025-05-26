@@ -78,21 +78,12 @@
                                     </td>
                                     <td class="cell">
                                         <?php if (!empty($host['add_on_domain'])): ?>
-                                            <?php
-                                            $addOnDomains = explode(',', $host['add_on_domain']);
-                                            foreach ($addOnDomains as $index => $domain) :
-                                                $trimmedDomain = trim($domain);
-                                            ?>
-                                                <div class="mb-1">
-                                                    <i class="fas fa-link me-1"></i>
-                                                    <a href="https://<?= esc($trimmedDomain) ?>" target="_blank" class="text-decoration-none">
-                                                        <?= esc($trimmedDomain) ?>
-                                                    </a>
-                                                </div>
-                                                <?php if ($index < count($addOnDomains) - 1): ?>
-                                                    <hr class="my-1">
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
+                                            <button type="button" class="btn btn-sm btn-outline-info view-addon-domains" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#addonModal<?= $host['id_hosting'] ?>">
+                                                <i class="fas fa-external-link-alt me-1"></i> Lihat Add-on Domain
+                                                <span class="badge bg-secondary ms-1"><?= substr_count($host['add_on_domain'], ',') + 1 ?></span>
+                                            </button>
                                         <?php else: ?>
                                             <span class="text-muted"><em>Tidak ada</em></span>
                                         <?php endif; ?>
@@ -151,6 +142,45 @@
     </div>
 <?php endforeach; ?>
 
+<!-- Modal Add-on Domain -->
+<?php foreach ($allHosting as $host) : ?>
+    <?php if (!empty($host['add_on_domain'])): ?>
+    <div class="modal fade" id="addonModal<?= $host['id_hosting'] ?>" tabindex="-1" aria-labelledby="addonModalLabel<?= $host['id_hosting'] ?>" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="addonModalLabel<?= $host['id_hosting'] ?>">
+                        Add-on Domain untuk <?= esc($host['domain_utama']) ?>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group">
+                        <?php
+                        $addOnDomains = explode(',', $host['add_on_domain']);
+                        foreach ($addOnDomains as $domain) :
+                            $trimmedDomain = trim($domain);
+                        ?>
+                            <a href="https://<?= esc($trimmedDomain) ?>" target="_blank" 
+                               class="list-group-item list-group-item-action d-flex align-items-center">
+                                <i class="fas fa-globe me-2 text-primary"></i>
+                                <?= esc($trimmedDomain) ?>
+                                <i class="fas fa-external-link-alt ms-auto text-muted"></i>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+<?php endforeach; ?>
+
 <!-- Script untuk Toggle Password -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -183,9 +213,12 @@
                 tableRows.forEach(row => {
                     const domain = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
                     const username = row.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
-                    const addOnDomains = row.querySelector('td:nth-child(5)')?.textContent.toLowerCase() || '';
+                    // Search termasuk domain add-on akan tetap bekerja karena data asli tersimpan di modal
+                    const hostId = row.querySelector('.view-addon-domains')?.getAttribute('data-bs-target')?.replace('#addonModal', '') || '';
+                    const addonModal = document.getElementById('addonModal' + hostId);
+                    const addonText = addonModal ? addonModal.textContent.toLowerCase() : '';
 
-                    if (domain.includes(searchValue) || username.includes(searchValue) || addOnDomains.includes(searchValue)) {
+                    if (domain.includes(searchValue) || username.includes(searchValue) || addonText.includes(searchValue)) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';

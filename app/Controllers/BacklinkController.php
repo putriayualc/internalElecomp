@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\BlogModel;
 use App\Models\EmailModel;
+use App\Models\UsersModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class BacklinkController extends BaseController
@@ -20,31 +21,32 @@ class BacklinkController extends BaseController
 
     public function index()
     {
-        $allEmail = $this->emailModel->findAll();
+        if (session()->get('role') === 'user') {
+            $allEmail = $this->emailModel->getEmailUserWithNama(session()->get('id_user'));
+            $allBlogs = $this->blogModel->getAllBlogWithCountArticle(session()->get('id_user'));
 
-        // Ambil semua blog dan hitung jumlah artikel per blog
-        $allBlogs = $this->blogModel->getAllBlogWithCountArticle();
+        } else {
+            $allEmail = $this->emailModel->getEmailUserWithNama(); // Semua
+            $allBlogs = $this->blogModel->getAllBlogWithCountArticle();
+
+        }
 
         $data = [
             'allEmail' => $allEmail,
             'allBlogs' => $allBlogs
         ];
 
-        // dd($data);
-
         return view('pages/backlink/index', $data);
     }
     public function tambah()
     {
-        $emailModel = new EmailModel();
+        $userModel = new UsersModel();
 
-        $allEmail = $emailModel->findAll();
+        $allUsers = $userModel->getUsersWithNamaSiswa();
 
         $data = [
-            'allEmail' => $allEmail,
+            'allUsers' => $allUsers
         ];
-
-        // dd($data);
 
         return view('pages/backlink/tambah', $data);
     }
@@ -55,29 +57,36 @@ class BacklinkController extends BaseController
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $domains = $this->request->getPost('domain_blog');
-
-        // Validasi dasar
-        if (empty($email) || empty($password)) {
-            return redirect()->back()->withInput()->with('error', 'Email dan password harus diisi.');
+        if (session()->get('role') === 'admin'){
+            $user = $this->request->getPost('id_user');
+        }else{
+            $user = session()->get('id_user');
         }
-
+        
         // Simpan data email ke database
         $emailData = [
             'email' => $email,
             'password' => $password,
+            'id_user'  => $user
         ];
 
-        $this->emailModel->insert($emailData);
-        $id_email = $this->emailModel->insertID(); // Dapatkan ID email yang baru disimpan
+        // Cek apakah validasi berhasil
+        if (!$this->emailModel->validate($emailData)) {
+            // Jika validasi gagal, kembalikan error ke form
+            return redirect()->back()->withInput()->with('error', $this->emailModel->errors());
+        } else {
+            $this->emailModel->insert($emailData);
+            $id_email = $this->emailModel->insertID(); // Dapatkan ID email yang baru disimpan
 
-        // Simpan setiap domain blog yang diinput
-        if ($domains && is_array($domains)) {
-            foreach ($domains as $domain) {
-                if (!empty(trim($domain))) {
-                    $this->blogModel->insert([
-                        'id_email' => $id_email,
-                        'domain_blog' => $domain
-                    ]);
+            // Simpan setiap domain blog yang diinput
+            if ($domains && is_array($domains)) {
+                foreach ($domains as $domain) {
+                    if (!empty(trim($domain))) {
+                        $this->blogModel->insert([
+                            'id_email' => $id_email,
+                            'domain_blog' => $domain
+                        ]);
+                    }
                 }
             }
         }
@@ -88,12 +97,16 @@ class BacklinkController extends BaseController
 
     public function edit($id_email)
     {
-        $email = $this->emailModel->find($id_email);
+        $email = $this->emailModel->getOneEmailUserWithNama($id_email);
         $blogs = $this->blogModel->where('id_email', $id_email)->find();
+
+        $userModel = new UsersModel();
+        $allUsers = $userModel->getUsersWithNamaSiswa();
 
         $data = [
             'email' => $email,
-            'blogs' => $blogs
+            'blogs' => $blogs,
+            'allUsers' => $allUsers
         ];
         // dd($data);
 
@@ -102,22 +115,18 @@ class BacklinkController extends BaseController
 
     public function update($id_email)
     {
-        $validation = \Config\Services::validation();
-
         $data = $this->request->getPost();
-
+        $data['id_email'] = $id_email;
         // dd($data);
-        if (!$this->validate([
-            'email' => 'required|valid_email',
-            'password' => 'required',
-        ])) {
-            return redirect()->back()->withInput()->with('error', $validation->listErrors());
-        }
+        if (!$this->emailModel->validate($data)) {
+            return redirect()->back()->withInput()->with('error', $this->emailModel->errors());
+        };
 
-        // Update email utama
+        // Simpan data utama
         $this->emailModel->update($id_email, [
-            'email' => $data['email'],
+            'email'    => $data['email'],
             'password' => $data['password'],
+            'id_user'  => $data['id_user'],
         ]);
 
         // Update domain blogs

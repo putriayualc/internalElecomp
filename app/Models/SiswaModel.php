@@ -25,6 +25,7 @@ class SiswaModel extends Model
         'tgl_keluar',
         'status',
         'keterangan',
+        'id_user'
     ];
 
     protected bool $allowEmptyInserts = false;

@@ -10,7 +10,7 @@
             </div>
             <div class="col-auto">
                 <div class="d-flex gap-2">
-                    <a href="#" class="btn btn-primary">
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahProspekModal">
                         <i class="fas fa-plus-circle me-2"></i>Tambah Prospek
                     </a>
                 </div>
@@ -103,6 +103,52 @@
     </div>
 </div>
 
+<!-- Modal Tambah Prospek -->
+<div class="modal fade" id="tambahProspekModal" tabindex="-1" aria-labelledby="tambahProspekModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="tambahProspekModalLabel">Tambah Prospek Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formTambahProspek">
+                    <div class="mb-3">
+                        <label for="judulProspek" class="form-label">Judul Prospek <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="judulProspek" name="judulProspek" placeholder="Masukkan judul prospek" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="kategoriProspek" class="form-label">Kategori</label>
+                        <select class="form-select" id="kategoriProspek" name="kategoriProspek">
+                            <option value="" selected disabled>Pilih kategori</option>
+                            <option value="1">Penjualan</option>
+                            <option value="2">Pemasaran</option>
+                            <option value="3">Pengembangan Produk</option>
+                            <option value="4">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deskripsiProspek" class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="deskripsiProspek" name="deskripsiProspek" rows="3" placeholder="Masukkan deskripsi prospek"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tanggalProspek" class="form-label">Tanggal</label>
+                        <input type="date" class="form-control" id="tanggalProspek" name="tanggalProspek">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Batal
+                </button>
+                <button type="button" class="btn btn-primary" id="btnSimpanProspek" data-bs-dismiss="modal">
+                    <i class="fas fa-save me-1"></i> Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Konfirmasi Hapus (Statis) -->
 <div class="modal fade" id="deleteModal1" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -169,5 +215,30 @@
         </div>
     </div>
 </div>
+
+<!-- JavaScript untuk simulasi simpan data (static) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mendapatkan referensi tombol simpan
+    const btnSimpan = document.getElementById('btnSimpanProspek');
+    
+    // Menambahkan event listener untuk tombol simpan
+    if(btnSimpan) {
+        btnSimpan.addEventListener('click', function() {
+            // Tampilkan notifikasi sukses (yang sudah ada di halaman)
+            const alertSuccess = document.querySelector('.alert-success');
+            if(alertSuccess) {
+                alertSuccess.classList.add('show');
+                setTimeout(function() {
+                    alertSuccess.classList.remove('show');
+                }, 3000); // Notifikasi akan hilang setelah 3 detik
+            }
+            
+            // Reset form
+            document.getElementById('formTambahProspek').reset();
+        });
+    }
+});
+</script>
  
 <?= $this->endSection('content') ?>

@@ -6,50 +6,106 @@
         <h1 class="app-page-title">Edit Artikel</h1>
         <hr class="mb-4">
 
-        <?php if (!empty(session()->getFlashdata('error'))) : ?>
-            <div class="alert alert-danger"><?= session()->getFlashdata('error'); ?></div>
-        <?php endif; ?>
+        <div class="app-card app-card-settings shadow-sm p-4">
+            <div class="card-body">
 
-        <form action="<?= route_to('artikel.update', $id_email, $id_blog, $artikel['id_artikel']) ?>" method="POST" enctype="multipart/form-data">
-            <?= csrf_field(); ?>
-
-            <div class="mb-3">
-                <label for="judul_artikel" class="form-label">Judul Artikel</label>
-                <input type="text" class="form-control" id="judul_artikel" name="judul_artikel" value="<?= old('judul_artikel', $artikel['judul_artikel']) ?>">
-            </div>
-
-            <div class="mb-3">
-                <label for="deskripsi_artikel" class="form-label">Deskripsi Artikel</label>
-                <textarea class="form-control tiny" id="deskripsi_artikel" name="deskripsi_artikel"><?= old('deskripsi_artikel', $artikel['deskripsi_artikel']) ?></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="foto_artikel" class="form-label">Gambar Artikel</label>
-                <input class="form-control" type="file" id="foto_artikel" name="foto_artikel">
-                <?php if (!empty($artikel['foto'])) : ?>
-                    <p class="mt-2">Gambar Saat Ini: <br>
-                        <img src="<?= base_url('assets/img/artikel/' . $artikel['foto']) ?>" alt="Gambar Artikel" width="150">
-                    </p>
+                <?php if (!empty(session()->getFlashdata('error'))) : ?>
+                    <div class="alert alert-danger" role="alert">
+                        <h4>Error</h4>
+                        <p><?= session()->getFlashdata('error'); ?></p>
+                    </div>
                 <?php endif; ?>
-                <small class="text-muted">* Maks 572x572px, format jpg/jpeg/png</small>
-            </div>
 
-            <div class="mb-3">
-                <label for="tanggal_upload" class="form-label">Tanggal Upload</label>
-                <input type="date" class="form-control" id="tanggal_upload" name="tanggal_upload" value="<?= old('tanggal_upload', date('Y-m-d', strtotime($artikel['tgl_upload']))) ?>">
-            </div>
+                <form action="<?= route_to('artikel.update', $id_email, $id_blog, $artikel['id_artikel']) ?>" method="POST" enctype="multipart/form-data">
+                    <?= csrf_field(); ?>
 
-            <div class="mb-3">
-                <label for="jenis" class="form-label">Jenis</label>
-                <select class="form-select" id="jenis" name="jenis">
-                    <option value="artikel" <?= ($artikel['jenis'] == 'artikel') ? 'selected' : '' ?>>Artikel</option>
-                    <option value="backlink" <?= ($artikel['jenis'] == 'backlink') ? 'selected' : '' ?>>Backlink</option>
-                </select>
-            </div>
+                    <!-- Judul -->
+                    <div class="mb-3">
+                        <label class="form-label">Judul Artikel</label>
+                        <input type="text" class="form-control" name="judul_artikel" value="<?= old('judul_artikel', $artikel['judul_artikel']) ?>" required>
+                    </div>
 
-            <button type="submit" class="btn btn-primary">Update</button>
-        </form>
-    </div>
-</div>
+                    <!-- Jenis -->
+                    <div class="mb-3">
+                        <label class="form-label">Jenis Artikel</label>
+                        <select class="form-select" name="jenis" required>
+                            <option value="artikel" <?= $artikel['jenis'] == 'artikel' ? 'selected' : '' ?>>Artikel</option>
+                            <option value="backlink" <?= $artikel['jenis'] == 'backlink' ? 'selected' : '' ?>>Backlink</option>
+                        </select>
+                    </div>
+
+                    <!-- Link -->
+                    <div class="mb-3">
+                        <label class="form-label">Link Artikel</label>
+                        <input type="url" class="form-control" name="link" value="<?= old('link', $artikel['link']) ?>">
+                    </div>
+
+                    <!-- Link To -->
+                    <div class="mb-3">
+                        <label class="form-label">Link To</label>
+                        <input type="url" class="form-control" name="link_to" value="<?= old('link_to', $artikel['link_to']) ?>">
+                    </div>
+
+                    <!-- Link Type -->
+                    <div class="mb-3">
+                        <label class="form-label">Link Type</label>
+                        <select class="form-select" name="link_type">
+                            <option value="">-- Pilih --</option>
+                            <option value="img" <?= old('link_type', $artikel['link_type']) == 'img' ? 'selected' : '' ?>>image</option>
+                            <option value="video" <?= old('link_type', $artikel['link_type']) == 'video' ? 'selected' : '' ?>>video</option>
+                            <option value="naked_url" <?= old('link_type', $artikel['link_type']) == 'naked_url' ? 'selected' : '' ?>>naked url</option>
+                            <option value="text" <?= old('link_type', $artikel['link_type']) == 'text' ? 'selected' : '' ?>>text</option>
+                        </select>
+                    </div>
+
+                    <!-- Keywords -->
+                    <div class="mb-3">
+                        <label class="form-label">Keywords</label>
+                        <input type="text" class="form-control" name="keywords" value="<?= old('keywords', $artikel['keywords']) ?>">
+                    </div>
+
+                    <!-- Anchor Text -->
+                    <div class="mb-3">
+                        <label class="form-label">Anchor Text</label>
+                        <input type="text" class="form-control" name="anchor_text" value="<?= old('anchor_text', $artikel['anchor_text']) ?>">
+                    </div>
+
+                    <!-- Tanggal Upload -->
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal Upload</label>
+                        <input type="date" class="form-control" name="tanggal_upload" value="<?= old('tanggal_upload', date('Y-m-d', strtotime($artikel['tgl_upload']))) ?>" required>
+                    </div>
+
+                    <!-- Indexed -->
+                    <div class="mb-3">
+                        <label class="form-label">Indexed</label>
+                        <select class="form-select" name="indexed">
+                            <option value="">-- Pilih --</option>
+                            <option value="sudah" <?= old('indexed', $artikel['indexed']) == 'sudah' ? 'selected' : '' ?>>Sudah</option>
+                            <option value="belum" <?= old('indexed', $artikel['indexed']) == 'belum' ? 'selected' : '' ?>>Belum</option>
+                        </select>
+                    </div>
+
+                    <!-- Tombol Aksi -->
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> Update
+                        </button>
+                        <a href="<?= route_to('artikel', $id_email, $id_blog) ?>" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> Kembali
+                        </a>
+                    </div>
+
+                    <?php if (!empty(session()->getFlashdata('success'))) : ?>
+                        <div class="alert alert-success mt-3" role="alert">
+                            <?= session()->getFlashdata('success') ?>
+                        </div>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div><!--//app-card-->
+        <hr class="my-4">
+    </div><!--//container-->
+</div><!--//app-content-->
 
 <?= $this->endSection(); ?>

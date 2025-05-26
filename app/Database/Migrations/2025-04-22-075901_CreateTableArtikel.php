@@ -22,16 +22,38 @@ class CreateTableArtikel extends Migration
             'judul_artikel' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
+            ],            
+            'tgl_upload' => [
+                'type'       => 'DATE',
             ],
-            'deskripsi_artikel' => [
-                'type'       => 'TEXT',
-            ],
-            'foto' => [
+            'link' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'tgl_upload' => [
-                'type'       => 'DATETIME',
+            'link_to' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+                'null'       => true,
+            ],
+            'link_type' => [
+                'type'       => 'ENUM',
+                'constraint' => ['img', 'video', 'naked_url', 'text'],
+                'default'    => 'text',
+                'null'       => true,
+            ],
+            'keywords' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+            ],
+            'anchor_text' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255,
+                'null'       => true,
+            ],
+            'indexed' => [
+                'type'       => 'ENUM',
+                'constraint' => ['sudah', 'belum'],
+                'default'    => 'belum'
             ],
             'jenis' => [
                 'type'       => 'ENUM',
