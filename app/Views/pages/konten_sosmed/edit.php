@@ -25,7 +25,7 @@
                         <div class="mb-3">
                             <label for="judul" class="form-label">Judul Konten</label>
                             <input type="text" class="form-control" id="judul" name="judul"
-                                   value="<?= old('judul', $konten['judul']) ?>" required>
+                                value="<?= old('judul', $konten['judul']) ?>" required>
                         </div>
 
                         <!-- Caption Konten -->
@@ -57,7 +57,7 @@
                                     <label class="form-label">Konten Saat Ini:</label>
                                     <div class="row">
                                         <?php foreach ($kontenFiles as $file): ?>
-                                            <div class="col-md-3 mb-2">
+                                            <div class="col-md-3 mb-2 position-relative">
                                                 <?php if (strpos($file['media'], '.mp4') !== false): ?>
                                                     <video controls style="width: 100%;">
                                                         <source src="<?= base_url('assets/sosmed/konten/' . $file['media']) ?>" type="video/mp4">
@@ -65,6 +65,7 @@
                                                 <?php else: ?>
                                                     <img src="<?= base_url('assets/sosmed/konten/' . $file['media']) ?>" class="img-fluid" alt="Konten">
                                                 <?php endif; ?>
+                                                <a href="<?= route_to('konten.deleteMedia', $file['id_detail_konten']) ?>" class="btn btn-danger btn-sm position-absolute top-0 end-0" onclick="return confirm('Yakin hapus file ini?')">×</a>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -95,7 +96,7 @@
                         <div class="mb-3">
                             <label for="tgl_upload" class="form-label">Tanggal Upload</label>
                             <input type="date" class="form-control" id="tgl_upload" name="tgl_upload"
-                                   value="<?= old('tgl_upload', $konten['tgl_upload']) ?>" required>
+                                value="<?= old('tgl_upload', $konten['tgl_upload']) ?>" required>
                         </div>
 
                         <!-- Tombol Aksi -->

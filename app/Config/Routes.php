@@ -133,6 +133,7 @@ $routes->group('konten', function ($routes) {
     $routes->post('update/(:num)', 'KontenController::update/$1', ['as' => 'konten.update']);
     $routes->get('delete/(:num)', 'KontenController::delete/$1', ['as' => 'konten.delete']);
     $routes->get('detail', 'KontenController::detail', ['as' => 'konten.detail']);
+    $routes->get('deleteMedia/(:num)', 'KontenController::deleteMedia/$1', ['as' => 'konten.deleteMedia']);
 });
 
 // MENU KIRIM EMAIL

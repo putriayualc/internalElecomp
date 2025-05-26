@@ -313,21 +313,42 @@ class KontenController extends BaseController
         }
 
         // Handle file konten (gambar/video)
-        $kontenFiles = $this->request->getFiles();
-        if (isset($kontenFiles['konten_file'])) {
-            foreach ($kontenFiles['konten_file'] as $file) {
-                if ($file->isValid() && !$file->hasMoved()) {
-                    $fileName = $file->getRandomName();
-                    $file->move('assets/sosmed/konten', $fileName);
+        $kontenFiles = $this->request->getFileMultiple('konten_file');
 
-                    $this->detailKontenModel->insert([
-                        'id_konten' => $id_konten,
-                        'media'     => $fileName,
-                    ]);
-                }
+        foreach ($kontenFiles as $file) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                // Deteksi tipe media dari mime type
+                $mime = $file->getMimeType();
+                $tipe = str_contains($mime, 'image') ? 'foto' : (str_contains($mime, 'video') ? 'video' : 'lainnya');
+
+                $fileName = $file->getRandomName();
+                $file->move('assets/sosmed/konten', $fileName);
+
+                $this->detailKontenModel->insert([
+                    'id_konten' => $id_konten,
+                    'media'     => $fileName,
+                    'tipe_media'=> $tipe,
+                ]);
             }
         }
 
-        return redirect()->route('konten.index')->with('success', 'Konten berhasil diperbarui.');
+
+        return redirect()->route('konten')->with('success', 'Konten berhasil diperbarui.');
+    }
+
+    public function deleteMedia($id_detail_konten)
+    {
+        $media = $this->detailKontenModel->find($id_detail_konten);
+
+        if ($media) {
+            $filePath = FCPATH . 'assets/sosmed/konten/' . $media['media'];
+            if (is_file($filePath)) {
+                unlink($filePath);
+            }
+            $this->detailKontenModel->delete($id_detail_konten);
+            return redirect()->route('konten.edit', [$media['id_konten']])->with('success', 'Konten berhasil diperbarui.');
+        }
+
+        return redirect()->back()->with('error', 'Data konten tidak ditemukan.');
     }
 }
