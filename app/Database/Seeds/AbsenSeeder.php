@@ -8,31 +8,54 @@ class AbsenSeeder extends Seeder
 {
     public function run()
     {
-        {
-            $statuses = ['masuk', 'ijin', 'bolos', 'sakit'];
-            $kegiatans = [
-                'Menginput data',
-                'Mengerjakan laporan',
-                'Membuat desain',
-                'Menghadiri meeting',
-                'Menulis konten',
-                'Mengelola database',
-                'Menguji aplikasi',
-                'Mengerjakan tugas dari atasan'
-            ];
+        $data = [
+            [
+                'id_user'      => 1,
+                'bukti_foto'   => 'foto1.jpg',
+                'tanggal_waktu'=> '2025-05-26 07:45:00',
+                'waktu_pulang' => '2025-05-26 16:00:00',
+                'keterangan'   => 'Tepat waktu',
+                'status'       => 'Masuk',
+                'persetujuan'  => 'Terima',
+                'created_at'   => '2025-05-26',
+                'updated_at'   => '2025-05-26',
+            ],
+            [
+                'id_user'      => 2,
+                'bukti_foto'   => 'foto2.jpg',
+                'tanggal_waktu'=> '2025-05-26 08:10:00',
+                'waktu_pulang' => '2025-05-26 16:00:00',
+                'keterangan'   => 'Datang terlambat',
+                'status'       => 'Ijin',
+                'persetujuan'  => 'Pending',
+                'created_at'   => '2025-05-26',
+                'updated_at'   => '2025-05-26',
+            ],
+            [
+                'id_user'      => 3,
+                'bukti_foto'   => 'foto3.jpg',
+                'tanggal_waktu'=> '2025-05-26 00:00:00',
+                'waktu_pulang' => null,
+                'keterangan'   => 'Sakit dengan surat dokter',
+                'status'       => 'Sakit',
+                'persetujuan'  => 'Terima',
+                'created_at'   => '2025-05-26',
+                'updated_at'   => '2025-05-26',
+            ],
+            [
+                'id_user'      => 4,
+                'bukti_foto'   => 'foto4.jpg',
+                'tanggal_waktu'=> '2025-05-26 00:00:00',
+                'waktu_pulang' => null,
+                'keterangan'   => 'Tidak hadir tanpa keterangan',
+                'status'       => 'Bolos',
+                'persetujuan'  => 'Tolak',
+                'created_at'   => '2025-05-26',
+                'updated_at'   => '2025-05-26',
+            ],
+        ];
 
-            for ($i = 1; $i <= 20; $i++) {
-                $data = [
-                    'id_user'       => rand(1, 5), // Anggap ada 5 user
-                    'bukti_foto'    => 'user.png',
-                    'tanggal_waktu' => date('Y-m-d H:i:s', strtotime("-$i days")),
-                    'kegiatan'      => $kegiatans[array_rand($kegiatans)],
-                    'status'        => $statuses[array_rand($statuses)],
-                    'persetujuan'   => 'pending',
-                ];
-
-                $this->db->table('tb_absen')->insert($data);
-            }
-        }
+        // Insert batch
+        $this->db->table('tb_absen')->insertBatch($data);
     }
 }

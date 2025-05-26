@@ -61,6 +61,11 @@
     <!-- Page Specific JS -->
     <script src="<?= base_url('assets/js/app.js') ?>"></script>
     <script src="<?= base_url('assets') ?>/js/lazysizes.min.js"></script>
+
+    <!-- jQuery -->
+     <script src="../assets/plugins/jquery/jquery.min.js"></script>
+     <script src="js/perfect-scrollbar.jquery.min.js"></script>
+
     <!--  -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -112,6 +117,7 @@
             form.style.display = form.style.display === 'block' ? 'none' : 'block';
             $('.nama-dropdown').select2(); // aktifkan select2
         }
+
     </script>
 
 

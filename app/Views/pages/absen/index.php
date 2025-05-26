@@ -34,25 +34,25 @@
                 <div class="col-auto d-flex gap-5">
                     <h4 class="app-card-title">Daftar Absen</h4>
 
-                    <form action="/absen" method="post">
+                    <form action="/absen/admin" method="post">
                       <?= csrf_field() ?>
                       <input type="hidden" name="date" value="masuk">
                       <button type="submit" class="btn btn-success">Masuk</button>
                     </form>
 
-                    <form action="/absen" method="post">
+                    <form action="/absen/admin" method="post">
                       <?= csrf_field() ?>
                       <input type="hidden" name="date" value="Ijin">
                       <button type="submit" class="btn btn-warning">Ijin</button>
                     </form>
 
-                    <form action="/absen" method="post">
+                    <form action="/absen/admin" method="post">
                       <?= csrf_field() ?>
                       <input type="hidden" name="date" value="Sakit">
                       <button type="submit" class="btn btn-danger">Sakit</button>
                     </form>
 
-                    <form action="/absen" method="post">
+                    <form action="/absen/admin" method="post">
                       <?= csrf_field() ?>
                       <input type="hidden" name="date" value="Bolos">
                       <button type="submit" class="btn btn-dark">Bolos</button>
@@ -62,7 +62,7 @@
               </div>
           </div>
 
-          <!-- Tampilan Data ================================================================================= -->
+          <!-- Tampilan Data ========================================================================= -->
           <div class="app-card-body">
               <div class="table-responsive">
                   <table class="table app-table-hover mb-0 text-left table-striped">
@@ -83,37 +83,72 @@
                           </tr>
                       </thead>
                       <tbody>
-                        <?php foreach ($absen as $item):?>
-                          <?php if ($item['persetujuan'] == 'Pending' && $tanggalAbsen === $tanggalHariIni && $jam === 8 && $menit >= 0 && $menit <= 15): ?>
+                        <?php 
+                          // Inisialisasi flag sebagai penanda apakah ada data yang tampil
+                          $adaData = false;
+
+                          // Mulai perulangan data absensi
+                          foreach ($absen as $item): 
+                              // Ubah string waktu absen menjadi objek Time agar bisa diolah
+                              $waktuAbsenItem = \CodeIgniter\I18n\Time::parse($item['tanggal_waktu']);
+
+                              // Ambil tanggal dari waktu absen (tanpa jam)
+                              $tanggalAbsenItem = $waktuAbsenItem->toDateString();
+
+                              // Ambil jam dan menit dari waktu absen
+                              $jamItem = (int) $waktuAbsenItem->format('H');
+                              $menitItem = (int) $waktuAbsenItem->format('i');
+
+                              // Kondisi penyaringan: hanya tampilkan jika:
+                              // 1. persetujuan masih 'Pending'
+                              // 2. tanggal absen = tanggal hari ini
+                              // 3. jam = 8, dan menit antara 0–15
+                              if (
+                                  $item['persetujuan'] == 'Pending' &&
+                                  $tanggalAbsenItem == $tanggalHariIni &&
+                                  $jamItem == 8 &&
+                                  $menitItem >= 0 && $menitItem <= 15
+                              ): 
+                                // Tandai bahwa ada data yang ditampilkan
+                                $adaData = true;
+                        ?>
+                          <!-- Jika lolos filter, tampilkan baris tabelnya -->
                           <tr>
                               <td><?= $no++ ?></td>
                               <td><?= $item['username'] ?></td>
                               <td>
-                                  <img src="/assets/img/<?= $item['bukti_foto'] ?>" width="100" alt="">
+                                <img src="<?= base_url('assets/img/absensi/'. $item['bukti_foto']) ?>" style="width: 100%;" alt="">
                               </td>
-                              <td>
-                                <?php if ($item['status'] == 'Sakit'):?>
-                                  <button type="button" class="btnSakit" id="btnSakit" style="border: none;" data-keterangan="<?= $item['keterangan']?>" data-bukti="<?= $item['foto_suratDokter'] ?>" data-username="<?= $item['username'] ?>"><?= $item['status'] ?></button>
-                                <?php else:?>
-                                  <?= $item['status'] ?>
-                                <?php endif?>
-                              </td>
-                              <td><?= $item['kegiatan'] ?></td>
+                              <td><?= $item['persetujuan'] ?></td>
+                              <td><?= $item['keterangan'] ?></td>
                               <td><?= $item['tanggal_waktu'] ?></td>
                               <td>
+                                <!-- Tombol Terima -->
                                 <form action="<?= base_url('absen/terima/' . $item['id_absen']) ?>" method="post" class="d-inline">
                                   <?= csrf_field() ?>
                                   <button class="btn btn-primary">Terima</button>
-                                </form> 
+                                </form>
+
+                                <!-- Tombol Tolak -->
                                 <form action="<?= base_url('absen/tolak/' . $item['id_absen']) ?>" method="post" class="d-inline">
                                   <?= csrf_field() ?>
                                   <button class="btn btn-danger">Tolak</button>
                                 </form>
                               </td>
                           </tr>
-                          <?php endif ?>
-                          <?php endforeach; ?>
-                        </tbody>
+                        <?php 
+                              endif; // Akhir dari pengecekan kondisi data
+                          endforeach; // Akhir dari perulangan data absensi
+
+                          // Jika tidak ada satupun data yang lolos filter, tampilkan pesan
+                          if (!$adaData):
+                        ?>
+                          <tr>
+                            <td colspan="7" class="text-center">Data Masuk Masih Belum Ada</td>
+                          </tr>
+                        <?php endif; ?>
+                      </tbody>
+
 
                       <?php elseif ($statusTerpilih == 'Sakit'):?>
                       <!-- ======================= Data Absen Sakit ============================= -->
@@ -130,40 +165,50 @@
                             </tr>
                         </thead>
                         <tbody>
-                          <?php foreach ($absen as $item):?>
-                            <?php
-                                $waktuAbsen = Time::parse($item['tanggal_waktu']);
-                                $tanggalAbsen = $waktuAbsen->toDateString();
-                                $tanggalHariIni = Time::today()->toDateString();
-                                $jam = (int) $waktuAbsen->format('H');
-                                $menit = (int) $waktuAbsen->format('i');
+                          <?php 
+                            $adaData = false;
+                            foreach ($absen as $item): 
+                                $waktuAbsenItem = \CodeIgniter\I18n\Time::parse($item['tanggal_waktu']);
+                                $tanggalAbsenItem = $waktuAbsenItem->toDateString();
+                                $jamItem = (int) $waktuAbsenItem->format('H');
+                                $menitItem = (int) $waktuAbsenItem->format('i');
+
+                                if (
+                                    $item['persetujuan'] == 'Pending' &&
+                                    $tanggalAbsenItem == $tanggalHariIni &&
+                                    $jamItem == 8 &&
+                                    $menitItem >= 0 && $menitItem <= 15
+                                ):
+                                    $adaData = true;
                             ?>
-                            <?php if ($item['persetujuan'] == 'Pending' && $tanggalAbsen === $tanggalHariIni && $jam === 8 && $menit >= 0 && $menit <= 15 ): ?>
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td><?= $item['username'] ?></td>
-                                <td>
-                                  <?= $item['status'] ?>
-                                  <!-- <button type="button" class="btnSakit" id="btnSakit" style="border: none;" data-keterangan="<?= $item['keterangan']?>" data-bukti="<?= $item['foto_suratDokter'] ?>" data-username="<?= $item['username'] ?>"><?= $item['status'] ?></button> -->
-                                </td>
+                                <td><?= $item['persetujuan'] ?></td>
                                 <td><?= $item['keterangan'] ?></td>
-                                <td>
-                                    <img src="/assets/img/<?= $item['foto_suratDokter'] ?>" width="100" alt="">
-                                </td>
+                                <td><img src="<?= base_url('assets/img/absensi/' . $item['bukti_foto']) ?>" width="100" alt=""></td>
                                 <td><?= $item['tanggal_waktu'] ?></td>
                                 <td>
-                                  <form action="<?= base_url('absen/terima/' . $item['id_absen']) ?>" method="post" class="d-inline">
-                                    <?= csrf_field() ?>
-                                    <button class="btn btn-primary">Terima</button>
-                                  </form> 
-                                  <form action="<?= base_url('absen/tolak/' . $item['id_absen']) ?>" method="post" class="d-inline">
-                                    <?= csrf_field() ?>
-                                    <button class="btn btn-danger">Tolak</button>
-                                  </form>
+                                    <form action="<?= base_url('absen/admin/terima/' . $item['id_absen']) ?>" method="post" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <button class="btn btn-primary">Terima</button>
+                                    </form>
+                                    <form action="<?= base_url('absen/admin/tolak/' . $item['id_absen']) ?>" method="post" class="d-inline">
+                                        <?= csrf_field() ?>
+                                        <button class="btn btn-danger">Tolak</button>
+                                    </form>
                                 </td>
                             </tr>
-                            <?php endif ?>
-                            <?php endforeach; ?>
+                            <?php 
+                                endif;
+                            endforeach;
+
+                            if (!$adaData): ?>
+                            <tr>
+                                <td colspan="7" class="text-center">Data Sakit Masih Belum Ada</td>
+                            </tr>
+                            <?php endif; ?>
+
                         </tbody>
 
                       <?php elseif ($statusTerpilih == 'Ijin'):?>
@@ -181,33 +226,50 @@
                             </tr>
                         </thead>
                         <tbody>
-                          <?php foreach ($absen as $item):?>
-                            <?php if ($item['persetujuan'] == 'Pending' && $tanggalAbsen === $tanggalHariIni && $jam === 8 && $menit >= 0 && $menit <= 15): ?>
-                            <tr>
-                                <td><?= $no++ ?></td>
-                                <td><?= $item['username'] ?></td>
-                                <td>
-                                  <?= $item['status'] ?>
-                                  <!-- <button type="button" class="btnSakit" id="btnSakit" style="border: none;" data-keterangan="<?= $item['keterangan']?>" data-bukti="<?= $item['foto_suratDokter'] ?>" data-username="<?= $item['username'] ?>"><?= $item['status'] ?></button> -->
-                                </td>
-                                <td><?= $item['keterangan'] ?></td>
-                                <td>
-                                    <img src="/assets/img/<?= $item['bukti_foto'] ?>" width="100" alt="">
-                                </td>
-                                <td><?= $item['tanggal_waktu'] ?></td>
-                                <td>
-                                  <form action="<?= base_url('absen/terima/' . $item['id_absen']) ?>" method="post" class="d-inline">
-                                    <?= csrf_field() ?>
-                                    <button class="btn btn-primary">Terima</button>
-                                  </form> 
-                                  <form action="<?= base_url('absen/tolak/' . $item['id_absen']) ?>" method="post" class="d-inline">
-                                    <?= csrf_field() ?>
-                                    <button class="btn btn-danger">Tolak</button>
-                                  </form>
-                                </td>
-                            </tr>
-                            <?php endif ?>
-                            <?php endforeach; ?>
+                          <?php 
+                              $adaData = false;
+                              foreach ($absen as $item): 
+                                  $waktuAbsenItem = \CodeIgniter\I18n\Time::parse($item['tanggal_waktu']);
+                                  $tanggalAbsenItem = $waktuAbsenItem->toDateString();
+                                  $jamItem = (int) $waktuAbsenItem->format('H');
+                                  $menitItem = (int) $waktuAbsenItem->format('i');
+
+                                  if (
+                                      $item['persetujuan'] == 'Pending' &&
+                                      $tanggalAbsenItem == $tanggalHariIni &&
+                                      $jamItem == 8 &&
+                                      $menitItem >= 0 && $menitItem <= 15
+                                  ):
+                                      $adaData = true;
+                              ?>
+                              <tr>
+                                  <td><?= $no++ ?></td>
+                                  <td><?= $item['username'] ?></td>
+                                  <td><?= $item['persetujuan'] ?></td>
+                                  <td><?= $item['keterangan'] ?></td>
+                                  <td><img src="<?= base_url('assets/img/absensi/' . $item['bukti_foto']) ?>" width="100" alt=""></td>
+                                  <td><?= $item['tanggal_waktu'] ?></td>
+                                  <td>
+                                      <form action="<?= base_url('absen/admin/terima/' . $item['id_absen']) ?>" method="post" class="d-inline">
+                                          <?= csrf_field() ?>
+                                          <button class="btn btn-primary">Terima</button>
+                                      </form>
+                                      <form action="<?= base_url('absen/admin/tolak/' . $item['id_absen']) ?>" method="post" class="d-inline">
+                                          <?= csrf_field() ?>
+                                          <button class="btn btn-danger">Tolak</button>
+                                      </form>
+                                  </td>
+                              </tr>
+                              <?php 
+                                  endif;
+                              endforeach;
+
+                              if (!$adaData): ?>
+                              <tr>
+                                  <td colspan="7" class="text-center">Data Ijin Masih Belum Ada</td>
+                              </tr>
+                              <?php endif; ?>
+
                         </tbody>
 
                       <?php else:  ?>
@@ -225,33 +287,50 @@
                             </tr>
                         </thead>
                         <tbody>
-                          <?php foreach ($absen as $item):?>
-                            <?php if ($item['persetujuan'] == 'Pending' && $tanggalAbsen === $tanggalHariIni && $jam >= 8 && $menit >= 15): ?>
-                            <tr>
-                                <td><?= $no++ ?></td>
-                                <td><?= $item['username'] ?></td>
-                                <td>
-                                  <?= $item['status'] ?>
-                                  <!-- <button type="button" class="btnSakit" id="btnSakit" style="border: none;" data-keterangan="<?= $item['keterangan']?>" data-bukti="<?= $item['foto_suratDokter'] ?>" data-username="<?= $item['username'] ?>"><?= $item['status'] ?></button> -->
-                                </td>
-                                <td><?= $item['keterangan'] ?></td>
-                                <td>
-                                    <img src="/assets/img/<?= $item['bukti_foto'] ?>" width="100" alt="">
-                                </td>
-                                <td><?= $item['tanggal_waktu'] ?></td>
-                                <!-- <td>
-                                  <form action="<?= base_url('absen/terima/' . $item['id_absen']) ?>" method="post" class="d-inline">
-                                    <?= csrf_field() ?>
-                                    <button class="btn btn-primary">Terima</button>
-                                  </form> 
-                                  <form action="<?= base_url('absen/tolak/' . $item['id_absen']) ?>" method="post" class="d-inline">
-                                    <?= csrf_field() ?>
-                                    <button class="btn btn-danger">Tolak</button>
-                                  </form>
-                                </td> -->
-                            </tr>
-                            <?php endif ?>
-                            <?php endforeach; ?>
+                          <?php 
+                              $adaData = false;
+                              foreach ($absen as $item): 
+                                  $waktuAbsenItem = \CodeIgniter\I18n\Time::parse($item['tanggal_waktu']);
+                                  $tanggalAbsenItem = $waktuAbsenItem->toDateString();
+                                  $jamItem = (int) $waktuAbsenItem->format('H');
+                                  $menitItem = (int) $waktuAbsenItem->format('i');
+
+                                  if (
+                                      $item['persetujuan'] == 'Pending' &&
+                                      $tanggalAbsenItem == $tanggalHariIni
+                                      // $jamItem == 8 &&
+                                      // $menitItem >= 0 && $menitItem <= 15
+                                  ):
+                                      $adaData = true;
+                              ?>
+                              <tr>
+                                  <td><?= $no++ ?></td>
+                                  <td><?= $item['username'] ?></td>
+                                  <td><?= $item['persetujuan'] ?></td>
+                                  <td><?= $item['keterangan'] ?></td>
+                                  <td><img src="<?= base_url('assets/img/absensi/' . $item['bukti_foto']) ?>" width="100" alt=""></td>
+                                  <td><?= $item['tanggal_waktu'] ?></td>
+                                  <td>
+                                      <form action="<?= base_url('absen/admin/terima/' . $item['id_absen']) ?>" method="post" class="d-inline">
+                                          <?= csrf_field() ?>
+                                          <button class="btn btn-primary">Terima</button>
+                                      </form>
+                                      <form action="<?= base_url('absen/admin/tolak/' . $item['id_absen']) ?>" method="post" class="d-inline">
+                                          <?= csrf_field() ?>
+                                          <button class="btn btn-danger">Tolak</button>
+                                      </form>
+                                  </td>
+                              </tr>
+                              <?php 
+                                  endif;
+                              endforeach;
+
+                              if (!$adaData): ?>
+                              <tr>
+                                  <td colspan="7" class="text-center">Data Bolos Masih Belum Ada</td>
+                              </tr>
+                              <?php endif; ?>
+
                         </tbody>
                       <?php endif ?>
                   </table>
@@ -374,25 +453,17 @@
         <tbody>
             <?php $no = 1 ?>
             <?php foreach ($absen as $item):?>
-                <?php if ($item['persetujuan'] == 'Terima'): ?>
+                <?php if ($item['persetujuan'] == 'Terima' && $item['id_user'] != '1'): ?>
             <tr>
                 <td><?= $no++ ?></td>
                 <td><?= $item['username'] ?></td>
                 <td>
-                    <img src="/assets/img/<?= $item['bukti_foto'] ?>" width="100" alt="">
+                    <img src="<?= base_url('assets/img/absensi/' . $item['bukti_foto']) ?>" width="100" alt="">
                 </td>
-                <!-- <td><?= $item['status'] ?></td> -->
-                    <td>
-                    <?php if ($item['status'] == 'Sakit'):?>
-                        <button type="button" id="btnSakit" style="border: none;" data-keterangan="<?= $item['keterangan']?>" data-bukti="<?= $item['foto_suratDokter'] ?>" data-username="<?= $item['username'] ?>"><?= $item['status'] ?></button>
-                    <?php else:?>
-                        <?= $item['status'] ?>
-                    <?php endif?>
-                    </td>
-                <td><?= $item['kegiatan'] ?></td>
+                <td><?= $item['keterangan'] ?></td>
                 <td><?= $item['tanggal_waktu'] ?></td>
                 <td>
-                        <form action="<?= base_url('absen/reset/' . $item['id_absen']) ?>" method="post" class="d-inline">
+                        <form action="<?= base_url('absen/admin/reset/' . $item['id_absen']) ?>" method="post" class="d-inline">
                             <?= csrf_field() ?>
                             <button class="btn btn-warning">Reset</button>
                         </form> 
@@ -431,7 +502,7 @@
         <tbody>
             <?php $no = 1 ?>
             <?php foreach ($absen as $item):?>
-                <?php if ($item['persetujuan'] == 'Tolak'): ?>
+                <?php if ($item['persetujuan'] == 'Tolak' && $item['id_user'] != '1'): ?>
             <tr>
                 <td><?= $no++ ?></td>
                 <td><?= $item['username'] ?></td>
@@ -488,7 +559,7 @@
         <tbody>
             <?php $no = 1 ?>
             <?php foreach ($absen as $item):?>
-                <?php if ($item['persetujuan'] == 'Bolos'): ?>
+                <?php if ($item['persetujuan'] == 'Bolos' && $item['id_user'] != '1'): ?>
                 <tr>
                   <td><?= $no++ ?></td>
                   <td><?= $item['username'] ?></td>

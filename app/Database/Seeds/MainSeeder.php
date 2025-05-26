@@ -11,6 +11,7 @@ class MainSeeder extends Seeder
          // Panggil semua seeder lainnya
          $this->call('UsersSeeder');
          $this->call('SiswaSeeder');
+         $this->call('AbsenSeeder');
 
     }
 }

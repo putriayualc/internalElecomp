@@ -12,7 +12,7 @@ class AbsenModel extends Model
     protected $returnType       = 'array';
     // protected $useSoftDeletes   = false;
     // protected $protectFields    = true;
-    protected $allowedFields    = ['id_user', 'bukti_foto', 'tanggal_waktu', 'kegiatan', 'keterangan', 'foto_suratDokter', 'status', 'persetujuan'];
+    protected $allowedFields    = ['id_user', 'bukti_foto', 'tanggal_waktu', 'waktu_pulang', 'kegiatan', 'keterangan', 'foto_suratDokter', 'status', 'persetujuan'];
 
     // protected bool $allowEmptyInserts = false;
     // protected bool $updateOnlyChanged = true;
@@ -50,6 +50,7 @@ class AbsenModel extends Model
     public function search($hasil)
         {
             return $this->like('status', $hasil)->select('tb_absen.*, tb_users.*')
-                ->join('tb_users', 'tb_users.id_user = tb_absen.id_user')->findAll();
+                ->join('tb_users', 'tb_users.id_user = tb_absen.id_user')
+                ->findAll();
         }
 }

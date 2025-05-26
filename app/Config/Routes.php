@@ -147,13 +147,30 @@ $routes->group('whatsapp', function ($routes) {
     $routes->get('email', 'WhatsappController::detail', ['as' => 'whatsapp.detail']);
 });
 
-// Absen
+// Absen Admin
 $routes->group('absen', function ($routes) {
-    $routes->get('/', 'AbsenController::index');
-    $routes->post('/', 'AbsenController::index');
-    $routes->post('terima/(:num)', 'AbsenController::terima/$1');
-    $routes->post('tolak/(:num)', 'AbsenController::tolak/$1');
-    $routes->post('reset/(:num)', 'AbsenController::reset/$1');
+    $routes->get('/', 'AbsenController::user');
+    $routes->post('masuk/(:num)', 'AbsenController::masuk/$1');
+    $routes->post('masuk/keterangan/(:num)', 'AbsenController::keterangan/$1');
+    $routes->post('ijin/(:num)', 'AbsenController::ijin/$1');
+    $routes->post('sakit/(:num)', 'AbsenController::sakit/$1');
+
+    $routes->group('admin', ['filter' => 'role:admin'], function ($routes) {
+        $routes->get('/', 'AbsenController::index');
+        $routes->post('/', 'AbsenController::index');
+        $routes->post('terima/(:num)', 'AbsenController::terima/$1');
+        $routes->post('tolak/(:num)', 'AbsenController::tolak/$1');
+        $routes->post('reset/(:num)', 'AbsenController::reset/$1');
+    });
 });
+
+// Dashboard Absen Admin
+$routes->group('absenDashboard', ['filter' => 'role:admin'], function ($routes) {
+     $routes->get('/', 'AbsenDashboardController::index');
+     $routes->get('grafikMingguan', 'AbsenDashboardController::grafikMingguan');
+
+});
+
+
 
 
