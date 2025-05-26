@@ -53,12 +53,22 @@ class UserSosmedModel extends Model
             ->select('
             tb_user_sosmed.id_sosmed,
             tb_user_sosmed.id_user,
-            siswa.nama,
-            siswa.foto_profil
+            tb_siswa.nama,
+            tb_siswa.foto
         ')
-            ->join('users', 'users.id_user = tb_user_sosmed.id_user')
-            ->join('siswa', 'siswa.id_siswa = users.id_siswa')
+            ->join('tb_users', 'tb_users.id_user = tb_user_sosmed.id_user')
+            ->join('tb_siswa', 'tb_siswa.id_user = tb_users.id_user ')
             ->get()
-            ->getResult();
+            ->getResultArray();
+    }
+
+    public function getSosmedIdsByUser($id_user)
+    {
+        $result = $this->select('id_sosmed')
+            ->where('id_user', $id_user)
+            ->get()
+            ->getResultArray();
+
+        return array_column($result, 'id_sosmed');
     }
 }

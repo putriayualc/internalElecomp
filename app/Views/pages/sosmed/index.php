@@ -19,18 +19,18 @@
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         transition: all 0.3s ease;
     }
-    
+
     .app-card:hover {
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
     }
-    
+
     .app-card-header {
         background-color: #fff;
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
     }
-    
+
     .app-card-title {
         color: #4e73df;
         font-weight: 600;
@@ -41,21 +41,21 @@
     .table {
         font-size: 0.9rem;
     }
-    
+
     .app-table-hover tbody tr {
         transition: all 0.2s ease;
     }
-    
+
     .app-table-hover tbody tr:hover {
         background-color: rgba(78, 115, 223, 0.05);
         transform: translateY(-2px);
     }
-    
+
     thead tr {
         background-color: #f8f9fc;
         border-bottom: 2px solid #e3e6f0;
     }
-    
+
     thead th {
         font-weight: 600;
         color: #5a5c69;
@@ -63,7 +63,7 @@
         font-size: 0.8rem;
         letter-spacing: 0.5px;
     }
-    
+
     tbody td {
         vertical-align: middle !important;
         padding: 1rem 0.75rem;
@@ -75,61 +75,61 @@
         background-color: var(--primary-color);
         border-color: var(--primary-color);
     }
-    
+
     .btn-primary:hover {
         background-color: var(--primary-hover);
         border-color: var(--primary-hover);
     }
-    
+
     .btn {
         border-radius: 6px;
         font-weight: 500;
         padding: 0.4rem 1rem;
         transition: all 0.2s ease;
     }
-    
+
     .btn-sm {
         padding: 0.25rem 0.7rem;
         font-size: 0.8rem;
     }
-    
+
     .action-btn-group {
         display: flex;
         gap: 6px;
     }
-    
+
     .action-btn-group .btn {
-        box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
     }
-    
+
     .btn-info {
         background-color: var(--info-color);
         border-color: var(--info-color);
         color: white;
     }
-    
+
     .btn-info:hover {
         background-color: #2da1b3;
         border-color: #2da1b3;
         color: white;
     }
-    
+
     .btn-warning {
         background-color: var(--warning-color);
         border-color: var(--warning-color);
         color: #212529;
     }
-    
+
     .btn-warning:hover {
         background-color: #e0ae2c;
         border-color: #e0ae2c;
     }
-    
+
     .btn-danger {
         background-color: var(--danger-color);
         border-color: var(--danger-color);
     }
-    
+
     .btn-danger:hover {
         background-color: #d32a1a;
         border-color: #d32a1a;
@@ -143,35 +143,17 @@
         border-radius: 30px;
         letter-spacing: 0.3px;
     }
-    
+
     .hover-badge {
         background-color: rgba(54, 185, 204, 0.15) !important;
         color: #36b9cc !important;
         transition: all 0.3s ease;
         border: 1px solid rgba(54, 185, 204, 0.2);
     }
-    
+
     .hover-badge:hover {
         background-color: #36b9cc !important;
         color: #fff !important;
-    }
-    
-    .status-active {
-        background-color: rgba(28, 200, 138, 0.15) !important;
-        color: #1cc88a !important;
-        border: 1px solid rgba(28, 200, 138, 0.2);
-    }
-    
-    .status-inactive {
-        background-color: rgba(231, 74, 59, 0.15) !important;
-        color: #e74a3b !important;
-        border: 1px solid rgba(231, 74, 59, 0.2);
-    }
-    
-    .status-pending {
-        background-color: rgba(246, 194, 62, 0.15) !important;
-        color: #f6c23e !important;
-        border: 1px solid rgba(246, 194, 62, 0.2);
     }
 
     /* Platform icons styling */
@@ -186,27 +168,27 @@
         font-size: 1.2rem;
         color: white;
     }
-    
+
     .icon-fb {
         background: linear-gradient(45deg, #3b5998, #4c6bba);
         box-shadow: 0 3px 8px rgba(59, 89, 152, 0.3);
     }
-    
+
     .icon-ig {
         background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
         box-shadow: 0 3px 8px rgba(219, 42, 123, 0.3);
     }
-    
+
     .icon-linkedin {
         background: linear-gradient(45deg, #0077b5, #0e9bd8);
         box-shadow: 0 3px 8px rgba(0, 119, 181, 0.3);
     }
-    
+
     .icon-tiktok {
         background: linear-gradient(45deg, #000000, #3d3d3d);
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
     }
-    
+
     .icon-default {
         background: linear-gradient(45deg, #6c757d, #868e96);
         box-shadow: 0 3px 8px rgba(108, 117, 125, 0.3);
@@ -220,7 +202,7 @@
         margin-bottom: 1.5rem;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
     }
-    
+
     .form-select {
         border-radius: 6px;
         border-color: #e3e6f0;
@@ -229,12 +211,12 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         transition: all 0.2s;
     }
-    
+
     .form-select:focus {
         border-color: #bac8f3;
         box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
     }
-    
+
     .form-label {
         font-weight: 600;
         color: #5a5c69;
@@ -247,40 +229,40 @@
         border-radius: 10px;
         border: none;
     }
-    
+
     .alert-success {
         background-color: rgba(28, 200, 138, 0.1);
         color: #1cc88a;
         border-left: 4px solid #1cc88a;
     }
-    
+
     /* Modal styling */
     .modal-content {
         border-radius: 10px;
         border: none;
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
-    
+
     .modal-header.bg-danger {
         background: linear-gradient(45deg, #e74a3b, #f17a6e) !important;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
     }
-    
+
     /* Page title section */
     .app-page-title {
         font-weight: 700;
         color: #4e73df;
         margin-bottom: 0.2rem;
     }
-    
+
     /* Empty state styling */
     .empty-state {
         text-align: center;
         padding: 2.5rem 0;
         color: #6c757d;
     }
-    
+
     .empty-state i {
         font-size: 2.5rem;
         margin-bottom: 1rem;
@@ -293,32 +275,34 @@
             opacity: 0;
             transform: translateY(10px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
-    
-    .app-card, .alert {
+
+    .app-card,
+    .alert {
         animation: fadeInUp 0.4s ease-out;
     }
-    
+
     /* Platform labels */
     .platform-label {
         display: flex;
         align-items: center;
     }
-    
+
     .platform-name {
         font-weight: 600;
     }
-    
+
     /* Count badge animation */
     .hover-badge {
         position: relative;
         overflow: hidden;
     }
-    
+
     .hover-badge::after {
         content: "";
         position: absolute;
@@ -330,9 +314,73 @@
         transform: translateX(-100%);
         transition: transform 0.6s ease;
     }
-    
+
     .hover-badge:hover::after {
         transform: translateX(100%);
+    }
+
+    .avatar-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        object-fit: cover;
+        margin-left: -8px;
+        box-shadow: 0 0 0 1px #ccc;
+        transition: transform 0.2s;
+        cursor: pointer;
+    }
+
+    .avatar:first-child {
+        margin-left: 0;
+    }
+
+    .avatar:hover {
+        transform: scale(1.1);
+        z-index: 2;
+    }
+
+    .avatar.more {
+        background-color: #6c757d;
+        color: #fff;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .avatar-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip-text {
+        visibility: hidden;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 4px 8px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        /* Atur posisi tooltip */
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        white-space: nowrap;
+        font-size: 12px;
+    }
+
+    .avatar-wrapper:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
     }
 </style>
 <?= $this->endSection('css'); ?>
@@ -417,9 +465,8 @@
                                 <th class="cell" width="5%">No</th>
                                 <th class="cell" width="20%">Platform</th>
                                 <th class="cell" width="20%">Username</th>
-                                <th class="cell" width="20%">User</th>
+                                <th class="cell" width="10%">User</th>
                                 <th class="cell" width="10%">Total Konten</th>
-                                <th class="cell" width="10%">Status</th>
                                 <th class="cell" width="15%">Terakhir Diupdate</th>
                                 <th class="cell" width="20%">Aksi</th>
                             </tr>
@@ -428,80 +475,66 @@
                         <tbody>
                             <?php $counter = 1; ?>
                             <?php foreach ($allSosmed as $sosmed) : ?>
-                                <tr data-status="<?= strtolower($sosmed['status']) ?>">
+                                <tr>
                                     <td class="cell"><?= $counter++; ?></td>
                                     <td class="cell">
                                         <div class="platform-label">
                                             <?php
-                                            $iconClass = '';
-                                            $platformIconClass = '';
-                                            switch (strtolower($sosmed['platform'])) {
-                                                case 'fb':
-                                                    $iconClass = 'fab fa-facebook';
-                                                    $platformIconClass = 'icon-fb';
-                                                    $platformName = 'Facebook';
-                                                    break;
-                                                case 'ig':
-                                                    $iconClass = 'fab fa-instagram';
-                                                    $platformIconClass = 'icon-ig';
-                                                    $platformName = 'Instagram';
-                                                    break;
-                                                case 'linkedin':
-                                                    $iconClass = 'fab fa-linkedin';
-                                                    $platformIconClass = 'icon-linkedin';
-                                                    $platformName = 'LinkedIn';
-                                                    break;
-                                                case 'tiktok':
-                                                    $iconClass = 'fab fa-tiktok';
-                                                    $platformIconClass = 'icon-tiktok';
-                                                    $platformName = 'TikTok';
-                                                    break;
-                                                default:
-                                                    $iconClass = 'fas fa-share-alt';
-                                                    $platformIconClass = 'icon-default';
-                                                    $platformName = $sosmed['platform'];
-                                            }
+                                            $iconClass = 'fab fa-' . $sosmed['platform'];
+                                            $platformIconClass = 'icon-' . $sosmed['platform'];
+                                            $platformIconClass = 'icon-' . $sosmed['platform'];
                                             ?>
                                             <div class="platform-icon <?= $platformIconClass ?>">
                                                 <i class="<?= $iconClass ?>"></i>
                                             </div>
-                                            <span class="platform-name"><?= $platformName ?></span>
+                                            <span class="platform-name"><?= $sosmed['platform'] ?></span>
                                         </div>
                                     </td>
                                     <td class="cell">@<?= $sosmed['username']; ?></td>
-                                    <!-- <td class="cell">@<?= $sosmed['user']; ?></td> -->
+                                    <td class="cell">
+                                        <div class="avatar-group d-flex align-items-center">
+                                            <?php
+                                            $maxAvatar = 4;
+                                            $avatars = [];
+
+                                            // Kumpulkan user yang sesuai dengan id_sosmed saat ini
+                                            foreach ($allUserSosmed as $relasi) {
+                                                if ($relasi['id_sosmed'] == $sosmed['id_sosmed']) {
+                                                    $avatars[] = [
+                                                        'nama_user' => $relasi['nama'],
+                                                        'foto' => $relasi['foto'],
+                                                    ];
+                                                }
+                                            }
+
+                                            $totalUser = count($avatars);
+                                            $displayed = array_slice($avatars, 0, $maxAvatar);
+                                            ?>
+
+                                            <?php foreach ($displayed as $user): ?>
+                                                <div class="avatar-wrapper">
+                                                    <img src="<?= $user['foto'] ?? '/img/default-avatar.png' ?>"
+                                                        class="avatar rounded-circle me-1"
+                                                        alt="<?= $user['nama_user'] ?>" />
+                                                    <div class="tooltip-text"><?= $user['nama_user'] ?></div>
+                                                </div>
+                                            <?php endforeach; ?>
+
+                                            <?php if ($totalUser > $maxAvatar): ?>
+                                                <div class="avatar more rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                                                    style="width: 30px; height: 30px;"
+                                                    title="<?= $totalUser - $maxAvatar ?> lainnya">
+                                                    +<?= $totalUser - $maxAvatar ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </td>
+
                                     <td class="cell">
                                         <a href="#" class="badge text-decoration-none hover-badge">
                                             <i class="fas fa-file-alt me-1"></i>
                                             <?= isset($sosmed['jumlah_konten']) ? $sosmed['jumlah_konten'] : 0 ?>
                                         </a>
-                                    </td>
-                                    <td class="cell">
-                                        <?php
-                                        $statusClass = '';
-                                        $statusIcon = '';
-                                        switch (strtolower($sosmed['status'])) {
-                                            case 'aktif':
-                                                $statusClass = 'status-active';
-                                                $statusIcon = 'fas fa-check-circle';
-                                                break;
-                                            case 'tidak aktif':
-                                                $statusClass = 'status-inactive';
-                                                $statusIcon = 'fas fa-times-circle';
-                                                break;
-                                            case 'pending':
-                                                $statusClass = 'status-pending';
-                                                $statusIcon = 'fas fa-clock';
-                                                break;
-                                            default:
-                                                $statusClass = '';
-                                                $statusIcon = 'fas fa-circle';
-                                        }
-                                        ?>
-                                        <span class="badge <?= $statusClass ?>">
-                                            <i class="<?= $statusIcon ?> me-1"></i>
-                                            <?= $sosmed['status']; ?>
-                                        </span>
                                     </td>
                                     <td class="cell">
                                         <i class="far fa-calendar-alt me-1"></i>
@@ -602,7 +635,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Inisialisasi tooltip
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         });
 
@@ -616,28 +649,16 @@
         });
     });
 
-    // Filter by status
-    function filterByStatus(status) {
-        const rows = document.querySelectorAll('#sosmedTable tbody tr');
-        rows.forEach(row => {
-            if (status === 'all' || row.getAttribute('data-status') === status) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
 
     // Reset filters
     function resetFilters() {
         document.getElementById('filterBisnis').selectedIndex = 0;
-        document.getElementById('statusFilter').selectedIndex = 0;
-        
+
         const rows = document.querySelectorAll('#sosmedTable tbody tr');
         rows.forEach(row => {
             row.style.display = '';
         });
-        
+
         // Redirect to base URL
         window.location.href = "<?= route_to('sosmed') ?>";
     }

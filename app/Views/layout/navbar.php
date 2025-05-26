@@ -140,11 +140,13 @@
 
                     <div id="sosmedDropdown" class="collapse" data-bs-parent="#sidebarMenu">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <?php if ($role === 'admin') : ?>
                             <li>
                                 <a href="<?= route_to('sosmed') ?>" class="nav-link d-flex align-items-center">
                                     <i class="bi bi-pencil-square me-2"></i> Akun Sosmed
                                 </a>
                             </li>
+                            <?php endif; ?>
                             <li>
                                 <a href="<?= route_to('konten') ?>" class="nav-link d-flex align-items-center">
                                     <i class="bi bi-envelope-fill me-2"></i> Konten Sosmed

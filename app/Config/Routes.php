@@ -111,7 +111,7 @@ $routes->group('bisnis', ['filter' => 'role:admin'], function ($routes) {
 });
 
 // MENU SOSMED
-$routes->group('sosmed', function ($routes) {
+$routes->group('sosmed', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('/', 'SosmedController::index', ['as' => 'sosmed']);
     $routes->get('(:num)', 'SosmedController::index/$1', ['as' => 'sosmed.filter']);
     $routes->get('tambah', 'SosmedController::tambah', ['as' => 'sosmed.tambah']);

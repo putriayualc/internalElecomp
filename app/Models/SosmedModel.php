@@ -37,7 +37,7 @@ class SosmedModel extends Model
     protected $validationRules = [
         'id_bisnis' => 'required|integer',
         'username'  => 'required',
-        'platform'  => 'required|in_list[ig,fb,tiktok,linkedin]',
+        'platform'  => 'required|in_list[instagram,facebook,tiktok,linkedin]',
         'status'    => 'permit_empty|in_list[aktif,tdk_aktif]' // jika kolom status digunakan
     ];
 

@@ -15,7 +15,8 @@ class KontenModel extends Model
     protected $allowedFields    = [
         'judul',
         'caption',
-        'cover'
+        'cover',
+        'tgl_upload'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -33,6 +34,7 @@ class KontenModel extends Model
         'judul'   => 'required|min_length[3]|max_length[255]',
         'caption' => 'required',
         'cover'   => 'permit_empty',
+        'tgl_upload' => 'required'
     ];
 
     protected $validationMessages = [
@@ -43,6 +45,9 @@ class KontenModel extends Model
         ],
         'caption' => [
             'required'    => 'Caption wajib diisi.',
+        ],
+        'tgl_upload' => [
+            'required'    => 'Tanggal wajib diisi.',
         ],
     ];
 
@@ -68,14 +73,15 @@ class KontenModel extends Model
             tb_konten.judul,
             tb_konten.caption,
             tb_konten.cover,
+            tb_konten.tgl_upload,
+            MIN(tb_bisnis.nama_bisnis) as nama_bisnis,
             GROUP_CONCAT(tb_sosmed.platform) as platforms,
             GROUP_CONCAT(tb_sosmed.username) as akun_platform,
-            MIN(tb_konten_sosmed.tgl_upload) as tgl_upload,
-            GROUP_CONCAT(tb_users.username) as username
+            GROUP_CONCAT(tb_konten_sosmed.id_sosmed) as id_sosmed,
         ')
             ->join('tb_konten_sosmed', 'tb_konten_sosmed.id_konten = tb_konten.id_konten')
             ->join('tb_sosmed', 'tb_sosmed.id_sosmed = tb_konten_sosmed.id_sosmed')
-            ->join('tb_users', 'tb_users.id_user = tb_konten_sosmed.id_user', 'left');
+            ->join('tb_bisnis', 'tb_sosmed.id_bisnis = tb_bisnis.id_bisnis');
 
         if ($id_bisnis) {
             $builder->where('tb_sosmed.id_bisnis', $id_bisnis);

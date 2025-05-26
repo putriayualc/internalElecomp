@@ -15,7 +15,7 @@
                     <form action="<?= route_to('sosmed.simpan') ?>" method="post" id="sosmedForm">
                         <?= csrf_field() ?>
 
-                          <!-- Input untuk Username -->
+                        <!-- Input untuk Username -->
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" name="username" required>
@@ -37,12 +37,32 @@
                             <label for="platform" class="form-label">Platform</label>
                             <select class="form-select" id="platform" name="platform" required>
                                 <option value="" disabled selected>-- Pilih Platform --</option>
-                                <option value="ig">Instagram</option>
-                                <option value="fb">Facebook</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="facebook">Facebook</option>
                                 <option value="tiktok">TikTok</option>
                                 <option value="linkedin">LinkedIn</option>
                             </select>
                         </div>
+
+                        <!-- Tambahkan ini di bagian sebelum tombol submit -->
+                        <div class="mb-3">
+                            <label class="form-label">Pilih User Pengelola</label>
+                            <div id="user-wrapper">
+                                <div class="input-group mb-2">
+                                    <select name="id_user[]" class="form-select" required>
+                                        <option value="" disabled selected>-- Pilih User --</option>
+                                        <?php foreach ($allUsers as $user): ?>
+                                            <option value="<?= $user['id_user']; ?>">
+                                                <?= $user['nama']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <button type="button" class="btn btn-outline-danger remove-user d-none">Hapus</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="add-user">+ Tambah User</button>
+                        </div>
+
 
                         <!-- Tombol Submit -->
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -53,5 +73,23 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('add-user').addEventListener('click', function () {
+        const wrapper = document.getElementById('user-wrapper');
+        const firstSelectGroup = wrapper.querySelector('.input-group');
+        const clone = firstSelectGroup.cloneNode(true);
+
+        clone.querySelector('.remove-user').classList.remove('d-none');
+        clone.querySelector('select').value = ''; // reset value
+        wrapper.appendChild(clone);
+    });
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('remove-user')) {
+            e.target.closest('.input-group').remove();
+        }
+    });
+</script>
 
 <?= $this->endSection(); ?>

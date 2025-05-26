@@ -32,12 +32,6 @@ class CreateTableSosmed extends Migration
             'updated_at' => [
                 'type'      => 'DATE'
             ],
-            'platform' => [
-                'type'       => 'ENUM',
-                'constraint' => ['instagram', 'tiktok', 'facebook', 'linkedin'],
-                'null'       => true,
-                'default'    => null,
-            ],
         ]);
 
         $this->forge->addKey('id_sosmed', true);
