@@ -26,9 +26,10 @@
             </div>
             <div class="col-auto">
                 <div class="d-flex gap-2">
-                    <a href="<?= route_to('bisnis.tambah') ?>" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahBisnisModal">
                         <i class="fas fa-plus-circle me-2"></i>Tambah Bisnis
-                    </a>
+                    </button>
+
                 </div>
             </div>
         </div>
@@ -80,18 +81,19 @@
                                     </td>
                                     <td class="cell" style="vertical-align: top;">
                                         <div class="d-flex gap-1">
-                                        
-                                            <a href="#" class="btn btn-sm btn-warning">
+
+                                            <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editBisnisModal<?= $bisnis['id_bisnis'] ?>">
                                                 <i class="fas fa-edit me-1"></i> Edit
-                                            </a>
+                                            </button>
+
                                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteBisnisModal<?= $bisnis['id_bisnis'] ?>">
                                                 <i class="fas fa-trash me-1"></i> Hapus
                                             </button>
                                         </div>
                                     </td>
-                                </tr>                         
-                                           
-                           
+                                </tr>
+
+
                             <?php endforeach; ?>
 
                             <?php if (empty($allBisnis)) : ?>
@@ -124,7 +126,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i> Batal
                     </button>
-                    <a href="<?= route_to('bisnis.hapus', $bisnis['id_bisnis']) ?>" class="btn btn-danger">
+                    <a href="<?= route_to('bisnis.delete', $bisnis['id_bisnis']) ?>" class="btn btn-danger">
                         <i class="fas fa-trash me-1"></i> Hapus
                     </a>
                 </div>
@@ -133,6 +135,79 @@
     </div>
 
 <?php endforeach; ?>
+
+<!-- Modal Tambah Bisnis -->
+<div class="modal fade" id="tambahBisnisModal" tabindex="-1" aria-labelledby="tambahBisnisModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="<?= route_to('bisnis.simpan') ?>" method="post">
+            <?= csrf_field() ?>
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="tambahBisnisModalLabel">Tambah Bisnis Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nama_bisnis" class="form-label">Nama Bisnis</label>
+                        <input type="text" name="nama_bisnis" id="nama_bisnis" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="website" class="form-label">Website</label>
+                        <input type="text" name="website" id="website" class="form-control">
+                    </div>
+                    <!-- Tambahkan input lain jika perlu -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Simpan
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL UPDATE -->
+<?php foreach ($allBisnis as $bisnis) : ?>
+    <div class="modal fade" id="editBisnisModal<?= $bisnis['id_bisnis'] ?>" tabindex="-1" aria-labelledby="editBisnisModalLabel<?= $bisnis['id_bisnis'] ?>" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="<?= route_to('bisnis.update', $bisnis['id_bisnis']) ?>" method="post">
+                <?= csrf_field() ?>
+                <input type="hidden" name="_method" value="POST">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-dark">
+                        <h5 class="modal-title" id="editBisnisModalLabel<?= $bisnis['id_bisnis'] ?>">Edit Bisnis</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nama_bisnis<?= $bisnis['id_bisnis'] ?>" class="form-label">Nama Bisnis</label>
+                            <input type="text" class="form-control" name="nama_bisnis" id="nama_bisnis<?= $bisnis['id_bisnis'] ?>" value="<?= esc($bisnis['nama_bisnis']) ?>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="website<?= $bisnis['id_bisnis'] ?>" class="form-label">Website</label>
+                            <input type="text" class="form-control" name="website" id="website<?= $bisnis['id_bisnis'] ?>" value="<?= esc($bisnis['website']) ?>">
+                        </div>
+                        <!-- Tambahkan field lain jika ada -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-save me-1"></i> Simpan Perubahan
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php endforeach; ?>
+
+
 
 
 <?= $this->endSection('content') ?>
