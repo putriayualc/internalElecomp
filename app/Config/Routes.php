@@ -65,8 +65,8 @@ $routes->group('piket', function ($routes) {
 
     $routes->group('', ['filter' => 'role:admin'], function ($routes) {
         $routes->get('edit/(:segment)', 'PiketController::edit/$1');
-        $routes->post('update', 'PiketController::update'); 
-        $routes->get('delete/(:any)/(:any)', 'PiketController::delete/$1/$2'); 
+        $routes->post('update', 'PiketController::update');
+        $routes->get('delete/(:any)/(:any)', 'PiketController::delete/$1/$2');
     });
 });
 
@@ -85,7 +85,7 @@ $routes->group('hosting', ['filter' => 'role:admin'], function ($routes) {
 $routes->group('siswa', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('/', 'SiswaController::index', ['as' => 'siswa']);
     $routes->get('tambah', 'SiswaController::tambah', ['as' => 'siswa.tambah']);
-    $routes->post('simpan', 'SiswaController::simpan', ['as' => 'siswa.simpan']); 
+    $routes->post('simpan', 'SiswaController::simpan', ['as' => 'siswa.simpan']);
     $routes->get('edit/(:num)', 'SiswaController::edit/$1', ['as' => 'siswa.edit']);
     $routes->post('update/(:num)', 'SiswaController::update/$1', ['as' => 'siswa.update']);
     $routes->get('delete/(:num)', 'SiswaController::delete/$1', ['as' => 'siswa.delete']);
@@ -98,7 +98,7 @@ $routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as'
 $routes->group('prospek', function ($routes) {
     $routes->get('/', 'ProspekController::index', ['as' => 'prospek']);
     $routes->get('tambah', 'ProspekController::tambah', ['as' => 'prospek.tambah']);
-    $routes->post('simpan', 'ProspekController::simpan', ['as' => 'prospek.simpan']); 
+    $routes->post('simpan', 'ProspekController::simpan', ['as' => 'prospek.simpan']);
     $routes->get('edit/(:num)', 'ProspekController::edit/$1', ['as' => 'prospek.edit']);
     $routes->post('update/(:num)', 'ProspekController::update/$1', ['as' => 'prospek.update']);
     $routes->get('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
@@ -106,11 +106,23 @@ $routes->group('prospek', function ($routes) {
 });
 
 // MENU Bisnis
-$routes->group('bisnis', ['filter' => 'role:admin'], function ($routes) {
+$routes->group('bisnis', function ($routes) {
     $routes->get('/', 'BisnisController::index', ['as' => 'bisnis']);
     $routes->get('tambah', 'BisnisController::tambah', ['as' => 'bisnis.tambah']);
-    $routes->post('simpan', 'BisnisController::simpan', ['as' => 'bisnis.simpan']); 
+    $routes->post('simpan', 'BisnisController::simpan', ['as' => 'bisnis.simpan']);
+    $routes->post('update/(:num)', 'BisnisController::update/$1', ['as' => 'bisnis.update']);
+    $routes->get('delete/(:num)', 'BisnisController::delete/$1', ['as' => 'bisnis.delete']); // Pastikan ini ada
 
+});
+
+// MENU ARTIKEL
+$routes->group('artikel_internal', function ($routes) {
+    $routes->get('/', 'ArtikelInternalController::index', ['as' => 'artikel_internal.index']);
+    $routes->get('tambah', 'ArtikelInternalController::tambah', ['as' => 'artikel_internal.tambah']);
+    $routes->post('simpan', 'ArtikelInternalController::simpan', ['as' => 'artikel_internal.simpan']);
+    $routes->get('edit/(:num)', 'ArtikelInternalController::edit/$1', ['as' => 'artikel_internal.edit']);
+    $routes->post('update/(:num)', 'ArtikelInternalController::update/$1', ['as' => 'artikel_internal.update']);
+    $routes->get('delete/(:num)', 'ArtikelInternalController::delete/$1', ['as' => 'artikel_internal.delete']);
 });
 
 // MENU SOSMED
@@ -118,7 +130,7 @@ $routes->group('sosmed', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('/', 'SosmedController::index', ['as' => 'sosmed']);
     $routes->get('(:num)', 'SosmedController::index/$1', ['as' => 'sosmed.filter']);
     $routes->get('tambah', 'SosmedController::tambah', ['as' => 'sosmed.tambah']);
-    $routes->post('simpan', 'SosmedController::simpan', ['as' => 'sosmed.simpan']); 
+    $routes->post('simpan', 'SosmedController::simpan', ['as' => 'sosmed.simpan']);
     $routes->get('edit/(:num)', 'SosmedController::edit/$1', ['as' => 'sosmed.edit']);
     $routes->post('update/(:num)', 'SosmedController::update/$1', ['as' => 'sosmed.update']);
     $routes->get('delete/(:num)', 'SosmedController::delete/$1', ['as' => 'sosmed.delete']);
@@ -131,7 +143,7 @@ $routes->group('konten', function ($routes) {
     $routes->get('(:num)', 'KontenController::index/$1', ['as' => 'konten.filter']);
     $routes->get('tambah', 'KontenController::tambah', ['as' => 'konten.tambah']);
     $routes->get('getByBisnis/(:num)', 'KontenController::getByBisnis/$1', ['as' => 'konten.getByBisnis']);
-    $routes->post('simpan', 'KontenController::simpan', ['as' => 'konten.simpan']); 
+    $routes->post('simpan', 'KontenController::simpan', ['as' => 'konten.simpan']);
     $routes->get('edit/(:num)', 'KontenController::edit/$1', ['as' => 'konten.edit']);
     $routes->post('update/(:num)', 'KontenController::update/$1', ['as' => 'konten.update']);
     $routes->get('delete/(:num)', 'KontenController::delete/$1', ['as' => 'konten.delete']);
@@ -170,11 +182,6 @@ $routes->group('absen', function ($routes) {
 
 // Dashboard Absen Admin
 $routes->group('absenDashboard', ['filter' => 'role:admin'], function ($routes) {
-     $routes->get('/', 'AbsenDashboardController::index');
-     $routes->get('grafikMingguan', 'AbsenDashboardController::grafikMingguan');
-
+    $routes->get('/', 'AbsenDashboardController::index');
+    $routes->get('grafikMingguan', 'AbsenDashboardController::grafikMingguan');
 });
-
-
-
-
