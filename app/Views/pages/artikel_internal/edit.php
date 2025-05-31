@@ -54,17 +54,19 @@
                     </select>
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_user" class="form-label">User</label>
-                    <select name="id_user" id="id_user" class="form-select" required>
-                        <option value="">-- Pilih User --</option>
-                        <?php foreach ($allUsers as $user) : ?>
-                            <option value="<?= $user['id_user'] ?>" <?= old('id_user', $artikel['id_user']) == $user['id_user'] ? 'selected' : '' ?>>
-                                <?= esc($user['username']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
+                <?php if (session()->get('role')  === 'admin') : ?>
+                    <div class="mb-3">
+                        <label for="id_user" class="form-label">User</label>
+                        <select name="id_user" id="id_user" class="form-select" required>
+                            <option value="">-- Pilih User --</option>
+                            <?php foreach ($allUsers as $user) : ?>
+                                <option value="<?= $user['id_user'] ?>" <?= old('id_user', $artikel['id_user']) == $user['id_user'] ? 'selected' : '' ?>>
+                                    <?= esc($user['username']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                <?php endif; ?>
 
 
                 <div class="d-flex justify-content-between">

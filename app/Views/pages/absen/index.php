@@ -19,11 +19,11 @@
           <!-- <div class="d-flex gap-2">
             <button  class="btn btn-secondary" type="button" id="btnTB">Telat/Bolos</button>
           </div> -->
-          <div class="d-flex gap-2">
+          <!-- <div class="d-flex gap-2">
             <a href="<?= route_to('hosting.tambah') ?>" class="btn btn-info">
               <i class="fas fa-plus-circle me-2"></i>Semua Absen
             </a>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -281,7 +281,7 @@
                                 <th class="cell" width="15%">Nama</th>
                                 <th class="cell" width="8%">Status</th>
                                 <th class="cell" width="25%">Keterangan</th>
-                                <th class="cell" width="15%">Bukti Ijin</th>
+                                <th class="cell" width="15%">Foto(opsional)</th>
                                 <th class="cell" width="15%">Tanggal-Waktu</th>
                                 <!-- <th class="cell" width="20%">Aksi</th> -->
                             </tr>
@@ -517,7 +517,7 @@
                         <?= $item['status'] ?>
                     <?php endif?>
                     </td>
-                <td><?= $item['kegiatan'] ?></td>
+                <td><?= $item['keterangan'] ?></td>
                 <td><?= $item['tanggal_waktu'] ?></td>
                 <td>
                         <form action="<?= base_url('absen/reset/' . $item['id_absen']) ?>" method="post" class="d-inline">

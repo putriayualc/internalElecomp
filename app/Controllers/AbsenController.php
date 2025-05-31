@@ -125,14 +125,14 @@ class AbsenController extends BaseController
 
         $hariIni = date('Y-m-d');
         // Ubah jadi objek waktu
-        $mulai = Time::parse($hariIni . ' 08:00:00');
-        $selesai = Time::parse($hariIni . ' 08:15:00');
+        $mulai = Time::parse($hariIni . ' 07:45:00');
+        $selesai = Time::parse($hariIni . ' 08:59:00');
 
         $waktuAbsen = Time::now();
 
         // dd($mulai, $selesai);
 
-        if ($waktuAbsen <= $mulai && $waktuAbsen >= $selesai) {
+        if ($waktuAbsen >= $mulai && $waktuAbsen <= $selesai) {
             $data = [
                 'id_user' => $id_user,
                 'bukti_foto' =>$namaFile,
@@ -149,7 +149,7 @@ class AbsenController extends BaseController
                 'tanggal_waktu' => date('Y-m-d H:i:s'),
                 'keterangan' => '--',
                 // 'keterangan' => $this->request->getVar('keterangan'),
-                'status' => 'Bolos',
+                'status' => 'Bolos ',
                 'persetujuan' => 'Pending'
             ];
         }
@@ -170,14 +170,14 @@ class AbsenController extends BaseController
 
         $hariIni = date('Y-m-d');
         // Ubah jadi objek waktu
-        $mulai = Time::parse($hariIni . ' 08:00:00');
+        $mulai = Time::parse($hariIni . ' 07:45:00');
         $selesai = Time::parse($hariIni . ' 08:15:00');
 
         $waktuAbsen = Time::now();
 
         // dd($mulai, $selesai);
 
-        if ($waktuAbsen <= $mulai && $waktuAbsen >= $selesai) {
+        if ($waktuAbsen >= $mulai && $waktuAbsen <= $selesai) {
             $data = [
                 'id_user' => $id_user,
                 'bukti_foto' =>$namaFile,
@@ -213,14 +213,14 @@ class AbsenController extends BaseController
 
         $hariIni = date('Y-m-d');
         // Ubah jadi objek waktu
-        $mulai = Time::parse($hariIni . ' 08:00:00');
+        $mulai = Time::parse($hariIni . ' 07:45:00');
         $selesai = Time::parse($hariIni . ' 08:15:00');
 
         $waktuAbsen = Time::now();
 
         // dd($mulai, $selesai);
 
-        if ($waktuAbsen <= $mulai && $waktuAbsen >= $selesai) {
+        if ($waktuAbsen >= $mulai && $waktuAbsen <= $selesai) {
             $data = [
                 'id_user' => $id_user,
                 'bukti_foto' =>$namaFile,
@@ -286,9 +286,10 @@ class AbsenController extends BaseController
     $sekarang = date('H:i');
 
     // Hanya jalan kalau lewat dari jam 16:15
-    if ($sekarang < '16:15') {
-        return;
-    }
+    if ($sekarang < '16:15' && $sekarang > '07:45') {
+    return;
+}
+
 
     $tanggalHariIni = date('Y-m-d');
 
@@ -317,7 +318,3 @@ class AbsenController extends BaseController
 }
 
 }
-
-
-
-

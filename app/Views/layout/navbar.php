@@ -168,40 +168,6 @@
                     </div>
                 </li>
 
-                <!-- BACKLINK -->
-                <!-- <li class="nav-item">
-                    <a class="nav-link collapsed d-flex align-items-center" href="#" data-bs-toggle="collapse" data-bs-target="#adminDropdown" aria-expanded="false" aria-controls="adminDropdown">
-                        <span class="nav-icon me-2">
-                            
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journals" viewBox="0 0 16 16">
-                                <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2" />
-                                <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-text">Backlink</span>
-                        <i class="bi bi-chevron-down ms-auto rotate-icon" id="dropdownArrow"></i>
-                    </a>
-
-                    <div id="adminDropdown" class="collapse" data-bs-parent="#sidebarMenu">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li>
-                                <a href="<?= route_to('backlink') ?>" class="nav-link d-flex align-items-center">
-                                    <i class="bi bi-envelope-fill me-2"></i> Email
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link d-flex align-items-center">
-                                    <i class="bi bi-pencil-square me-2"></i> Blog
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="nav-link d-flex align-items-center">
-                                    <i class="bi bi-file-earmark-text me-2"></i> Artikel
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> -->
 
                 <li class="nav-item">
                     <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
@@ -229,15 +195,6 @@
                         <span class="nav-link-text">SOP</span>
                     </a><!--//nav-link-->
                 </li><!--//nav-item-->
-
-
-
-
-
-
-
-
-
 
                 <!-- Absen -->
                 <?php if ($role === 'admin') : ?>
@@ -280,7 +237,6 @@
                         </a><!--//nav-link-->
                     </li><!--//nav-item-->
                 <?php endif ?>
-
 
 
             </ul><!--//app-menu-->

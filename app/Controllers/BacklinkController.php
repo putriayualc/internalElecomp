@@ -24,11 +24,9 @@ class BacklinkController extends BaseController
         if (session()->get('role') === 'user') {
             $allEmail = $this->emailModel->getEmailUserWithNama(session()->get('id_user'));
             $allBlogs = $this->blogModel->getAllBlogWithCountArticle(session()->get('id_user'));
-
         } else {
             $allEmail = $this->emailModel->getEmailUserWithNama(); // Semua
             $allBlogs = $this->blogModel->getAllBlogWithCountArticle();
-
         }
 
         $data = [
@@ -57,12 +55,12 @@ class BacklinkController extends BaseController
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
         $domains = $this->request->getPost('domain_blog');
-        if (session()->get('role') === 'admin'){
+        if (session()->get('role') === 'admin') {
             $user = $this->request->getPost('id_user');
-        }else{
+        } else {
             $user = session()->get('id_user');
         }
-        
+
         // Simpan data email ke database
         $emailData = [
             'email' => $email,
@@ -116,6 +114,11 @@ class BacklinkController extends BaseController
     public function update($id_email)
     {
         $data = $this->request->getPost();
+        if (session()->get('role') === 'admin') {
+            $data['id_user'] = $this->request->getPost('id_user');
+        } else {
+            $data['id_user'] = session()->get('id_user');
+        }
         $data['id_email'] = $id_email;
         // dd($data);
         if (!$this->emailModel->validate($data)) {

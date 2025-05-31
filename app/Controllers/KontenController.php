@@ -133,14 +133,12 @@ class KontenController extends BaseController
 
         // Simpan ke kontenSosmedModel
         $id_sosmed_list = $this->request->getPost('id_sosmed');
-        $tgl_upload = $this->request->getPost('tgl_upload');
 
         if (!empty($id_sosmed_list)) {
             foreach ($id_sosmed_list as $id_sosmed) {
                 $this->kontenSosmedModel->save([
                     'id_sosmed' => $id_sosmed,
                     'id_konten' => $id_konten,
-                    'tgl_upload' => $tgl_upload
                 ]);
             }
         }

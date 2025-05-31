@@ -56,19 +56,20 @@
                         </select>
                     </div>
 
-
-                    <!-- ID User -->
-                    <div class="mb-3">
-                        <label class="form-label">User</label>
-                        <select class="form-select" name="id_user" required>
-                            <option value="">-- Pilih User --</option>
-                            <?php foreach ($allUsers as $user): ?>
-                                <option value="<?= $user['id_user'] ?>" <?= old('id_user') == $user['id_user'] ? 'selected' : '' ?>>
-                                    <?= $user['username'] ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                    <?php if (session()->get('role')  === 'admin') : ?>
+                        <!-- ID User -->
+                        <div class="mb-3">
+                            <label class="form-label">User</label>
+                            <select class="form-select" name="id_user" required>
+                                <option value="">-- Pilih User --</option>
+                                <?php foreach ($allUsers as $user): ?>
+                                    <option value="<?= $user['id_user'] ?>" <?= old('id_user') == $user['id_user'] ? 'selected' : '' ?>>
+                                        <?= $user['username'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    <?php endif; ?>
 
 
                     <!-- Tombol Aksi -->
