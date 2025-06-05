@@ -44,6 +44,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/portal.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
     <?= $this->renderSection('css'); ?>
+    <!-- CSS FullCalendar dari view akan dirender di sini jika diletakkan di section styles -->
 </head>
 
 <body class="app">
@@ -198,6 +199,23 @@
             $('.nama-dropdown').select2();
         }
     </script>
+
+    <!-- === SCRIPT LIBRARY UTAMA DAN YANG DIBUTUHKAN === -->
+    <!-- Urutan sangat penting: jQuery, lalu FullCalendar main, lalu FullCalendar locale -->
+
+    <!-- 1. jQuery (Penting: ini harus dimuat duluan jika script Anda pakai $) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- 2. FullCalendar Main (Ini yang mendefinisikan objek FullCalendar) -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+
+    <!-- 3. FullCalendar Locale (Ini yang menggunakan objek FullCalendar) -->
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/locales/id.global.min.js'></script>
+
+    <!-- === BARIS UNTUK MERENDER SCRIPT DARI VIEW === -->
+    <!-- Ini harus TEPAT setelah semua library yang dibutuhkan dimuat -->
+    <?= $this->renderSection('scripts') ?>
+
 </body>
 
 </html>
