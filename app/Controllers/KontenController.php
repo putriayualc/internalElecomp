@@ -85,6 +85,23 @@ class KontenController extends BaseController
         return view('pages/konten_sosmed/index', $data);
     }
 
+    public function detail($id_konten)
+    {
+        $konten = $this->kontenModel->getKontenWithDetailAndSosmed($id_konten);
+        // dd($konten);
+
+        if (!$konten) {
+            return redirect()->back()->with('error', 'Data konten tidak ditemukan.');
+        }
+
+        $data = [
+            'konten'    => $konten
+        ];
+
+        return view('pages/konten_sosmed/detail', $data);
+
+    }
+
     public function tambah()
     {
         $allBisnis = $this->bisnisModel->findAll();
@@ -325,7 +342,7 @@ class KontenController extends BaseController
                 $this->detailKontenModel->insert([
                     'id_konten' => $id_konten,
                     'media'     => $fileName,
-                    'tipe_media'=> $tipe,
+                    'tipe_media' => $tipe,
                 ]);
             }
         }

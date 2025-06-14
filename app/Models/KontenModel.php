@@ -92,4 +92,27 @@ class KontenModel extends Model
             ->get()
             ->getResultArray();
     }
+
+    public function getKontenWithDetailAndSosmed($id_konten)
+    {
+        // Ambil konten
+        $konten = $this->find($id_konten);
+
+        // Ambil detail konten
+        $detailModel = new DetailKontenModel();
+        $konten['detail_konten'] = $detailModel
+            ->where('id_konten', $id_konten)
+            ->findAll();
+
+        // Ambil daftar sosmed
+        $builder = $this->db->table('tb_konten_sosmed')
+            ->select('tb_sosmed.*, tb_bisnis.nama_bisnis')
+            ->join('tb_sosmed', 'tb_sosmed.id_sosmed = tb_konten_sosmed.id_sosmed')
+            ->join('tb_bisnis', 'tb_sosmed.id_bisnis = tb_bisnis.id_bisnis')
+            ->where('tb_konten_sosmed.id_konten', $id_konten);
+
+        $konten['sosmed'] = $builder->get()->getResultArray();
+
+        return $konten;
+    }
 }
