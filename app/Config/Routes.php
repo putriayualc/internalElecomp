@@ -163,6 +163,29 @@ $routes->group('absenDashboard', ['filter' => 'role:admin'], function ($routes) 
     $routes->get('grafikMingguan', 'AbsenDashboardController::grafikMingguan');
 });
 
+// Route untuk Company Profile
+$routes->group('company_profile', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'CompanyProfile::index', ['as' => 'company_profile']);
+    $routes->get('create', 'CompanyProfile::create', ['as' => 'company_profile.create']);
+    $routes->post('store', 'CompanyProfile::store', ['as' => 'company_profile.store']);
+    $routes->get('edit/(:num)', 'CompanyProfile::edit/$1', ['as' => 'company_profile.edit']);
+    $routes->match(['get', 'post'], 'update/(:num)', 'CompanyProfile::update/$1', ['as' => 'company_profile.update']);
+    $routes->delete('delete/(:num)', 'CompanyProfile::delete/$1', ['as' => 'company_profile.delete']);
+    $routes->get('get/(:num)', 'CompanyProfile::get/$1', ['as' => 'company_profile.get']);
+});
+
+// Artikulasi
+$routes->group('artikulasi', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'ArtikulasiController::index', ['as' => 'artikulasi']);
+    $routes->get('getKalenderData', 'ArtikulasiController::getKalenderData', ['as' => 'artikulasi.getKalenderData']);
+    $routes->get('getByDate', 'ArtikulasiController::getArtikelByDate', ['as' => 'artikulasi.getByDate']);
+    $routes->post('store', 'ArtikulasiController::store', ['as' => 'artikulasi.store']);
+    $routes->post('update/(:num)', 'ArtikulasiController::update/$1', ['as' => 'artikulasi.update']);
+    $routes->delete('delete/(:num)', 'ArtikulasiController::delete/$1', ['as' => 'artikulasi.delete']);
+    $routes->get('filterByDate', 'ArtikulasiController::filterByDate', ['as' => 'artikulasi.filterByDate']);
+    $routes->get('filterByUploadDate', 'ArtikulasiController::filterByUploadDate', ['as' => 'artikulasi.filterByUploadDate']);
+});
+
 
 // Routes untuk Prospek
 $routes->group('prospek', function ($routes) {
