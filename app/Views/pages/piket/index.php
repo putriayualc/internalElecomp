@@ -95,8 +95,9 @@
 
     .piket-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 25px;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr 1fr 1fr)); */
+        gap: 20px;
         margin-top: 30px;
         padding: 15px;
     }
@@ -519,8 +520,27 @@
 
 <?= $this->section('content'); ?>
 
+<div class="container-fluid py-3">
+    <div class="rounded-3 shadow-sm mb-4"
+        style="background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
+        <div class="d-flex justify-content-between align-items-center p-4 text-white">
+            <div>
+                <h1 class="h1 fw-bold">Jadwal Piket</h1>
+                <p class="text-white-70 small mb-0">Kelola data piket siswa yang sedang melakukan magang</p>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a href="<?= route_to('tugasPiket') ?>" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    <span class="d-none d-sm-inline">Manage Tugas Piket</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="piket">
-    <h1 class="display-6 fw-bold mb-4">Jadwal Piket Kelas</h1>
     <div class="piket-container">
         <?php foreach ($piketData as $hari => $namaList): ?>
             <?php

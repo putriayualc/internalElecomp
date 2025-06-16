@@ -91,4 +91,11 @@ class SosmedModel extends Model
             ->where('status', 'aktif')
             ->findAll();
     }
+
+    public function getJumlahPerPlatform()
+    {
+        return $this->select('platform, COUNT(*) as total')
+            ->groupBy('platform')
+            ->findAll();
+    }
 }

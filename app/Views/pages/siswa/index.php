@@ -1,13 +1,13 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-3">
     <div class="rounded-3 shadow-sm mb-4"
-        style="background: linear-gradient(rgba(13,110,253,0.85), rgba(13,110,253,0.85)), url('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
+        style="background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
         <div class="d-flex justify-content-between align-items-center p-4 text-white">
             <div>
-                <h1 class="h1 mb-1 fw-bold">Data Siswa Magang</h1>
-                <p class="text-white-50 small mb-0">Kelola data siswa yang sedang melakukan magang</p>
+                <h1 class="h1 fw-bold">Data Siswa Magang</h1>
+                <p class="text-white-70 small mb-0">Kelola data siswa yang sedang melakukan magang</p>
             </div>
 
             <div class="d-flex gap-2">
@@ -15,11 +15,13 @@
                     <i class="bi bi-download"></i>
                     <span class="d-none d-sm-inline">Export Data</span>
                 </button>
-                <button class="btn btn-light text-primary px-4 py-2 fs-6 d-flex align-items-center gap-2">
-                    <i class="fas fa-plus"></i>
+
+                <a href="<?= route_to('siswa.tambah') ?>" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2">
+                    <i class="fas fa-plus-circle me-2"></i>
                     <span class="d-none d-sm-inline">Tambah Siswa</span>
-                </button>
+                </a>
             </div>
+
         </div>
     </div>
 </div>
@@ -28,222 +30,222 @@
 
 <!-- Main Content Card -->
 <div class="card border-0 shadow-sm">
-    <div class="card-header bg-white border-bottom py-3">
-        <div class="row align-items-center">
-            <div class="col">
-                <h6 class="h5 mb-0 text-gray-700 fw-semibold">Daftar Siswa Magang</h6>
+    <div class="card-body px-1">
+        <div class="card-header bg-white">
+            <div class="row align-items-start">
+                <div class="col">
+                    <!-- Ganti Judul dengan Custom Toolbar -->
+                    <div class="row" id="custom-toolbar">
+                        <div class="col-md-6 d-flex align-items-center" id="custom-length"></div>
+                        <div class="col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0" id="custom-search"></div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="card-body p-0">
+
         <!-- DataTable Container -->
         <div class="datatable-wrapper">
             <div class="table-responsive">
-                <table id="siswaTable" class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="text-center border-end" style="width: 60px;">
-                                <span class="fw-semibold">No</span>
-                            </th>
-                            <th class="text-center border-end" style="min-width: 200px;">
-                                <span class="fw-semibold">Nama Siswa</span>
-                            </th>
-                            <th class="text-center border-end" style="min-width: 150px;">
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <span class="icon-circle bg-primary bg-opacity-10 text-primary">
-                                        <i class="bi bi-building"></i>
-                                    </span>
-                                    <span class="fw-semibold">Instansi</span>
-                                </div>
-                            </th>
-                            <th class="text-center border-end" style="min-width: 150px;">
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <span class="icon-circle bg-success bg-opacity-10 text-success">
-                                        <i class="bi bi-telephone-fill"></i>
-                                    </span>
-                                    <span class="fw-semibold">Telepon</span>
-                                </div>
-                            </th>
-                            <th class="text-center border-end" style="min-width: 180px;">
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <span class="icon-circle bg-danger bg-opacity-10 text-danger">
-                                        <i class="bi bi-envelope"></i>
-                                    </span>
-                                    <span class="fw-semibold">Email</span>
-                                </div>
-                            </th>
-                            <th class="text-center border-end" style="min-width: 150px;">
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <span class="icon-circle bg-warning bg-opacity-10 text-warning">
-                                        <i class="bi bi-geo-alt-fill"></i>
-                                    </span>
-                                    <span class="fw-semibold">Alamat</span>
-                                </div>
-                            </th>
-                            <th class="text-center border-end" style="min-width: 170px;">
-                                <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <span class="icon-circle bg-info bg-opacity-10 text-info">
-                                        <i class="bi bi-info-circle"></i>
-                                    </span>
-                                    <span class="fw-semibold">Info Lainnya</span>
-                                </div>
-                            </th>
-                            <th class="text-center" style="width: 100px;">
-                                <span class="fw-semibold">Aksi</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($siswa as $i => $siswa): ?>
+                <div class="table-responsive-wrapper">
+                    <table id="siswaTable" class="table align-middle">
+                        <thead class="table-light">
                             <tr>
-                                <td class="text-center border-end">
-                                    <span class="text-muted fw-medium"><?= $i + 1 ?></span>
-                                </td>
-                                <td class="border-end">
-                                    <div class="d-flex align-items-center py-2">
-                                        <div class="flex-shrink-0 me-3">
-                                            <div class="avatar-wrapper">
-                                                <img src="<?= base_url('assets/img/user/' . ($siswa['foto'] ?? 'default.jpg')); ?>"
-                                                    alt="<?= esc($siswa['nama']); ?>"
-                                                    class="avatar-img">
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1 min-width-0">
-                                            <div class="mb-1">
-                                                <a href="<?= route_to('siswa.detail', $siswa['id_siswa']) ?>"
-                                                    class="text-decoration-none text-dark fw-semibold user-name-link">
-                                                    <?= esc($siswa['nama']); ?>
-                                                </a>
-                                            </div>
-                                            <div class="d-flex align-items-center gap-2">
-                                                <small class="text-muted"><?= esc($siswa['jurusan']); ?></small>
-                                                <?php
-                                                $status = strtoupper($siswa['status']);
-                                                switch ($status) {
-                                                    case 'AKTIF':
-                                                        $badgeClass = 'status-badge status-active';
-                                                        break;
-                                                    case 'SELESAI':
-                                                        $badgeClass = 'status-badge status-completed';
-                                                        break;
-                                                    default:
-                                                        $badgeClass = 'status-badge status-inactive';
-                                                }
-                                                ?>
-                                                <span class="<?= $badgeClass; ?>">
-                                                    <?= $status; ?>
-                                                </span>
-                                            </div>
-                                        </div>
+                                <th class="text-center border-end" style="width: 60px;">
+                                    <span class="fw-semibold">No</span>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 200px;">
+                                    <span class="fw-semibold">Nama Siswa</span>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 150px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-primary bg-opacity-10 text-primary">
+                                            <i class="bi bi-building"></i>
+                                        </span>
+                                        <span class="fw-semibold">Instansi</span>
                                     </div>
-                                </td>
-                                <td class="text-center border-end">
-                                    <span class="text-truncate d-inline-block" style="max-width: 150px;"
-                                        title="<?= esc($siswa['asal_instansi']); ?>">
-                                        <?= esc($siswa['asal_instansi']); ?>
-                                    </span>
-                                </td>
-                                <td class="text-center border-end">
-                                    <a href="tel:<?= esc($siswa['no_telepon']); ?>"
-                                        class="text-decoration-none text-success fw-medium">
-                                        <?= esc($siswa['no_telepon']); ?>
-                                    </a>
-                                </td>
-                                <td class="text-center border-end">
-                                    <a href="mailto:<?= esc($siswa['email']); ?>"
-                                        class="text-decoration-none text-primary fw-medium text-truncate d-inline-block"
-                                        style="max-width: 180px;" title="<?= esc($siswa['email']); ?>">
-                                        <?= esc($siswa['email']); ?>
-                                    </a>
-                                </td>
-                                <td class="text-center border-end">
-                                    <span class="text-truncate d-inline-block" style="max-width: 150px;"
-                                        title="<?= esc($siswa['alamat']); ?>">
-                                        <?= esc($siswa['alamat']); ?>
-                                    </span>
-                                </td>
-                                <td class="text-center border-end">
-                                    <span class="text-truncate d-inline-block" style="max-width: 120px;"
-                                        title="<?= esc($siswa['keterangan']); ?>">
-                                        <?= esc($siswa['keterangan']); ?>
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle action-btn"
-                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center"
-                                                    href="<?= route_to('siswa.detail', $siswa['id_siswa']) ?>">
-                                                    <i class="bi bi-eye text-info me-2"></i>
-                                                    <span>Detail</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center"
-                                                    href="<?= route_to('siswa.edit', $siswa['id_siswa']) ?>">
-                                                    <i class="bi bi-pencil-square text-primary me-2"></i>
-                                                    <span>Edit</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item d-flex align-items-center text-danger"
-                                                    onclick="confirmDelete(<?= $siswa['id_siswa'] ?>)">
-                                                    <i class="bi bi-trash text-danger me-2"></i>
-                                                    <span>Hapus</span>
-                                                </button>
-                                            </li>
-                                        </ul>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 150px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-success bg-opacity-10 text-success">
+                                            <i class="bi bi-telephone-fill"></i>
+                                        </span>
+                                        <span class="fw-semibold">Telepon</span>
                                     </div>
-                                </td>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 180px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-danger bg-opacity-10 text-danger">
+                                            <i class="bi bi-envelope"></i>
+                                        </span>
+                                        <span class="fw-semibold">Email</span>
+                                    </div>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 150px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-warning bg-opacity-10 text-warning">
+                                            <i class="bi bi-geo-alt-fill"></i>
+                                        </span>
+                                        <span class="fw-semibold">Alamat</span>
+                                    </div>
+                                </th>
+                                <!-- <th class="text-center border-end" style="min-width: 170px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-info bg-opacity-10 text-info">
+                                            <i class="bi bi-info-circle"></i>
+                                        </span>
+                                        <span class="fw-semibold">Info Lainnya</span>
+                                    </div>
+                                </th> -->
+                                <th class="text-center" style="width: 100px;">
+                                    <span class="fw-semibold">Aksi</span>
+                                </th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($siswa as $i => $siswa): ?>
+                                <tr>
+                                    <td class="text-center border-end">
+                                        <span class="text-muted fw-medium"><?= $i + 1 ?></span>
+                                    </td>
+                                    <td class="border-end">
+                                        <div class="d-flex align-items-center py-2">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="avatar-wrapper">
+                                                    <img src="<?= base_url('assets/img/user/' . ($siswa['foto'] ?? 'default.jpg')); ?>"
+                                                        alt="<?= esc($siswa['nama']); ?>"
+                                                        class="avatar-img">
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 min-width-0">
+                                                <div class="mb-1">
+                                                    <a href="<?= route_to('siswa.detail', $siswa['id_siswa']) ?>"
+                                                        class="text-decoration-none text-dark fw-semibold user-name-link">
+                                                        <?= esc($siswa['nama']); ?>
+                                                    </a>
+                                                </div>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <small class="text-muted"><?= esc($siswa['jurusan']); ?></small>
+                                                    <?php
+                                                    $status = strtoupper($siswa['status']);
+                                                    switch ($status) {
+                                                        case 'AKTIF':
+                                                            $badgeClass = 'status-badge status-active';
+                                                            break;
+                                                        case 'SELESAI':
+                                                            $badgeClass = 'status-badge status-completed';
+                                                            break;
+                                                        default:
+                                                            $badgeClass = 'status-badge status-inactive';
+                                                    }
+                                                    ?>
+                                                    <span class="<?= $badgeClass; ?>">
+                                                        <?= $status; ?>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center border-end">
+                                        <span class="text-truncate d-inline-block" style="max-width: 150px;"
+                                            title="<?= esc($siswa['asal_instansi']); ?>">
+                                            <?= esc($siswa['asal_instansi']); ?>
+                                        </span>
+                                    </td>
+                                    <td class="text-center border-end">
+                                        <a href="tel:<?= esc($siswa['no_telepon']); ?>"
+                                            class="text-truncate text-dark fw-medium">
+                                            <?= esc($siswa['no_telepon']); ?>
+                                        </a>
+                                    </td>
+                                    <td class="text-center border-end">
+                                        <a href="mailto:<?= esc($siswa['email']); ?>"
+                                            class="text-decoration-none text-dark fw-medium text-truncate d-inline-block"
+                                            style="max-width: 180px;" title="<?= esc($siswa['email']); ?>">
+                                            <?= esc($siswa['email']); ?>
+                                        </a>
+                                    </td>
+                                    <td class="text-center border-end">
+                                        <span class="text-truncate d-inline-block" style="max-width: 150px;"
+                                            title="<?= esc($siswa['alamat']); ?>">
+                                            <?= esc($siswa['alamat']); ?>
+                                        </span>
+                                    </td>
+                                    <!-- <td class="text-center border-end">
+                                        <span class="text-truncate d-inline-block" style="max-width: 120px;" title="<?= esc($siswa['keterangan']); ?>">
+                                            <a href="<?= esc($siswa['keterangan']); ?>" target="_blank" class="text-decoration-none text-dark">
+                                                <?= esc(parse_url($siswa['keterangan'], PHP_URL_HOST) ?: $siswa['keterangan']); ?>
+                                                <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                            </a>
+                                        </span>
+                                    </td> -->
+
+                                    <td class="text-center">
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle action-btn"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center text-primary"
+                                                        href="<?= route_to('siswa.edit', $siswa['id_siswa']) ?>">
+                                                        <i class="bi bi-pencil-square text-primary me-2"></i>
+                                                        <span>Edit</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center text-danger"
+                                                        href="#"
+                                                        onclick="konfirmasiHapus('<?= route_to('siswa.delete', $siswa['id_siswa']) ?>')">
+                                                        <i class="bi bi-trash text-danger me-2"></i>
+                                                        <span>Hapus</span>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-danger bg-opacity-10 border-bottom">
-                <h5 class="modal-title text-danger fw-semibold" id="deleteModalLabel">
-                    <i class="bi bi-exclamation-triangle me-2"></i>Konfirmasi Hapus
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-semibold" id="modalHapusLabel">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Konfirmasi Hapus
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
-            <div class="modal-body py-4">
-                <p class="mb-2">Apakah Anda yakin ingin menghapus data siswa ini?</p>
-                <p class="text-danger mb-0 small">
-                    <i class="bi bi-info-circle me-1"></i>
-                    Tindakan ini tidak dapat dibatalkan.
-                </p>
+            <div class="modal-body text-center">
+                <p class="mb-0 fs-6">Apakah Anda yakin ingin menghapus data ini?</p>
             </div>
-            <div class="modal-footer border-top">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle me-1"></i>Batal
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i> Batal
                 </button>
-                <form id="deleteForm" action="" method="POST" class="d-inline">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="bi bi-trash me-1"></i>Ya, Hapus
+                <form id="formHapus" method="POST" action="" class="d-inline">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i> Hapus
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -258,16 +260,13 @@
 
 <script>
     $(document).ready(function() {
-        // Initialize DataTable
         var table = $('#siswaTable').DataTable({
-            responsive: true,
+            responsive: false,
             pageLength: 10,
             lengthMenu: [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "Semua"]
             ],
-
-            // Language configuration
             language: {
                 decimal: "",
                 emptyTable: "Tidak ada data siswa yang tersedia",
@@ -287,94 +286,105 @@
                     previous: "❮"
                 }
             },
-
-            // Layout configuration with Bootstrap classes
-            dom: '<"row g-3 mb-3"<"col-sm-12 col-md-6 d-flex align-items-center"l><"col-sm-12 col-md-6"f>>' +
-                '<"row"<"col-sm-12"tr>>' +
-                '<"row g-3 mt-2 pt-2 border-top"<"col-sm-12 col-md-5 d-flex align-items-center"i><"col-sm-12 col-md-7"p>>',
-
-            // Column configuration
+            // DOM harus menyertakan 'l' dan 'f' agar bisa dipindahkan
+            dom: '<"dt-temp-toolbar"lf>rt<"row g-3 mt-2 pt-2 border-top"' +
+                '<"col-md-5 d-flex align-items-center"i>' +
+                '<"col-md-7 d-flex justify-content-md-end"p>>',
             columnDefs: [{
-                    orderable: false,
-                    targets: [0, 7] // No dan Aksi
-                },
-                {
-                    searchable: false,
-                    targets: [0, 7] // No dan Aksi
-                }
-            ],
-
-            // Default sorting
+                orderable: false,
+                searchable: false,
+                targets: 0
+            }],
             order: [
                 [1, 'asc']
             ],
-
-            // Additional options
             autoWidth: false,
-            processing: false,
-            serverSide: false,
             stateSave: true,
-            stateDuration: 60 * 60 * 24, // 24 hours
 
-            // Callbacks
-            initComplete: function(settings, json) {
-                // Style the controls
+            initComplete: function() {
+                // Tambahkan styling bootstrap
                 $('.dataTables_length select').addClass('form-select form-select-sm me-2');
                 $('.dataTables_filter input').addClass('form-control form-control-sm').attr('placeholder', 'Ketik untuk mencari...');
-
-                // Add some custom styling
                 $('.dataTables_length').addClass('d-flex align-items-center');
                 $('.dataTables_filter').addClass('d-flex align-items-center justify-content-end');
                 $('.dataTables_filter label').addClass('d-flex align-items-center mb-0');
+
+                // Pindahkan kontrol ke tempat custom
+                $('#siswaTable_length').appendTo('#custom-length');
+                $('#siswaTable_filter').appendTo('#custom-search');
+
+                // FIX tampilan "Tampilkan 10 data"
+                $('.dataTables_length label').addClass('d-flex align-items-center gap-2 mb-0');
             },
 
-            drawCallback: function(settings) {
-                // Re-initialize tooltips
+            drawCallback: function() {
                 $('[data-bs-toggle="tooltip"]').tooltip();
             }
         });
 
-        // Export functionality
-        window.exportData = function() {
-            const data = table.data().toArray();
-            let csv = 'No,Nama,Jurusan,Status,Asal Instansi,Telepon,Email,Alamat,Info Lainnya\n';
-
-            data.forEach(function(row, index) {
-                const nama = $(row[1]).find('a').text().trim();
-                const jurusan = $(row[1]).find('small').first().text().trim();
-                const status = $(row[1]).find('.status-badge').text().trim();
-                const instansi = $(row[2]).text().trim();
-                const telepon = $(row[3]).text().trim();
-                const email = $(row[4]).text().trim();
-                const alamat = $(row[5]).text().trim();
-                const info = $(row[6]).text().trim();
-
-                csv += `${index + 1},"${nama}","${jurusan}","${status}","${instansi}","${telepon}","${email}","${alamat}","${info}"\n`;
+        // Tambahkan penomoran otomatis di kolom pertama
+        table.on('order.dt search.dt draw.dt', function() {
+            let i = 1;
+            table.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function(cell) {
+                cell.innerHTML = i++;
             });
-
-            const blob = new Blob([csv], {
-                type: 'text/csv;charset=utf-8;'
-            });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-
-            link.setAttribute('href', url);
-            link.setAttribute('download', `data_siswa_magang_${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
-
-        // Delete confirmation
-        window.confirmDelete = function(id) {
-            document.getElementById('deleteForm').action = '<?= base_url('siswa/delete/'); ?>' + id;
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            deleteModal.show();
-        };
+        }).draw();
     });
+
+    function exportData() {
+        const table = document.getElementById('siswaTable');
+        const rows = table.querySelectorAll('tbody tr');
+        let csv = 'No,Nama,Jurusan,Status,Asal Instansi,Telepon,Email,Alamat,Info Lainnya\n';
+
+        rows.forEach((row, index) => {
+            const cols = row.querySelectorAll('td');
+
+            const namaElem = cols[1].querySelector('a');
+            const jurusanElem = cols[1].querySelector('small');
+            const statusElem = cols[1].querySelector('.status-badge');
+
+            const nama = namaElem ? namaElem.textContent.trim() : '';
+            const jurusan = jurusanElem ? jurusanElem.textContent.trim() : '';
+            const status = statusElem ? statusElem.textContent.trim() : '';
+
+            const instansi = cols[2]?.textContent.trim() ?? '';
+            const telepon = cols[3]?.textContent.trim() ?? '';
+            const email = cols[4]?.textContent.trim() ?? '';
+            const alamat = cols[5]?.textContent.trim() ?? '';
+            const info = cols[6]?.textContent.trim() ?? '';
+
+            csv += `${index + 1},"${nama}","${jurusan}","${status}","${instansi}","${telepon}","${email}","${alamat}","${info}"\n`;
+        });
+
+        // Buat dan unduh file CSV
+        const blob = new Blob([csv], {
+            type: 'text/csv;charset=utf-8;'
+        });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data-siswa.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
 </script>
+
+<script>
+    function konfirmasiHapus(url) {
+        const form = document.getElementById('formHapus');
+        form.action = url;
+
+        const modal = new bootstrap.Modal(document.getElementById('modalHapus'));
+        modal.show();
+    }
+</script>
+
+
 
 <style>
     /* Modern DataTable Styling */
@@ -383,10 +393,35 @@
         border-radius: 0;
     }
 
+    /* Dropdown Menu Improvements */
+    .dropdown-menu {
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        border: none;
+        padding: 0.5rem 0;
+    }
+
+    .dropdown-menu .dropdown-item {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+        color: #495057;
+        transition: background-color 0.2s ease;
+    }
+
+    .dropdown-menu .dropdown-item:hover,
+    .dropdown-menu .dropdown-item:focus {
+        background-color: #f1f3f4;
+        color: #212529;
+    }
+
     /* Table Styling */
     #siswaTable {
         border-collapse: separate;
         border-spacing: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        width: 100%;
+        table-layout: auto;
     }
 
     #siswaTable thead th {
@@ -414,6 +449,11 @@
 
     #siswaTable tbody tr:last-child td {
         border-bottom: none;
+    }
+
+    .table-responsive-wrapper {
+        overflow-x: auto;
+        width: 100%;
     }
 
     /* Icon Badges */
@@ -506,7 +546,7 @@
     }
 
     .user-name-link:hover {
-        color: #0d6efd !important;
+        color: rgb(94, 153, 240) !important;
     }
 
     /* Action Button */
@@ -530,12 +570,7 @@
         padding: 1.5rem;
     }
 
-    .dataTables_length label {
-        font-weight: 500;
-        color: #495057;
-        font-size: 0.875rem;
-    }
-
+    .dataTables_length label,
     .dataTables_filter label {
         font-weight: 500;
         color: #495057;
@@ -551,7 +586,8 @@
         min-width: 250px;
     }
 
-    .dataTables_filter input:focus {
+    .dataTables_filter input:focus,
+    .dataTables_length select:focus {
         border-color: #86b7fe;
         box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
         outline: 0;
@@ -563,12 +599,6 @@
         padding: 0.375rem 2rem 0.375rem 0.75rem;
         background-color: #fff;
         transition: all 0.2s ease;
-    }
-
-    .dataTables_length select:focus {
-        border-color: #86b7fe;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
-        outline: 0;
     }
 
     /* Pagination Styling */
@@ -608,14 +638,12 @@
         color: #adb5bd;
     }
 
-    /* Info Text */
     .dataTables_info {
         color: #6c757d;
         font-size: 0.875rem;
         font-weight: 500;
     }
 
-    /* Empty State */
     .dataTables_empty {
         text-align: center;
         padding: 3rem 1rem !important;
@@ -623,19 +651,15 @@
         font-style: italic;
     }
 
-    /* Card Enhancements */
     .card {
         border-radius: 12px;
         overflow: hidden;
-        /* padding: 5%; */
-        background-color:#dc3545;
     }
 
     .card-header {
         border-bottom: 1px solid #f1f3f4;
     }
 
-    /* Responsive Design */
     @media (max-width: 768px) {
         .dataTables_wrapper {
             padding: 1rem;
@@ -699,7 +723,6 @@
         }
     }
 
-    /* Loading State */
     .dataTables_processing {
         position: absolute;
         top: 50%;
@@ -714,7 +737,6 @@
         z-index: 1000;
     }
 
-    /* Scrollbar Styling */
     .dataTables_scrollBody::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -722,55 +744,43 @@
 
     .dataTables_scrollBody::-webkit-scrollbar-track {
         background: #f1f3f4;
-        border-radius: 3px;
     }
 
     .dataTables_scrollBody::-webkit-scrollbar-thumb {
         background: #ced4da;
-        border-radius: 3px;
+        border-radius: 4px;
     }
 
-    .dataTables_scrollBody::-webkit-scrollbar-thumb:hover {
-        background: #adb5bd;
+    /* Default state: teks putih */
+    .btn-outline-light {
+        color: white;
+        border-color: white;
     }
 
-    /* Text Truncation Improvements */
-    .text-truncate {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    /* Hover state: teks putih, background putih */
+    .btn-outline-light:hover {
+        /* background-color: white;
+    border-color: white;
+    color: #0dcaf0; */
+        color: #0dcaf0;
+        background-color: white;
+        /* light blue hover */
+        border-color: white;
     }
 
-    /* Links in table */
-    #siswaTable a {
-        transition: all 0.2s ease;
+    /* Active (saat diklik): teks biru */
+    .btn-outline-light:active {
+        color: #0dcaf0 !important;
     }
 
-    #siswaTable a:hover {
-        text-decoration: underline !important;
-    }
-
-    /* Dropdown Menu Improvements */
-    .dropdown-menu {
-        border: none;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        padding: 0.5rem 0;
-    }
-
-    .dropdown-item {
-        padding: 0.5rem 1rem;
-        transition: all 0.2s ease;
-    }
-
-    .dropdown-item:hover {
-        background-color: #f8f9fa;
-        transform: translateX(2px);
-    }
-
-    .dropdown-divider {
-        margin: 0.25rem 0;
+    .btn-outline-light:focus {
+        color: #0dcaf0;
+        /* Bootstrap biru */
+        background-color: white;
+        border-color: white;
+        box-shadow: none;
     }
 </style>
+
 
 <?= $this->endSection(); ?>

@@ -11,7 +11,7 @@
                     Tambah Siswa Magang
                 </h2>
             </div>
-            <form action="<?= route_to('siswa.tambah') ?>" method="POST" enctype="multipart/form-data">
+            <form action="<?= route_to('siswa.simpan') ?>" method="POST" enctype="multipart/form-data">
                 <?= csrf_field() ?>
                 <div class="row g-4">
                     <!-- Nama Lengkap -->
@@ -32,9 +32,13 @@
                         <div class="form-floating">
                             <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
                                 <option value="">Pilih Jenis Kelamin</option>
-                                <option value="laki_laki">Laki-laki</option>
-                                <option value="perempuan">Perempuan</option>
+                                <?php foreach ($jenisKelaminList as $jk): ?>
+                                    <option value="<?= $jk ?>" <?= old('jenis_kelamin') === $jk ? 'selected' : '' ?>>
+                                        <?= $jk === 'l' ? 'Laki-laki' : 'Perempuan' ?>
+                                    </option>
+                                <?php endforeach ?>
                             </select>
+
                             <label for="jenis_kelamin">
                                 <i class="bi bi-gender-ambiguous me-2"></i>Jenis Kelamin
                             </label>
@@ -135,37 +139,41 @@
                         </div>
                     </div>
 
-                    <!-- Status -->
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <select class="form-select" id="status" name="status" required>
-                                <option value="">Pilih Status</option>
-                                <option value="aktif">Aktif</option>
-                                <option value="selesai">Selesai</option>
-                                <option value="pending">Pending</option>
-                            </select>
-                            <label for="status">
-                                <i class="bi bi-check-circle me-2"></i>Status
-                            </label>
-                            <div class="invalid-feedback">
-                                Status harus dipilih
+                    <div id="sosmed-container">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" name="sosmed[0][platform]" required>
+                                        <option value="" disabled selected>Pilih Platform</option>
+                                        <?php foreach ($platformList as $platform): ?>
+                                            <option value="<?= $platform ?>"><?= ucfirst($platform) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <label><i class="bi bi-globe me-2"></i>Platform Sosmed</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row mb-3 align-items-end">
+                                    <!-- Username / Link -->
+                                    <div class="col-md-9">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" name="sosmed[0][username_sosmed]" placeholder="username" required>
+                                            <label><i class="bi bi-person-circle me-2"></i>Username</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tombol Tambah Sosmed -->
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-info text-white w-100" onclick="tambahSosmed()">
+                                            Tambah
+                                        </button>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Keterangan  -->
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="email" class="form-control" id="keterangan" name="keterangan" placeholder="Keterangan Tambahan" required>
-                            <label for="keterangan">
-                                <i class="bi bi-info-circle me-2"></i>Info Lainnya
-                            </label>
-                            <div class="invalid-feedback">
-                                Keterangan harus diisi dengan format email yang valid
-                            </div>
-                        </div>
-                    </div>
-
 
                     <!-- Foto -->
                     <div class="col-12">
@@ -200,7 +208,7 @@
                             <span>Kembali</span>
                         </a>
                         <button type="submit" class="btn btn-primary btn-lg d-flex align-items-center">
-                            <i class="fas fa-save me-2"></i><span>Simpan</span>
+                            <span>Simpan</span>
                         </button>
                     </div>
             </form>
@@ -265,6 +273,53 @@
         });
     </script>
 
+    <script>
+        let sosmedIndex = 1;
+
+        function tambahSosmed() {
+            const container = document.getElementById('sosmed-container');
+
+            const row = document.createElement('div');
+            row.classList.add('row', 'mb-3', 'sosmed-entry'); // class tambahan untuk identifikasi
+            row.innerHTML = `
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <select class="form-select" name="sosmed[${sosmedIndex}][platform]" required>
+                    <option value="" disabled selected>Pilih Platform</option>
+                    <?php foreach ($platformList as $platform): ?>
+                        <option value="<?= $platform ?>"><?= ucfirst($platform) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label><i class="bi bi-globe me-2"></i>Platform Sosmed</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-3 align-items-end">
+                <div class="col-md-9">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="sosmed[${sosmedIndex}][username_sosmed]" placeholder="@username" required>
+                        <label><i class="bi bi-person-circle me-2"></i>Username / Link</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-danger text-white w-100" onclick="hapusSosmed(this)">Hapus</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+            container.appendChild(row);
+            sosmedIndex++;
+        }
+
+        function hapusSosmed(button) {
+            const row = button.closest('.sosmed-entry'); // sekarang hapus seluruh pasangan platform + username
+            if (row) {
+                row.remove();
+            }
+        }
+    </script>
 
 </body>
 

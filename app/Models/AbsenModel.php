@@ -48,9 +48,37 @@ class AbsenModel extends Model
 
 
     public function search($hasil)
-        {
-            return $this->like('status', $hasil)->select('tb_absen.*, tb_users.*')
-                ->join('tb_users', 'tb_users.id_user = tb_absen.id_user')
-                ->findAll();
-        }
+    {
+        return $this->like('status', $hasil)->select('tb_absen.*, tb_users.*')
+            ->join('tb_users', 'tb_users.id_user = tb_absen.id_user')
+            ->findAll();
+    }
+
+    public function getStatistikAbsensi()
+    {
+        $tanggalHariIni = date('Y-m-d');
+
+        return $this->select('status, COUNT(*) as total')
+                    ->where("DATE(tanggal_waktu)", $tanggalHariIni)
+                    ->groupBy('status')
+                    ->findAll();
+    }
+
+    public function getDataAbsen($tanggal = null)
+{
+    $builder = $this->db->table($this->table);
+$builder->select('tb_absen.*, tb_users.id_user, tb_users.username');
+    $builder->join('tb_users', 'tb_users.id_user = tb_absen.id_user');
+
+    if ($tanggal !== null) {
+        $builder->where('tb_absen.tanggal_waktu >=', $tanggal . ' 00:00:00');
+        $builder->where('tb_absen.tanggal_waktu <=', $tanggal . ' 23:59:59');
+    }
+
+    $builder->whereIn('tb_absen.status', ['Izin', 'Sakit', 'Bolos']);
+
+    return $builder->get()->getResultArray();
+}
+
+
 }

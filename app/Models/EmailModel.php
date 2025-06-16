@@ -25,7 +25,7 @@ class EmailModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -94,4 +94,22 @@ class EmailModel extends Model
             ->get()
             ->getRowArray();
     }
+
+   public function getEmailPerMinggu($bulan, $tahun)
+{
+    return $this->db->table('tb_email')
+        ->select("WEEK(created_at, 3) - WEEK(DATE_SUB(created_at, INTERVAL DAYOFMONTH(created_at)-1 DAY), 3) + 1 AS minggu, COUNT(*) AS total")
+        ->where('MONTH(created_at)', $bulan)
+        ->where('YEAR(created_at)', $tahun)
+        ->groupBy('minggu')
+        ->orderBy('minggu')
+        ->get()
+        ->getResultArray();
+}
+
+public function getTotalEmail()
+{
+    return $this->db->table('tb_email')->countAll();
+}
+
 }

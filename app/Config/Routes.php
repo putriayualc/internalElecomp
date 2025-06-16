@@ -88,8 +88,8 @@ $routes->group('siswa', ['filter' => 'role:admin'], function ($routes) {
     $routes->post('simpan', 'SiswaController::simpan', ['as' => 'siswa.simpan']);
     $routes->get('edit/(:num)', 'SiswaController::edit/$1', ['as' => 'siswa.edit']);
     $routes->post('update/(:num)', 'SiswaController::update/$1', ['as' => 'siswa.update']);
-    $routes->get('delete/(:num)', 'SiswaController::delete/$1', ['as' => 'siswa.delete']);
-    $routes->get('detail/(:num)', 'SiswaController::detail/$1', ['as' => 'siswa.detail']);
+    $routes->post('delete/(:num)', 'SiswaController::delete/$1', ['as' => 'siswa.delete']);
+    $routes->get('detail/(:segment)', 'SiswaController::detail/$1', ['as' => 'siswa.detail']);
 });
 
 $routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);
@@ -184,4 +184,18 @@ $routes->group('absen', function ($routes) {
 $routes->group('absenDashboard', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('/', 'AbsenDashboardController::index');
     $routes->get('grafikMingguan', 'AbsenDashboardController::grafikMingguan');
+});
+
+// MENU Tugas Piket
+$routes->group('tugasPiket', function ($routes) {
+    $routes->get('/', 'TugasPiketController::index');
+    $routes->get('detail/(:num)', 'TugasPiketController::detail/$1', ['as' => 'tugasPiket.detail']);
+
+    $routes->group('', ['filter' => 'role:admin'], function ($routes) {
+        $routes->get('tambah', 'TugasPiketController::tambah', ['as' => 'tugasPiket.tambah']);
+        $routes->post('simpan', 'TugasPiketController::simpan', ['as' => 'tugasPiket.simpan']);
+        $routes->get('edit/(:num)', 'TugasPiketController::edit/$1', ['as' => 'tugasPiket.edit']);
+        $routes->post('update/(:num)', 'TugasPiketController::update/$1', ['as' => 'tugasPiket.update']);
+        $routes->post('delete/(:num)', 'TugasPiketController::delete/$1', ['as' => 'tugasPiket.delete']);
+    });
 });

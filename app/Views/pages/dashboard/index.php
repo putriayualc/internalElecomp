@@ -1,8 +1,7 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
 
-<title>Dashboard Operasional</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<title>Dashboard</title>
 <style>
     * {
         margin: 0;
@@ -26,7 +25,7 @@
     }
 
     .header {
-        background: rgba(66, 165, 245, 0.8);
+        background: rgba(108, 182, 242, 0.8);
         padding: 30px;
         border-radius: 12px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -34,7 +33,7 @@
 
     .header h1 {
         font-size: 1.875rem;
-        font-weight: 600;
+        font-weight: bold;
         color: rgb(44, 45, 47);
         margin-bottom: 8px;
     }
@@ -46,7 +45,7 @@
 
     .top-metrics {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         align-items: start;
     }
@@ -110,6 +109,15 @@
         font-weight: 500;
     }
 
+    .status-label {
+        display: inline-block;
+        width: 130px;
+        /* sesuaikan */
+        font-weight: bold;
+        margin-left: 25px;
+    }
+
+
     .metric-card {
         background: white;
         padding: 30px;
@@ -127,8 +135,8 @@
     }
 
     .metric-label {
-        color: #718096;
-        font-size: 0.875rem;
+        color: #000;
+        font-size: 0.999rem;
         margin-bottom: 4px;
     }
 
@@ -147,7 +155,7 @@
 
     .main-content {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-columns: 2fr;
         gap: 20px;
         align-items: start;
     }
@@ -190,15 +198,23 @@
 
     .bottom-section {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 20px;
         align-items: start;
     }
 
+    .bottom-section-b2 {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 20px;
+        align-items: start;
+        min-height: 200px;
+    }
+
     .progress-circle {
         position: relative;
-        width: 120px;
-        height: 120px;
+        width: 150px;
+        height: 150px;
         margin: 20px auto;
     }
 
@@ -316,21 +332,29 @@
     }
 
     .social-status {
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 500;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+        margin-left: 8px;
     }
 
-    .status-active {
-        background: #c6f6d5;
-        color: #22543d;
+    .status-instagram {
+        background-color: #e1306c;
     }
 
-    .status-inactive {
-        background: #fed7d7;
-        color: #c53030;
+    .status-facebook {
+        background-color: #1877f2;
     }
+
+    .status-tiktok {
+        background-color: #000000;
+    }
+
+    .status-linkedin {
+        background-color: #0a56c0;
+    }
+
 
     /* Enhanced Piket (Duty) list styling */
     .piket-list {
@@ -502,23 +526,48 @@
         }
     }
 
+    /* Tambahan di bagian paling bawah CSS-mu */
+
     @media (max-width: 768px) {
+
         .dashboard {
             padding: 10px;
         }
 
-        .bottom-section {
-            grid-template-columns: 1fr;
+        .top-metrics,
+        .main-content,
+        .bottom-section,
+        .bottom-section-b2 {
+            grid-template-columns: 1fr !important;
         }
 
         .status-cards {
-            flex-direction: column;
+            flex-direction: column !important;
+            gap: 12px;
         }
 
-        /* Smaller charts on mobile */
+        .status-card {
+            width: 100%;
+        }
+
+        .chart-container {
+            padding: 16px;
+            min-height: auto;
+        }
+
+        .chart-wrapper {
+            height: auto;
+        }
+
         .chart-canvas {
-            height: 150px !important;
-            max-height: 150px !important;
+            height: 160px !important;
+            max-height: 160px !important;
+        }
+
+        .hosting-legend div {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
         }
     }
 </style>
@@ -526,453 +575,479 @@
 
 <body>
     <div class="dashboard">
-        <div class="header">
-            <h1>Dashboard User</h1>
-            <p>Monitoring aktivitas dan progress operasional hari ini</p>
+        <div class="container-fluid py-3">
+            <div class="rounded-3 shadow-sm mb-0"
+                style="background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
+                <div class="d-flex justify-content-between align-items-center p-4 text-white">
+                    <div>
+                        <h1 class="h1 fw-bold">
+                            Selamat datang, <?= esc(session('username')) ?>
+                        </h1>
+
+                        <p class="text-white-70 small mb-0">Monitoring aktivitas dan progress operasional hari ini</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
+
         <div class="top-metrics">
-            <div class="status-cards">
-                <!-- Status Cards -->
-                <div class="status-card">
-                    <div class="status-icon success"><i class="fas fa-pen"></i></div>
-                    <div class="status-info">
-                        <h3>18</h3>
-                        <p>Total Blog</p>
-                    </div>
+            <div class="metric-card">
+                <div class="metric-number" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-user-graduate fa-sm me-2" style="color: #3498db;"></i>
+                    <?= esc($totalSiswaMagang) ?>
                 </div>
-
-                <div class="status-card">
-                    <div class="status-icon warning"><i class="fas fa-server"></i></div>
-                    <div class="status-info">
-                        <div>
-                            <h3>5</h3>
-                        </div>
-                        <p>Total Hosting</p>
-                    </div>
-                </div>
-
-                <div class="status-card">
-                    <div class="status-icon danger"><i class="fas fa-file-alt"></i></div>
-                    <div class="status-info">
-                        <h3>3</h3>
-                        <p>Total SOP</p>
-                    </div>
-                </div>
-
+                <div class="metric-label">Total Siswa Magang</div>
+                <div style="font-size: 0.75rem; color: #718096;">Jumlah Siswa Magang aktif hingga hari ini</div>
             </div>
 
             <div class="metric-card">
-                <div class="metric-number">16,247</div>
-                <div class="metric-label">Total artikel</div>
-                <div class="metric-change negative">-6.8%</div>
-                <div style="font-size: 0.75rem; color: #718096;">Last 7 days</div>
+                <div class="metric-number" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-pen fa-sm me-2" style="color: #3498db;"></i>
+                    <?= esc($totalBlog) ?>
+                </div>
+                <div class="metric-label">Total Blog</div>
+                <div style="font-size: 0.75rem; color: #718096;">Jumlah Blog aktif hingga hari ini</div>
             </div>
 
             <div class="metric-card">
-                <div class="metric-number">356</div>
-                <div class="metric-label">Total bisnis</div>
-                <div class="metric-change positive">+26.5%</div>
-                <div style="font-size: 0.75rem; color: #718096;">Last 7 days</div>
+                <div class="metric-number" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-envelope fa-sm me-2" style="color: #3498db;"></i>
+                    <?= esc($totalEmail) ?>
+                </div>
+                <div class="metric-label">Total Email</div>
+                <div style="font-size: 0.75rem; color: #718096;">Jumlah Email aktif hingga hari ini</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-number" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-newspaper fa-sm me-2" style="color: #3498db;"></i>
+                    <?= esc($totalArtikel) ?>
+                </div>
+                <div class="metric-label">Total Artikel</div>
+                <div style="font-size: 0.75rem; color: #718096;">Jumlah Artikel aktif hingga hari ini</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-number" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-book-open fa-sm me-2" style="color: #3498db;"></i>
+                    <?= esc($totalSop) ?>
+                </div>
+                <div class="metric-label">Total SOP</div>
+                <div style="font-size: 0.75rem; color: #718096;">Jumlah SOP aktif hingga hari ini</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-number" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-briefcase fa-sm me-2" style="color: #3498db;"></i>
+                    <?= esc($totalBisnis) ?>
+                </div>
+                <div class="metric-label">Total Binis</div>
+                <div style="font-size: 0.75rem; color: #718096;">Jumlah Bisnis aktif hingga hari ini</div>
             </div>
         </div>
 
         <div class="main-content">
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3>Total blog aktif</h3>
-                    <p>Statistik blog yang sedang berjalan</p>
-                    <select class="date-selector" style="margin-top: 10px;">
-                        <option>Jan 1 - 31, 2025</option>
-                    </select>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas id="blogChart" class="chart-canvas"></canvas>
-                </div>
-            </div>
+            <div class="bottom-section-b2">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Upload Konten</h3>
+                        <p>Statistik blog yang sedang berjalan</p>
 
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3>Hosting aktif</h3>
-                    <p>Last 7 days</p>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas id="hostingChart" class="chart-canvas"></canvas>
-                </div>
-                <div class="hosting-legend">
-                    <div>
-                        <span style="color: #4299e1;">■ Completed</span>
-                        <span style="font-weight: 600;">52%</span>
+                        <form method="GET" action="">
+                            <select name="bulan" class="date-selector" style="margin-top: 10px;" onchange="this.form.submit()">
+                                <?php
+                                $namaBulan = [
+                                    '01' => 'Januari',
+                                    '02' => 'Februari',
+                                    '03' => 'Maret',
+                                    '04' => 'April',
+                                    '05' => 'Mei',
+                                    '06' => 'Juni',
+                                    '07' => 'Juli',
+                                    '08' => 'Agustus',
+                                    '09' => 'September',
+                                    '10' => 'Oktober',
+                                    '11' => 'November',
+                                    '12' => 'Desember'
+                                ];
+                                foreach ($namaBulan as $key => $value) {
+                                    $selected = ($key == $bulanAktif) ? 'selected' : '';
+                                    echo "<option value='$key' $selected>$value</option>";
+                                }
+                                ?>
+                            </select>
+
+                            <select name="tahun" class="date-selector" style="margin-top: 10px;" onchange="this.form.submit()">
+                                <?php
+                                $tahunSekarang = date('Y');
+                                for ($i = $tahunSekarang; $i >= $tahunSekarang - 5; $i--) {
+                                    $selected = ($i == $tahunAktif) ? 'selected' : '';
+                                    echo "<option value='$i' $selected>$i</option>";
+                                }
+                                ?>
+                            </select>
+                        </form>
                     </div>
-                    <div>
-                        <span style="color: #a0aec0;">■ Pending maintenance</span>
-                        <span style="font-weight: 600;">48%</span>
+
+                    <div class="chart-wrapper">
+                        <canvas id="blogChart" class="chart-canvas"></canvas>
                     </div>
                 </div>
-            </div>
 
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3>Siswa magang</h3>
-                    <p>Last 7 days</p>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas id="internChart" class="chart-canvas"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="bottom-section">
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3>Upload konten</h3>
-                    <p>Last 7 days</p>
-                </div>
-                <div class="progress-circle">
-                    <canvas id="contentProgress" width="120" height="120"></canvas>
-                    <div class="progress-text">72%</div>
-                </div>
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="legend-label">
-                            <div class="legend-color" style="background: #4299e1;"></div>
-                            <span>Artikel published</span>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Hosting Aktif</h3>
+                        <p>Statistik Hosting & Add-on</p>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="hostingChart" class="chart-canvas"></canvas>
+                    </div>
+                    <div class="hosting-legend mt-4">
+                        <div>
+                            <span>Hosting</span>
+                            <span style="font-weight: 600;">
+                                <?= esc($percentageHosting) ?>%
+                            </span>
                         </div>
-                        <span>72%</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-label">
-                            <div class="legend-color" style="background: #a0aec0;"></div>
-                            <span>Draft content</span>
+                        <div>
+                            <span>Add-on Domain</span>
+                            <span style="font-weight: 600;">
+                                <?= esc($percentageAddon) ?>%
+                            </span>
                         </div>
-                        <span>18%</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-label">
-                            <div class="legend-color" style="background: #3182ce;"></div>
-                            <span>Scheduled posts</span>
-                        </div>
-                        <span>10%</span>
                     </div>
                 </div>
+
+                <div class="chart-container">
+                    <div class="chart-header mb-4">
+                        <h3>Statistik Absen</h3>
+                        <p>Status kehadiran siswa</p>
+                    </div>
+
+                    <div class="chart-wrapper" style="height: 300px;">
+                        <?php if (empty($absensiLabels)): ?>
+                            <!-- Tampilan jika data kosong -->
+                            <div style="text-align: center; padding: 40px;">
+                                <img src="<?= base_url('assets/img/nodata.jpg') ?>"
+                                    alt="Tidak ada data"
+                                    style="max-width: 150px; opacity: 0.6; border-radius: 10px;">
+                                <p style="margin-top: 15px; font-size: 16px; color: #666;">
+                                    Belum ada data absen yang ditambahkan.
+                                </p>
+                            </div>
+                        <?php else: ?>
+                            <!-- Chart dan Legend jika data tersedia -->
+                            <canvas id="internChart" class="chart-canvas" style="width: 100%; height: 100%;"></canvas>
+
+                            <div class="hosting-legend mt-4" style="margin-top: 20px;">
+                                <?php
+                                $absenColors = ['#4DA3E2', '#38B2AC', '#F6AD55', '#FC8181'];
+                                foreach ($absensiLabels as $index => $label):
+                                ?>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                        <div style="display: flex; align-items: center;">
+                                            <div style="width: 10px; height: 10px; background-color: <?= $absenColors[$index] ?? '#ccc' ?>; margin-right: 8px;"></div>
+                                            <span><?= esc($label) ?></span>
+                                        </div>
+                                        <span style="font-weight: 600;">
+                                            <?= esc($absensiPersen[$index]) ?>%
+                                        </span>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+
             </div>
 
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3>Sosial media vs blog</h3>
-                    <p>Last 7 days</p>
+            <div class="bottom-section">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Sosial media</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="socialChart" class="chart-canvas" width="150" height="150"></canvas>
+                    </div>
+                    <div class="legend">
+                        <!-- Tambahan sosial media -->
+                        <?php
+                        $platformColors = [
+                            'instagram' => '#E1306C',
+                            'facebook'  => '#1877F2',
+                            'tiktok'    => '#000000',
+                            'linkedin'  => '#0A66C2',
+                        ];
+                        ?>
+                        <?php foreach ($persenPerPlatform as $platform => $persen): ?>
+                            <?php
+                            $color = $platformColors[strtolower($platform)] ?? '#ccc';
+                            ?>
+                            <div class="legend-item">
+                                <div class="legend-label">
+                                    <div class="legend-color" style="background: <?= $color ?>;"></div>
+                                    <span><?= ucfirst($platform) ?></span>
+                                </div>
+                                <span><?= $persen ?>%</span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-                <div class="chart-wrapper">
-                    <canvas id="socialChart" class="chart-canvas"></canvas>
-                </div>
-                <div style="margin-top: 20px;">
-                    <div class="social-item">
-                        <span class="social-name">Instagram</span>
-                        <span class="social-status status-active">Aktif</span>
-                    </div>
-                    <div class="social-item">
-                        <span class="social-name">Facebook</span>
-                        <span class="social-status status-active">Aktif</span>
-                    </div>
-                    <div class="social-item">
-                        <span class="social-name">Twitter/X</span>
-                        <span class="social-status status-inactive">Tidak Aktif</span>
-                    </div>
-                    <div class="social-item">
-                        <span class="social-name">LinkedIn</span>
-                        <span class="social-status status-active">Aktif</span>
-                    </div>
-                </div>
-            </div>
 
-            <div class="chart-container">
-    <div class="chart-header">
-        <h3>Daftar Piket & Tugas</h3>
-        <p>Status piket dan tugas hari ini (<?= esc($hariIni) ?>)</p>
-    </div>
-    <div class="piket-list">
-        <?php if (!empty($taskToday) && is_array($taskToday)): ?>
-            <?php foreach ($taskToday as $nama => $tugas): ?>
-                <div class="piket-item">
-                    <div class="piket-info">
-                        <h4><?= esc($nama) ?></h4>
-                        <p class="shift-time"><?= esc($hariIni) ?> • 08:00-16:00</p>
-                        <div class="piket-tasks">
-                            <?php foreach ($tugas as $tugasItem): ?>
-                                <div class="task-item">
-                                    <div class="task-icon"></div>
-                                    <span><?= esc($tugasItem) ?></span>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Daftar Piket & Tugas</h3>
+                        <p>Status piket dan tugas hari ini (<?= esc($hariIni) ?>)</p>
+                    </div>
+                    <div class="piket-list">
+                        <?php
+                        // Ambil daftar absen hari ini (username saja)
+                        $daftarAbsenUsernames = array_map(fn($x) => $x['username'], $absenData[$hariIni] ?? []);
+                        ?>
+
+                        <?php if (!empty($taskToday) && is_array($taskToday)): ?>
+                            <?php foreach ($taskToday as $nama => $tugas): ?>
+                                <?php if (in_array($nama, $daftarAbsenUsernames)) continue; // Lewati siswa yang absen 
+                                ?>
+
+                                <div class="piket-item">
+                                    <div class="piket-info">
+                                        <h4><?= esc($nama) ?></h4>
+                                        <p class="shift-time">08:00-16:00</p>
+                                        <div class="piket-tasks">
+                                            <?php foreach ($tugas as $tugasItem): ?>
+                                                <div class="task-item">
+                                                    <div class="task-icon"></div>
+                                                    <span><?= esc($tugasItem) ?></span>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                    <div class="piket-status 
+                        <?= (session()->get('username') == $nama)
+                                    ? 'status-on-duty' : 'status-off-duty' ?>">
+                                        <?= (session()->get('username') == $nama)
+                                            ? 'Aktif' : 'Belum Mulai' ?>
+                                    </div>
                                 </div>
                             <?php endforeach; ?>
-                        </div>
-                    </div>
-                    <div class="piket-status 
-                        <?= (session()->get('username') == $nama) 
-                            ? 'status-on-duty' : 'status-off-duty' ?>">
-                        <?= (session()->get('username') == $nama) 
-                            ? 'Aktif' : 'Belum Mulai' ?>
+                        <?php else: ?>
+                            <p>Tidak ada jadwal piket untuk hari ini.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>Tidak ada jadwal piket untuk hari ini.</p>
-        <?php endif; ?>
-    </div>
-</div>
 
 
-            <div class="chart-container">
-                <div class="chart-header">
-                    <h3>Daftar Prospek</h3>
-                    <p>List prospek dan kontak</p>
-                </div>
-                <div class="prospects-list">
-                    <div class="prospect-item">
-                        <div class="prospect-info">
-                            <h4>PT. Teknologi Maju</h4>
-                            <p>Web development - Rp 50,000,000</p>
-                        </div>
-                        <div class="prospect-actions">
-                            <button class="btn btn-email" onclick="sendEmail('pt-tekno@email.com')">Email</button>
-                            <button class="btn btn-whatsapp" onclick="sendWhatsApp('081234567890')">WA</button>
-                        </div>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Daftar Prospek</h3>
+                        <p>List prospek, email, dan whatsapp</p>
                     </div>
 
-                    <div class="prospect-item">
-                        <div class="prospect-info">
-                            <h4>CV. Solusi Digital</h4>
-                            <p>Mobile app - Rp 35,000,000</p>
-                        </div>
-                        <div class="prospect-actions">
-                            <button class="btn btn-email" onclick="sendEmail('solusi@email.com')">Email</button>
-                            <button class="btn btn-whatsapp" onclick="sendWhatsApp('081234567891')">WA</button>
-                        </div>
-                    </div>
-
-                    <div class="prospect-item">
-                        <div class="prospect-info">
-                            <h4>Toko Online Berkah</h4>
-                            <p>E-commerce - Rp 25,000,000</p>
-                        </div>
-                        <div class="prospect-actions">
-                            <button class="btn btn-email" onclick="sendEmail('berkah@email.com')">Email</button>
-                            <button class="btn btn-whatsapp" onclick="sendWhatsApp('081234567892')">WA</button>
-                        </div>
-                    </div>
-
-                    <div class="prospect-item">
-                        <div class="prospect-info">
-                            <h4>Startup EduTech</h4>
-                            <p>LMS system - Rp 75,000,000</p>
-                        </div>
-                        <div class="prospect-actions">
-                            <button class="btn btn-email" onclick="sendEmail('edutech@email.com')">Email</button>
-                            <button class="btn btn-whatsapp" onclick="sendWhatsApp('081234567893')">WA</button>
-                        </div>
-                    </div>
-
-                    <div class="prospect-item">
-                        <div class="prospect-info">
-                            <h4>Klinik Sehat Bersama</h4>
-                            <p>Hospital system - Rp 45,000,000</p>
-                        </div>
-                        <div class="prospect-actions">
-                            <button class="btn btn-email" onclick="sendEmail('klinik@email.com')">Email</button>
-                            <button class="btn btn-whatsapp" onclick="sendWhatsApp('081234567894')">WA</button>
-                        </div>
+                    <!-- Scrollable container -->
+                    <div class="prospects-list" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                        <?php if (empty($prospekList)): ?>
+                            <div style="text-align: center; padding: 40px;">
+                                <img src="<?= base_url('assets/img/nodata.jpg') ?>"
+                                    alt="Tidak ada data"
+                                    style="max-width: 150px; opacity: 0.6; border-radius: 10px;">
+                                <p style="margin-top: 15px; font-size: 16px; color: #666;">
+                                    Belum ada prospek yang ditambahkan.
+                                </p>
+                            </div>
+                        <?php else: ?>
+                            <?php foreach ($prospekList as $prospek): ?>
+                                <div class="prospect-item" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+                                    <div class="prospect-info">
+                                        <h4><?= esc($prospek['nama_perusahaan']) ?>
+                                            <span style="font-size: 0.8em; color: #777;">(<?= $prospek['sumber'] ?>)</span>
+                                        </h4>
+                                        <p><?= esc($prospek['keterangan']) ?></p>
+                                        <small style="color: #999;">Ditambahkan <?= esc($prospek['waktu_lalu']) ?></small>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> <!-- end of .main-content -->
     </div>
 
-    <script>
-        // Blog Activity Chart (Main chart)
-        const blogCtx = document.getElementById('blogChart').getContext('2d');
-        new Chart(blogCtx, {
-            type: 'line',
-            data: {
-                labels: ['01 Jan', '05 Jan', '10 Jan', '15 Jan', '20 Jan', '25 Jan', '30 Jan'],
-                datasets: [{
-                    data: [20, 35, 25, 45, 52, 38, 48],
-                    borderColor: '#4299e1',
-                    backgroundColor: 'rgba(66, 153, 225, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4
-                }, {
-                    data: [15, 28, 20, 38, 42, 30, 35],
-                    borderColor: '#a0aec0',
-                    backgroundColor: 'transparent',
-                    borderWidth: 2,
-                    borderDash: [5, 5],
-                    fill: false,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,0,0,0.05)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
 
-        // Hosting Chart (Bar chart)
-        const hostingCtx = document.getElementById('hostingChart').getContext('2d');
-        new Chart(hostingCtx, {
-            type: 'bar',
-            data: {
-                labels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-                datasets: [{
-                    data: [8, 12, 10, 15, 13, 11, 9],
-                    backgroundColor: '#4299e1',
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        display: false
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-
-        // Intern Chart (Line chart)
-        const internCtx = document.getElementById('internChart').getContext('2d');
-        new Chart(internCtx, {
-            type: 'line',
-            data: {
-                labels: ['01 Jan', '07 Jan', '14 Jan', '21 Jan', '28 Jan'],
-                datasets: [{
-                    data: [25, 28, 32, 35, 33],
-                    borderColor: '#4299e1',
-                    backgroundColor: 'transparent',
-                    borderWidth: 3,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        display: false
-                    },
-                    x: {
-                        display: false
-                    }
-                }
-            }
-        });
-
-        // Content Progress Circle
-        const progressCtx = document.getElementById('contentProgress').getContext('2d');
-        const progressValue = 72;
-
-        // Draw progress circle
-        progressCtx.lineWidth = 8;
-        progressCtx.strokeStyle = '#e2e8f0';
-        progressCtx.beginPath();
-        progressCtx.arc(60, 60, 50, 0, 2 * Math.PI);
-        progressCtx.stroke();
-
-        progressCtx.strokeStyle = '#4299e1';
-        progressCtx.beginPath();
-        progressCtx.arc(60, 60, 50, -Math.PI / 2, (-Math.PI / 2) + (2 * Math.PI * progressValue / 100));
-        progressCtx.stroke();
-
-        // Social vs Blog Chart (Donut)
-        const socialCtx = document.getElementById('socialChart').getContext('2d');
-        new Chart(socialCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Sosial Media', 'Blog Posts'],
-                datasets: [{
-                    data: [30, 70],
-                    backgroundColor: ['#4299e1', '#a0aec0'],
-                    borderWidth: 0,
-                    cutout: '70%'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
-
-        // Contact functions
-        function sendEmail(email) {
-            window.open(`mailto:${email}`, '_blank');
-        }
-
-        function sendWhatsApp(phone) {
-            window.open(`https://wa.me/${phone}`, '_blank');
-        }
-    </script>
-
-    <!-- Konten dashboard -->
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // BLOG LINE CHART
+            const kontenData = <?= json_encode($kontenPerMinggu) ?>;
+            const blogCanvas = document.getElementById('blogChart');
+            if (blogCanvas) {
+                new Chart(blogCanvas.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
+                        datasets: [{
+                            label: 'Total Konten',
+                            data: kontenData,
+                            borderColor: '#4DA3E2',
+                            backgroundColor: 'rgba(49, 130, 206, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
 
-    <?php if (isset($harusPiket) && $harusPiket): ?>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            // HOSTING BAR CHART
+            const hostingLabels = <?= json_encode($hostingLabels); ?>;
+            const dataAddon = <?= json_encode($dataAddon); ?>;
+            const hostingCanvas = document.getElementById('hostingChart');
+            if (hostingCanvas) {
+                new Chart(hostingCanvas.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: hostingLabels,
+                        datasets: [{
+                            label: 'Add-on Domain',
+                            data: dataAddon,
+                            backgroundColor: '#4299e1',
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // DONUT CHART
+            const donutLabels = <?= json_encode(array_keys($persenPerPlatform)) ?>;
+            const donutData = <?= json_encode(array_values($persenPerPlatform)) ?>;
+            const backgroundColors = {
+                'instagram': '#E1306C',
+                'facebook': '#1877F2',
+                'tiktok': '#000000',
+                'linkedin': '#0A66C2'
+            };
+            const socialCanvas = document.getElementById('socialChart');
+            if (socialCanvas) {
+                new Chart(socialCanvas.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: donutLabels,
+                        datasets: [{
+                            data: donutData,
+                            backgroundColor: donutLabels.map(label => backgroundColors[label] || '#ccc')
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            // ABSENSI BAR CHART
+            <?php if (!empty($absensiLabels)) : ?>
+                const absensiLabels = <?= json_encode($absensiLabels); ?>;
+                const absensiData = <?= json_encode($absensiData); ?>;
+                const absenCanvas = document.getElementById('internChart');
+                if (absenCanvas) {
+                    new Chart(absenCanvas.getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: absensiLabels,
+                            datasets: [{
+                                label: 'Total Siswa',
+                                data: absensiData,
+                                backgroundColor: ['#4DA3E2', '#38B2AC', '#F6AD55', '#FC8181'],
+                                borderColor: ['#4DA3E2', '#38B2AC', '#F6AD55', '#FC8181'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            <?php endif; ?>
+
+            // ALERT PIKET
+            <?php if (isset($harusPiket) && $harusPiket && !empty($tugasHariIni)) : ?>
                 const tugasArray = <?= json_encode($tugasHariIni, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
-
                 Swal.fire({
                     title: 'Pengingat Piket!',
                     icon: 'info',
                     html: tugasArray.length > 0 ?
-                        `Hari ini giliran kamu piket!<br><br><strong>Tugas:</strong><br>` + tugasArray.map(t => _.escape(t)).join('<br>') : 'Hari ini kamu tidak ada tugas piket.',
+                        'Hari ini giliran kamu piket!<br><br><strong>Tugas:</strong><br>' + tugasArray.map(t => _.escape(t)).join('<br>') : 'Hari ini kamu tidak ada tugas piket.',
                     confirmButtonText: 'Siap!'
                 });
-            });
-        </script>
+            <?php endif; ?>
+        });
+    </script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
-    <?php endif; ?>
 
 </body>
 

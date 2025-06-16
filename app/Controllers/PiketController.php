@@ -41,7 +41,7 @@ class PiketController extends BaseController
         // Susun data piket tanpa tugas dulu
         foreach ($resultsJoin as $row) {
             $hari = $row['hari'];
-            $siswa = $row['nama'];
+            $siswa = $row['username'];
 
             if (!isset($piketData[$hari])) {
                 $piketData[$hari] = [];
@@ -69,17 +69,31 @@ class PiketController extends BaseController
         // Assign tugas ke siswa per hari berdasarkan aturan dan minggu
         foreach ($piketData as $hari => $siswaList) {
             $expectedSiswa = ($hari === 'Sabtu') ? 4 : 3;
-            $actualSiswaList = array_slice($siswaList, 0, $expectedSiswa);
+
+            // Rotasi siswa berdasarkan minggu agar giliran adil
+            $jumlahSiswa = count($siswaList);
+            if ($jumlahSiswa > 0) {
+                $offset = $weekNumber % $jumlahSiswa;
+                $rotatedSiswaList = array_merge(
+                    array_slice($siswaList, $offset),
+                    array_slice($siswaList, 0, $offset)
+                );
+            } else {
+                $rotatedSiswaList = [];
+            }
+
+            $actualSiswaList = array_slice($rotatedSiswaList, 0, $expectedSiswa);
 
             foreach ($actualSiswaList as $index => $siswa) {
                 $tugasUntukSiswa = [];
 
                 if ($index === 0 && count($tugasBobot4Rotated) > 0) {
-                    // Anak pertama dapat 1 tugas bobot 4 sesuai rotasi
-                    $task = $tugasBobot4Rotated[$index % count($tugasBobot4Rotated)];
+                    // Anak pertama dapat 1 tugas bobot 4 yang bergilir per minggu dan hari
+                    $taskIndex = ($weekNumber + array_search($hari, array_keys($piketData))) % count($tugasBobot4Rotated);
+                    $task = $tugasBobot4Rotated[$taskIndex];
                     $tugasUntukSiswa[] = $task['nama_tugas'];
                 } else {
-                    // Anak lain dapat 2 tugas bobot 2 yang berbeda sesuai rotasi
+                    // Anak lain dapat 2 tugas bobot 2 sesuai rotasi
                     $countTugas2 = count($tugasBobot2Rotated);
                     if ($countTugas2 >= 2) {
                         $pos1 = ($index * 2) % $countTugas2;
@@ -94,13 +108,14 @@ class PiketController extends BaseController
                 }
                 $taskAssignment[$hari][$siswa] = $tugasUntukSiswa;
 
-                // Tandai tugas hari ini jika siswa adalah user login dan hari ini
+                // Tandai jika ini hari dan siswa login
                 if ($hari === $hariIni && $siswa === $userLogin) {
                     $harusPiket = true;
                     $tugasHariIni = $tugasUntukSiswa;
                 }
             }
         }
+
 
         return view('pages/piket/index', [
             'piketData' => $piketData,

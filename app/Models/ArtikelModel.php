@@ -32,7 +32,7 @@ class ArtikelModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -94,4 +94,23 @@ class ArtikelModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getArtikelPerMinggu($bulan, $tahun)
+{
+    return $this->db->table('tb_artikel')
+        ->select("WEEK(tgl_upload, 3) - WEEK(DATE_SUB(tgl_upload, INTERVAL DAYOFMONTH(tgl_upload)-1 DAY), 3) + 1 AS minggu, COUNT(*) AS total")
+        ->where('MONTH(tgl_upload)', $bulan)
+        ->where('YEAR(tgl_upload)', $tahun)
+        ->groupBy('minggu')
+        ->orderBy('minggu')
+        ->get()
+        ->getResultArray();
+}
+
+public function getTotalArtikel()
+{
+    return $this->db->table('tb_artikel')->countAll();
+}
+
+
 }

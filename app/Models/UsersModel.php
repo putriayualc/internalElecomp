@@ -32,8 +32,28 @@ class UsersModel extends Model
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
+    protected $validationRules = [
+        'username' => 'required|min_length[4]|max_length[20]|is_unique[tb_users.username]',
+        'password' => 'required|min_length[4]',
+        'role'     => 'required|in_list[admin,user]'
+    ];
+
+    protected $validationMessages = [
+        'username' => [
+            'required'   => 'Username wajib diisi.',
+            'min_length' => 'Username minimal 4 karakter.',
+            'max_length' => 'Username maksimal 20 karakter.',
+            'is_unique'  => 'Username sudah digunakan.'
+        ],
+        'password' => [
+            'required'   => 'Password wajib diisi.',
+            'min_length' => 'Password minimal 4 karakter.'
+        ],
+        'role' => [
+            'required' => 'Role wajib dipilih.',
+            'in_list'  => 'Role hanya boleh berisi admin atau user.'
+        ]
+    ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 

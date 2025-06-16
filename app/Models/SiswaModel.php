@@ -58,12 +58,42 @@ class SiswaModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function updateStatusSiswa()
+    public function updateStatus()
     {
         $today = date('Y-m-d');
-        $this->where('tgl_keluar <', $today)
+
+        // 1. Update hanya yang status-nya tidak sesuai (hemat query)
+        $this->builder()
+            ->where('tgl_masuk >', $today)
+            ->where('status !=', 'NonAktif')
+            ->set(['status' => 'NonAktif'])
+            ->update();
+
+        $this->builder()
+            ->where('tgl_masuk <=', $today)
+            ->where('tgl_keluar >=', $today)
+            ->where('status !=', 'Aktif')
+            ->set(['status' => 'Aktif'])
+            ->update();
+
+        $this->builder()
+            ->where('tgl_keluar <', $today)
             ->where('status !=', 'Selesai')
             ->set(['status' => 'Selesai'])
             ->update();
+    }
+
+    public function getEnumJenisKelamin()
+    {
+        $db = \Config\Database::connect();
+        $query = $db->query("SHOW COLUMNS FROM tb_siswa LIKE 'jenis_kelamin'");
+        $row = $query->getRow();
+
+        if (preg_match("/^enum\(\'(.*)\'\)$/", $row->Type, $matches)) {
+            $enum = explode("','", $matches[1]);
+            return $enum;
+        }
+
+        return [];
     }
 }
