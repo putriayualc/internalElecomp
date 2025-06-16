@@ -34,17 +34,19 @@
                 <input type="text" class="form-control" id="password" name="password" value="<?= old('password', $email['password']) ?>">
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Nama User <br></label>
-                <select class="form-select" name="id_user">
-                    <option value="">-- Pilih User --</option>
-                    <?php foreach ($allUsers as $user): ?>
-                        <option value="<?= $user['id_user']; ?>" <?= ($user['id_user'] == $email['id_user']) ? 'selected' : ''; ?>>
-                            <?= $user['nama'] ?? $user['username']; ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+            <?php if (session()->get('role')  === 'admin') : ?>
+                <div class="mb-3">
+                    <label class="form-label">Nama User <br></label>
+                    <select class="form-select" name="id_user">
+                        <option value="">-- Pilih User --</option>
+                        <?php foreach ($allUsers as $user): ?>
+                            <option value="<?= $user['id_user']; ?>" <?= ($user['id_user'] == $email['id_user']) ? 'selected' : ''; ?>>
+                                <?= $user['nama'] ?? $user['username']; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            <?php endif; ?>
 
             <div class="mb-3">
                 <label class="form-label">Domain Blog</label>

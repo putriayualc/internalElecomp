@@ -572,15 +572,17 @@
             <div class="<?= $class ?>">
                 <h3>
                     <span><i class="fas fa-<?= $icon ?>"></i> <?= $hari ?></span>
-                    <a href="<?= base_url('piket/edit/' . strtolower($hari)) ?>" title="Edit Jadwal">
-                        <span>
-                            <i class="fas fa-edit pe-0"
-                                style="color: <?= $color ?>;"
-                                onmouseover="this.style.color='<?= $color ?>';"
-                                onmouseout="this.style.color='<?= $color ?>';">
-                            </i>
-                        </span>
-                    </a>
+                    <?php if (session()->get('role')  === 'admin') : ?>
+                        <a href="<?= base_url('piket/edit/' . strtolower($hari)) ?>" title="Edit Jadwal">
+                            <span>
+                                <i class="fas fa-edit pe-0"
+                                    style="color: <?= $color ?>;"
+                                    onmouseover="this.style.color='<?= $color ?>';"
+                                    onmouseout="this.style.color='<?= $color ?>';">
+                                </i>
+                            </span>
+                        </a>
+                    <?php endif; ?>
                 </h3>
                 <ul>
                     <?php foreach ($namaList as $nama): ?>
@@ -638,8 +640,7 @@
                 title: 'Pengingat Piket!',
                 icon: 'info',
                 html: tugasArray.length > 0 ?
-                    `Hari ini giliran kamu piket!<br><br><strong>Tugas:</strong><br>` + tugasArray.map(t => _.escape(t)).join('<br>') :
-                    'Hari ini kamu tidak ada tugas piket.',
+                    `Hari ini giliran kamu piket!<br><br><strong>Tugas:</strong><br>` + tugasArray.map(t => _.escape(t)).join('<br>') : 'Hari ini kamu tidak ada tugas piket.',
                 confirmButtonText: 'Siap!'
             });
         });

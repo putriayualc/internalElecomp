@@ -36,18 +36,6 @@
                         </a><!--//nav-link-->
                     </li><!--//nav-item-->
 
-                    <!-- <li class="nav-item"> -->
-                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                    <!-- <a class="nav-link" href="<?= base_url('prospek') ?>">
-                        <span class="nav-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
-                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                                <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-text">Prospek</span>
-                    </a>
-                </li> -->
 
                     <!-- PROSPEK -->
                     <li class="nav-item">
@@ -106,9 +94,20 @@
                                 <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
                             </svg>
                         </span>
-                        <span class="nav-link-text">Artikel</span>
+                        <span class="nav-link-text">Artikel Website</span>
                     </a><!--//nav-link-->
                 </li><!--//nav-item-->
+
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= base_url('artikeltrending') ?>">
+                        <span class="nav-icon">
+                            <!-- Icon API Bootstrap -->
+                            <i class="bi bi-file-earmark-text" style="font-size: 1.5rem;"></i>
+
+                        </span>
+                        <span class="nav-link-text">Artikel Trending</span>
+                    </a>
+                </li>
 
                 <?php if ($role === 'admin') : ?>
                     <li class="nav-item">
@@ -168,40 +167,6 @@
                     </div>
                 </li>
 
-                <!-- BACKLINK -->
-                <!-- <li class="nav-item">
-                    <a class="nav-link collapsed d-flex align-items-center" href="#" data-bs-toggle="collapse" data-bs-target="#adminDropdown" aria-expanded="false" aria-controls="adminDropdown">
-                        <span class="nav-icon me-2">
-                            
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journals" viewBox="0 0 16 16">
-                                <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2" />
-                                <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-text">Backlink</span>
-                        <i class="bi bi-chevron-down ms-auto rotate-icon" id="dropdownArrow"></i>
-                    </a>
-
-                    <div id="adminDropdown" class="collapse" data-bs-parent="#sidebarMenu">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                            <li>
-                                <a href="<?= route_to('backlink') ?>" class="nav-link d-flex align-items-center">
-                                    <i class="bi bi-envelope-fill me-2"></i> Email
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link d-flex align-items-center">
-                                    <i class="bi bi-pencil-square me-2"></i> Blog
-                                </a>
-                            </li>
-                            <li>
-                                <a href="" class="nav-link d-flex align-items-center">
-                                    <i class="bi bi-file-earmark-text me-2"></i> Artikel
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> -->
 
                 <li class="nav-item">
                     <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
@@ -229,15 +194,6 @@
                         <span class="nav-link-text">SOP</span>
                     </a><!--//nav-link-->
                 </li><!--//nav-item-->
-
-
-
-
-
-
-
-
-
 
                 <!-- Absen -->
                 <?php if ($role === 'admin') : ?>
@@ -281,10 +237,39 @@
                     </li><!--//nav-item-->
                 <?php endif ?>
 
+                <?php if ($role === 'admin') : ?>
+                    <li class="nav-item">
+                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+                        <a class="nav-link" href="<?= base_url('company_profile') ?>">
+                            <span class="nav-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+                                    <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Z"/>
+                                    <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1Zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3V1Z"/>
+                                </svg>
+                            </span>
+                            <span class="nav-link-text">Company Profile</span>
+                        </a><!--//nav-link-->
+                    </li><!--//nav-item-->
+                <?php endif; ?>
 
+                <?php if ($role === 'admin') : ?>
+                    <li class="nav-item">
+                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+                        <a class="nav-link" href="<?= base_url('artikulasi') ?>">
+                            <span class="nav-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journals" viewBox="0 0 16 16">
+                                    <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2 2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v9a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2" />
+                                    <path d="M1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 2.5v.5H.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1H2v-.5a.5.5 0 0 0-1 0" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-text">Artikulasi</span>
+                        </a><!--//nav-link-->
+                    </li><!--//nav-item-->
+                <?php endif; ?>
 
             </ul><!--//app-menu-->
         </nav><!--//app-nav-->
 
     </div><!--//sidepanel-inner-->
 </div><!--//app-sidepanel-->
+

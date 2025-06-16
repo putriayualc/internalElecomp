@@ -51,13 +51,17 @@ class ArtikelInternalModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getArtikelWithRelations()
+    public function getArtikelWithRelations($id_user = null)
     {
-        return $this->db->table('tb_artikel_internal')
+        $builder = $this->db->table('tb_artikel_internal')
             ->select('tb_artikel_internal.*, tb_bisnis.nama_bisnis, tb_users.username')
             ->join('tb_bisnis', 'tb_bisnis.id_bisnis = tb_artikel_internal.id_bisnis')
-            ->join('tb_users', 'tb_users.id_user = tb_artikel_internal.id_user')
-            ->get()
-            ->getResultArray();
+            ->join('tb_users', 'tb_users.id_user = tb_artikel_internal.id_user');
+
+        if ($id_user !== null) {
+            $builder->where('tb_artikel_internal.id_user', $id_user);
+        }
+
+        return $builder->get()->getResultArray();
     }
 }

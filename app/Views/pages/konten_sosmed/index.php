@@ -98,7 +98,7 @@
                                 <?= date('Y-m-d', strtotime($k['tgl_upload'])) ?><br>
                             </td>
                             <td>
-                                <a href="<?= route_to('konten.view', $k['id_konten']) ?>" class="text-primary me-2"><i class="fas fa-eye"></i></a>
+                                <a href="<?= route_to('konten.detail', $k['id_konten']) ?>" class="text-primary me-2"><i class="fas fa-eye"></i></a>
                                 <a href="<?= route_to('konten.edit', $k['id_konten']) ?>" class="text-success me-2"><i class="fas fa-edit"></i></a>
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteKontenModal<?= $k['id_konten'] ?>" data-bs-toggle="tooltip" title="Hapus">
                                     <i class="fas fa-trash"></i>

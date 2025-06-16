@@ -94,17 +94,6 @@ $routes->group('siswa', ['filter' => 'role:admin'], function ($routes) {
 
 $routes->get('addon/hapus/(:num)/(:num)', 'DomainController::hapus/$1/$2', ['as' => 'domain.hapus']);
 
-// MENU LIST PROSPEK
-$routes->group('prospek', function ($routes) {
-    $routes->get('/', 'ProspekController::index', ['as' => 'prospek']);
-    $routes->get('tambah', 'ProspekController::tambah', ['as' => 'prospek.tambah']);
-    $routes->post('simpan', 'ProspekController::simpan', ['as' => 'prospek.simpan']);
-    $routes->get('edit/(:num)', 'ProspekController::edit/$1', ['as' => 'prospek.edit']);
-    $routes->post('update/(:num)', 'ProspekController::update/$1', ['as' => 'prospek.update']);
-    $routes->get('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
-    $routes->get('detail', 'ProspekController::detail', ['as' => 'prospek.detail']);
-});
-
 // MENU Bisnis
 $routes->group('bisnis', function ($routes) {
     $routes->get('/', 'BisnisController::index', ['as' => 'bisnis']);
@@ -147,20 +136,8 @@ $routes->group('konten', function ($routes) {
     $routes->get('edit/(:num)', 'KontenController::edit/$1', ['as' => 'konten.edit']);
     $routes->post('update/(:num)', 'KontenController::update/$1', ['as' => 'konten.update']);
     $routes->get('delete/(:num)', 'KontenController::delete/$1', ['as' => 'konten.delete']);
-    $routes->get('detail', 'KontenController::detail', ['as' => 'konten.detail']);
+    $routes->get('detail/(:num)', 'KontenController::detail/$1', ['as' => 'konten.detail']);
     $routes->get('deleteMedia/(:num)', 'KontenController::deleteMedia/$1', ['as' => 'konten.deleteMedia']);
-});
-
-// MENU KIRIM EMAIL
-$routes->group('email', function ($routes) {
-    $routes->get('/', 'EmailController::index', ['as' => 'email']);
-    $routes->get('detail', 'EmailController::detail', ['as' => 'email.detail']);
-});
-
-// MENU KIRIM WHATSAPP
-$routes->group('whatsapp', function ($routes) {
-    $routes->get('/', 'WhatsappController::index', ['as' => 'whatsapp']);
-    $routes->get('email', 'WhatsappController::detail', ['as' => 'whatsapp.detail']);
 });
 
 // Absen Admin
@@ -185,6 +162,83 @@ $routes->group('absenDashboard', ['filter' => 'role:admin'], function ($routes) 
     $routes->get('/', 'AbsenDashboardController::index');
     $routes->get('grafikMingguan', 'AbsenDashboardController::grafikMingguan');
 });
+
+// Route untuk Company Profile
+$routes->group('company_profile', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'CompanyProfile::index', ['as' => 'company_profile']);
+    $routes->get('create', 'CompanyProfile::create', ['as' => 'company_profile.create']);
+    $routes->post('store', 'CompanyProfile::store', ['as' => 'company_profile.store']);
+    $routes->get('edit/(:num)', 'CompanyProfile::edit/$1', ['as' => 'company_profile.edit']);
+    $routes->match(['get', 'post'], 'update/(:num)', 'CompanyProfile::update/$1', ['as' => 'company_profile.update']);
+    $routes->delete('delete/(:num)', 'CompanyProfile::delete/$1', ['as' => 'company_profile.delete']);
+    $routes->get('get/(:num)', 'CompanyProfile::get/$1', ['as' => 'company_profile.get']);
+});
+
+// Artikulasi
+$routes->group('artikulasi', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'ArtikulasiController::index', ['as' => 'artikulasi']);
+    $routes->get('getKalenderData', 'ArtikulasiController::getKalenderData', ['as' => 'artikulasi.getKalenderData']);
+    $routes->get('getByDate', 'ArtikulasiController::getArtikelByDate', ['as' => 'artikulasi.getByDate']);
+    $routes->post('store', 'ArtikulasiController::store', ['as' => 'artikulasi.store']);
+    $routes->post('update/(:num)', 'ArtikulasiController::update/$1', ['as' => 'artikulasi.update']);
+    $routes->delete('delete/(:num)', 'ArtikulasiController::delete/$1', ['as' => 'artikulasi.delete']);
+    $routes->get('filterByDate', 'ArtikulasiController::filterByDate', ['as' => 'artikulasi.filterByDate']);
+    $routes->get('filterByUploadDate', 'ArtikulasiController::filterByUploadDate', ['as' => 'artikulasi.filterByUploadDate']);
+});
+
+
+// Routes untuk Prospek
+$routes->group('prospek', function ($routes) {
+    $routes->get('/', 'ProspekController::index', ['as' => 'prospek']);
+    $routes->get('detail/(:num)', 'ProspekController::detail/$1', ['as' => 'prospek.detail']);
+    $routes->get('tambah', 'ProspekController::tambah', ['as' => 'prospek.tambah']);
+    $routes->post('store', 'ProspekController::store', ['as' => 'prospek.store']);
+    $routes->get('edit/(:num)', 'ProspekController::edit/$1', ['as' => 'prospek.edit']);
+    $routes->post('update/(:num)', 'ProspekController::update/$1', ['as' => 'prospek.update']);
+    $routes->get('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
+    $routes->get('detail/(:num)/export', 'DetailProspekController::export/$1');
+    $routes->post('detail/(:num)/import', 'DetailProspekController::import/$1');
+    $routes->get('detail/template/download', 'DetailProspekController::downloadTemplate');
+
+    // Group untuk detail prospek
+    $routes->group('(:num)/perusahaan', function ($routes) {
+        $routes->post('store', 'DetailProspekController::store/$1');
+        $routes->post('update/(:num)', 'DetailProspekController::update/$2/$1');
+        $routes->post('delete/(:num)', 'DetailProspekController::delete/$2/$1');
+        $routes->get('get/(:num)', 'DetailProspekController::getDetail/$2/$1');
+    });
+});
+
+// Routes untuk Prospek Email
+$routes->group('email', function ($routes) {
+    $routes->get('/', 'ProspekEmailController::index');
+    $routes->get('detail/(:num)', 'ProspekEmailController::detail/$1');
+    $routes->get('get-prospek-details/(:num)', 'ProspekEmailController::getProspekDetails/$1');
+    $routes->post('store', 'ProspekEmailController::store');
+    $routes->post('delete/(:num)', 'ProspekEmailController::delete/$1');
+    $routes->post('storeEmail', 'ProspekEmailController::storeEmail');
+    $routes->post('updateEmail/(:num)', 'ProspekEmailController::updateEmail/$1');
+    $routes->post('deleteEmail/(:num)', 'ProspekEmailController::deleteEmail/$1');
+});
+
+// MENU KIRIM WHATSAPP
+$routes->group('whatsapp', function ($routes) {
+    $routes->get('/', 'ProspekWhatsappController::index', ['as' => 'whatsapp']);
+    $routes->get('detail/(:num)', 'ProspekWhatsappController::detail/$1');
+    $routes->get('get-prospek-details/(:num)', 'ProspekWhatsappController::getProspekDetails/$1');
+    $routes->post('store', 'ProspekWhatsappController::store');
+    $routes->post('delete/(:num)', 'ProspekWhatsappController::delete/$1');
+    $routes->post('storeWhatsapp', 'ProspekWhatsappController::storeWhatsapp');
+    $routes->post('updateWhatsapp/(:num)', 'ProspekWhatsappController::updateWhatsapp/$1');
+    $routes->post('deleteWhatsapp/(:num)', 'ProspekWhatsappController::deleteWhatsapp/$1');
+});
+
+// MENU ARTIKEL TRENDING
+$routes->get('/artikeltrending', 'ArtikelTrending::index');
+$routes->get('/artikeltrending/tambah', 'ArtikelTrending::tambah');
+$routes->post('/artikeltrending/simpan', 'ArtikelTrending::simpan');
+$routes->get('/artikeltrending/hapus/(:num)', 'ArtikelTrending::hapus/$1');
+$routes->get('artikeltrending', 'ArtikelTrending::index');
 
 // MENU Tugas Piket
 $routes->group('tugasPiket', function ($routes) {
