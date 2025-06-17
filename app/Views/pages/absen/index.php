@@ -2,7 +2,6 @@
 
 use CodeIgniter\I18n\Time; ?>
 <?= $this->extend('layout/template'); ?>
-
 <?= $this->Section('content'); ?>
 
 <div class="app-content pt-3 p-md-3 p-lg-4">
@@ -22,6 +21,11 @@ use CodeIgniter\I18n\Time; ?>
         <!-- <div class="d-flex gap-2">
             <button  class="btn btn-secondary" type="button" id="btnTB">Telat/Bolos</button>
           </div> -->
+        <div class="d-flex gap-2">
+          <a href="<?= route_to('hosting.tambah') ?>" class="btn btn-info">
+            <i class="fas fa-plus-circle me-2"></i>Semua Absen
+          </a>
+        </div>
       </div>
     </div>
 
@@ -31,18 +35,7 @@ use CodeIgniter\I18n\Time; ?>
         <div class="row justify-content-between align-items-center">
           <div class="col-auto d-flex gap-5">
             <h4 class="app-card-title">Daftar Absen</h4>
-    <!-- daftar yang absen hari ini -->
-    <div class="app-card app-card-orders-table shadow-sm mb-5">
-      <div class="app-card-header p-3">
-        <div class="row justify-content-between align-items-center">
-          <div class="col-auto d-flex gap-5">
-            <h4 class="app-card-title">Daftar Absen</h4>
 
-            <form action="/absen/admin" method="post">
-              <?= csrf_field() ?>
-              <input type="hidden" name="date" value="masuk">
-              <button type="submit" class="btn btn-success">Masuk</button>
-            </form>
             <form action="/absen/admin" method="post">
               <?= csrf_field() ?>
               <input type="hidden" name="date" value="masuk">
@@ -54,17 +47,7 @@ use CodeIgniter\I18n\Time; ?>
               <input type="hidden" name="date" value="Ijin">
               <button type="submit" class="btn btn-warning">Ijin</button>
             </form>
-            <form action="/absen/admin" method="post">
-              <?= csrf_field() ?>
-              <input type="hidden" name="date" value="Ijin">
-              <button type="submit" class="btn btn-warning">Ijin</button>
-            </form>
 
-            <form action="/absen/admin" method="post">
-              <?= csrf_field() ?>
-              <input type="hidden" name="date" value="Sakit">
-              <button type="submit" class="btn btn-danger">Sakit</button>
-            </form>
             <form action="/absen/admin" method="post">
               <?= csrf_field() ?>
               <input type="hidden" name="date" value="Sakit">
@@ -76,15 +59,7 @@ use CodeIgniter\I18n\Time; ?>
               <input type="hidden" name="date" value="Bolos">
               <button type="submit" class="btn btn-dark">Bolos</button>
             </form>
-            <form action="/absen/admin" method="post">
-              <?= csrf_field() ?>
-              <input type="hidden" name="date" value="Bolos">
-              <button type="submit" class="btn btn-dark">Bolos</button>
-            </form>
 
-          </div>
-        </div>
-      </div>
           </div>
         </div>
       </div>
@@ -93,14 +68,7 @@ use CodeIgniter\I18n\Time; ?>
       <div class="app-card-body">
         <div class="table-responsive">
           <table class="table app-table-hover mb-0 text-left table-striped">
-      <!-- Tampilan Data ========================================================================= -->
-      <div class="app-card-body">
-        <div class="table-responsive">
-          <table class="table app-table-hover mb-0 text-left table-striped">
 
-            <?php $no = 1 ?>
-            <?php if ($statusTerpilih == 'Masuk'): ?>
-              <!-- ======================= Data Absen Masuk ============================= -->
             <?php $no = 1 ?>
             <?php if ($statusTerpilih == 'Masuk'): ?>
               <!-- ======================= Data Absen Masuk ============================= -->
@@ -118,51 +86,64 @@ use CodeIgniter\I18n\Time; ?>
               </thead>
               <tbody>
                 <?php
+                // Inisialisasi flag sebagai penanda apakah ada data yang tampil
                 $adaData = false;
 
+                // Mulai perulangan data absensi
                 foreach ($absen as $item):
+                  // Ubah string waktu absen menjadi objek Time agar bisa diolah
                   $waktuAbsenItem = \CodeIgniter\I18n\Time::parse($item['tanggal_waktu']);
+
+                  // Ambil tanggal dari waktu absen (tanpa jam)
                   $tanggalAbsenItem = $waktuAbsenItem->toDateString();
+
+                  // Ambil jam dan menit dari waktu absen
                   $jamItem = (int) $waktuAbsenItem->format('H');
                   $menitItem = (int) $waktuAbsenItem->format('i');
 
+                  // Kondisi penyaringan: hanya tampilkan jika:
+                  // 1. persetujuan masih 'Pending'
+                  // 2. tanggal absen = tanggal hari ini
+                  // 3. jam = 8, dan menit antara 0–15
                   if (
                     $item['persetujuan'] == 'Pending' &&
                     $tanggalAbsenItem == $tanggalHariIni &&
                     $jamItem == 8 &&
                     $menitItem >= 0 && $menitItem <= 15
                   ):
+                    // Tandai bahwa ada data yang ditampilkan
                     $adaData = true;
                 ?>
+                    <!-- Jika lolos filter, tampilkan baris tabelnya -->
                     <tr>
                       <td><?= $no++ ?></td>
                       <td><?= $item['username'] ?></td>
                       <td>
-                        <img src="<?= base_url('assets/img/absensi/' . $item['bukti_foto']) ?>" style="width: 100%;" alt="Bukti Foto">
+                        <img src="<?= base_url('assets/img/absensi/' . $item['bukti_foto']) ?>" style="width: 100%;" alt="">
                       </td>
                       <td><?= $item['persetujuan'] ?></td>
                       <td><?= $item['keterangan'] ?></td>
                       <td><?= $item['tanggal_waktu'] ?></td>
                       <td>
+                        <!-- Tombol Terima -->
                         <form action="<?= base_url('absen/admin/terima/' . $item['id_absen']) ?>" method="post" class="d-inline">
                           <?= csrf_field() ?>
                           <button class="btn btn-primary">Terima</button>
                         </form>
 
+                        <!-- Tombol Tolak -->
                         <form action="<?= base_url('absen/admin/tolak/' . $item['id_absen']) ?>" method="post" class="d-inline">
                           <?= csrf_field() ?>
                           <button class="btn btn-danger">Tolak</button>
                         </form>
-
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editStatusModal<?= $item['id_absen'] ?>">
                           Edit Status
                         </button>
                       </td>
                     </tr>
- 
                   <?php
-                  endif;
-                endforeach;
+                  endif; // Akhir dari pengecekan kondisi data
+                endforeach; // Akhir dari perulangan data absensi
 
                 // Jika tidak ada satupun data yang lolos filter, tampilkan pesan
                 if (!$adaData):
@@ -254,7 +235,7 @@ use CodeIgniter\I18n\Time; ?>
                         </form>
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editStatusModal<?= $item['id_absen'] ?>">
                           Edit Status
-                        </button>
+                        </button>      
                       </td>
                     </tr>
                   <?php
@@ -266,47 +247,7 @@ use CodeIgniter\I18n\Time; ?>
                     <td colspan="7" class="text-center">Data Sakit Masih Belum Ada</td>
                   </tr>
                 <?php endif; ?>
-                if (!$adaData): ?>
-                  <tr>
-                    <td colspan="7" class="text-center">Data Sakit Masih Belum Ada</td>
-                  </tr>
-                <?php endif; ?>
 
-              </tbody>
-              <!-- Modal Edit Status -->
-              <div class="modal fade" id="editStatusModal<?= $item['id_absen'] ?>" tabindex="-1" aria-labelledby="editStatusLabel<?= $item['id_absen'] ?>" aria-hidden="true">
-                <div class="modal-dialog">
-                  <form action="<?= base_url('absen/admin/editStatus/' . $item['id_absen']) ?>" method="post">
-                    <?= csrf_field() ?>
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="editStatusLabel<?= $item['id_absen'] ?>">Edit Status Absen</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="mb-3">
-                          <label for="status" class="form-label">Pilih Status</label>
-                          <select name="status" class="form-select" required>
-                            <option value="">-- Pilih Status --</option>
-                            <option value="masuk" <?= $item['status'] == 'masuk' ? 'selected' : '' ?>>Masuk</option>
-                            <option value="bolos" <?= $item['status'] == 'bolos' ? 'selected' : '' ?>>Bolos</option>
-                            <option value="ijin" <?= $item['status'] == 'ijin' ? 'selected' : '' ?>>Ijin</option>
-                            <option value="sakit" <?= $item['status'] == 'sakit' ? 'selected' : '' ?>>Sakit</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Simpan</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-
-
-            <?php elseif ($statusTerpilih == 'Ijin'): ?>
-              <!-- ======================= Data Absen Ijin ============================= -->
               </tbody>
               <!-- Modal Edit Status -->
               <div class="modal fade" id="editStatusModal<?= $item['id_absen'] ?>" tabindex="-1" aria-labelledby="editStatusLabel<?= $item['id_absen'] ?>" aria-hidden="true">
@@ -362,77 +303,7 @@ use CodeIgniter\I18n\Time; ?>
                   $tanggalAbsenItem = $waktuAbsenItem->toDateString();
                   $jamItem = (int) $waktuAbsenItem->format('H');
                   $menitItem = (int) $waktuAbsenItem->format('i');
-              <thead>
-                <tr>
-                  <th class="cell" width="5%">No</th>
-                  <th class="cell" width="15%">Nama</th>
-                  <th class="cell" width="8%">Status</th>
-                  <th class="cell" width="25%">Keterangan</th>
-                  <th class="cell" width="15%">Bukti Ijin</th>
-                  <th class="cell" width="15%">Tanggal-Waktu</th>
-                  <th class="cell" width="20%">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                $adaData = false;
-                foreach ($absen as $item):
-                  $waktuAbsenItem = \CodeIgniter\I18n\Time::parse($item['tanggal_waktu']);
-                  $tanggalAbsenItem = $waktuAbsenItem->toDateString();
-                  $jamItem = (int) $waktuAbsenItem->format('H');
-                  $menitItem = (int) $waktuAbsenItem->format('i');
-              <thead>
-                <tr>
-                  <th class="cell" width="5%">No</th>
-                  <th class="cell" width="15%">Nama</th>
-                  <th class="cell" width="8%">Status</th>
-                  <th class="cell" width="25%">Keterangan</th>
-                  <th class="cell" width="15%">Bukti Ijin</th>
-                  <th class="cell" width="15%">Tanggal-Waktu</th>
-                  <th class="cell" width="20%">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                $adaData = false;
-                foreach ($absen as $item):
-                  $waktuAbsenItem = \CodeIgniter\I18n\Time::parse($item['tanggal_waktu']);
-                  $tanggalAbsenItem = $waktuAbsenItem->toDateString();
-                  $jamItem = (int) $waktuAbsenItem->format('H');
-                  $menitItem = (int) $waktuAbsenItem->format('i');
 
-                  if (
-                    $item['persetujuan'] == 'Pending' &&
-                    $tanggalAbsenItem == $tanggalHariIni &&
-                    $jamItem == 8 &&
-                    $menitItem >= 0 && $menitItem <= 15
-                  ):
-                    $adaData = true;
-                ?>
-                    <tr>
-                      <td><?= $no++ ?></td>
-                      <td><?= $item['username'] ?></td>
-                      <td><?= $item['persetujuan'] ?></td>
-                      <td><?= $item['keterangan'] ?></td>
-                      <td><img src="<?= base_url('assets/img/absensi/' . $item['bukti_foto']) ?>" width="100" alt=""></td>
-                      <td><?= $item['tanggal_waktu'] ?></td>
-                      <td>
-                        <form action="<?= base_url('absen/admin/terima/' . $item['id_absen']) ?>" method="post" class="d-inline">
-                          <?= csrf_field() ?>
-                          <button class="btn btn-primary">Terima</button>
-                        </form>
-                        <form action="<?= base_url('absen/admin/tolak/' . $item['id_absen']) ?>" method="post" class="d-inline">
-                          <?= csrf_field() ?>
-                          <button class="btn btn-danger">Tolak</button>
-                        </form>
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editStatusModal<?= $item['id_absen'] ?>">
-                          Edit Status
-                        </button>
-                      </td>
-                    </tr>
-                  <?php
-                  endif;
-                endforeach;
                   if (
                     $item['persetujuan'] == 'Pending' &&
                     $tanggalAbsenItem == $tanggalHariIni &&
@@ -471,43 +342,6 @@ use CodeIgniter\I18n\Time; ?>
                     <td colspan="7" class="text-center">Data Ijin Masih Belum Ada</td>
                   </tr>
                 <?php endif; ?>
-                if (!$adaData): ?>
-                  <tr>
-                    <td colspan="7" class="text-center">Data Ijin Masih Belum Ada</td>
-                  </tr>
-                <?php endif; ?>
-
-              </tbody>
-              <!-- Modal Edit Status -->
-              <div class="modal fade" id="editStatusModal<?= $item['id_absen'] ?>" tabindex="-1" aria-labelledby="editStatusLabel<?= $item['id_absen'] ?>" aria-hidden="true">
-                <div class="modal-dialog">
-                  <form action="<?= base_url('absen/admin/editStatus/' . $item['id_absen']) ?>" method="post">
-                    <?= csrf_field() ?>
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="editStatusLabel<?= $item['id_absen'] ?>">Edit Status Absen</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="mb-3">
-                          <label for="status" class="form-label">Pilih Status</label>
-                          <select name="status" class="form-select" required>
-                            <option value="">-- Pilih Status --</option>
-                            <option value="masuk" <?= $item['status'] == 'masuk' ? 'selected' : '' ?>>Masuk</option>
-                            <option value="bolos" <?= $item['status'] == 'bolos' ? 'selected' : '' ?>>Bolos</option>
-                            <option value="ijin" <?= $item['status'] == 'ijin' ? 'selected' : '' ?>>Ijin</option>
-                            <option value="sakit" <?= $item['status'] == 'sakit' ? 'selected' : '' ?>>Sakit</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Simpan</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
 
               </tbody>
               <!-- Modal Edit Status -->
@@ -544,28 +378,7 @@ use CodeIgniter\I18n\Time; ?>
 
             <?php else:  ?>
               <!-- ======================= Data Absen Bolos ============================= -->
-            <?php else:  ?>
-              <!-- ======================= Data Absen Bolos ============================= -->
 
-              <thead>
-                <tr>
-                  <th class="cell" width="5%">No</th>
-                  <th class="cell" width="15%">Nama</th>
-                  <th class="cell" width="8%">Status</th>
-                  <th class="cell" width="25%">Keterangan</th>
-                  <th class="cell" width="15%">Foto(opsional)</th>
-                  <th class="cell" width="15%">Tanggal-Waktu</th>
-                  <!-- <th class="cell" width="20%">Aksi</th> -->
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                $adaData = false;
-                foreach ($absen as $item):
-                  $waktuAbsenItem = \CodeIgniter\I18n\Time::parse($item['tanggal_waktu']);
-                  $tanggalAbsenItem = $waktuAbsenItem->toDateString();
-                  $jamItem = (int) $waktuAbsenItem->format('H');
-                  $menitItem = (int) $waktuAbsenItem->format('i');
               <thead>
                 <tr>
                   <th class="cell" width="5%">No</th>
@@ -615,36 +428,6 @@ use CodeIgniter\I18n\Time; ?>
                         </button>
                       </td>
                     </tr>
-                    <!-- Modal Edit Status -->
-                    <div class="modal fade" id="editStatusModal<?= $item['id_absen'] ?>" tabindex="-1" aria-labelledby="editStatusLabel<?= $item['id_absen'] ?>" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <form action="<?= base_url('absen/admin/editStatus/' . $item['id_absen']) ?>" method="post">
-                          <?= csrf_field() ?>
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="editStatusLabel<?= $item['id_absen'] ?>">Edit Status Absen</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="mb-3">
-                                <label for="status" class="form-label">Pilih Status</label>
-                                <select name="status" class="form-select" required>
-                                  <option value="">-- Pilih Status --</option>
-                                  <option value="masuk" <?= $item['status'] == 'masuk' ? 'selected' : '' ?>>Masuk</option>
-                                  <option value="bolos" <?= $item['status'] == 'bolos' ? 'selected' : '' ?>>Bolos</option>
-                                  <option value="ijin" <?= $item['status'] == 'ijin' ? 'selected' : '' ?>>Ijin</option>
-                                  <option value="sakit" <?= $item['status'] == 'sakit' ? 'selected' : '' ?>>Sakit</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="submit" class="btn btn-success">Simpan</button>
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
                   <?php
                   endif;
                 endforeach;
@@ -656,38 +439,38 @@ use CodeIgniter\I18n\Time; ?>
                 <?php endif; ?>
 
               </tbody>
-
-            <?php endif ?>
-            <!-- Modal Edit Status -->
-            <div class="modal fade" id="editStatusModal<?= $item['id_absen'] ?>" tabindex="-1" aria-labelledby="editStatusLabel<?= $item['id_absen'] ?>" aria-hidden="true">
-              <div class="modal-dialog">
-                <form action="<?= base_url('absen/admin/editStatus/' . $item['id_absen']) ?>" method="post">
-                  <?= csrf_field() ?>
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="editStatusLabel<?= $item['id_absen'] ?>">Edit Status Absen</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="mb-3">
-                        <label for="status" class="form-label">Pilih Status</label>
-                        <select name="status" class="form-select" required>
-                          <option value="">-- Pilih Status --</option>
-                          <option value="masuk" <?= $item['status'] == 'masuk' ? 'selected' : '' ?>>Masuk</option>
-                          <option value="bolos" <?= $item['status'] == 'bolos' ? 'selected' : '' ?>>Bolos</option>
-                          <option value="ijin" <?= $item['status'] == 'ijin' ? 'selected' : '' ?>>Ijin</option>
-                          <option value="sakit" <?= $item['status'] == 'sakit' ? 'selected' : '' ?>>Sakit</option>
-                        </select>
+              <!-- Modal Edit Status -->
+              <div class="modal fade" id="editStatusModal<?= $item['id_absen'] ?>" tabindex="-1" aria-labelledby="editStatusLabel<?= $item['id_absen'] ?>" aria-hidden="true">
+                <div class="modal-dialog">
+                  <form action="<?= base_url('absen/admin/editStatus/' . $item['id_absen']) ?>" method="post">
+                    <?= csrf_field() ?>
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editStatusLabel<?= $item['id_absen'] ?>">Edit Status Absen</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label for="status" class="form-label">Pilih Status</label>
+                          <select name="status" class="form-select" required>
+                            <option value="">-- Pilih Status --</option>
+                            <option value="masuk" <?= $item['status'] == 'masuk' ? 'selected' : '' ?>>Masuk</option>
+                            <option value="bolos" <?= $item['status'] == 'bolos' ? 'selected' : '' ?>>Bolos</option>
+                            <option value="ijin" <?= $item['status'] == 'ijin' ? 'selected' : '' ?>>Ijin</option>
+                            <option value="sakit" <?= $item['status'] == 'sakit' ? 'selected' : '' ?>>Sakit</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                       </div>
                     </div>
-                    <div class="modal-footer">
-                      <button type="submit" class="btn btn-success">Simpan</button>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
-            </div>
+
+            <?php endif ?>
           </table>
         </div>
       </div>
@@ -906,7 +689,7 @@ use CodeIgniter\I18n\Time; ?>
   .modal {
     display: none;
     position: fixed;
-    z-index: 1055;
+    z-index: 9999;
     left: 0;
     top: 0;
     width: 100%;
@@ -916,10 +699,6 @@ use CodeIgniter\I18n\Time; ?>
     padding: 40px 10px;
     /* Jarak dari atas dan bawah */
     box-sizing: border-box;
-  }
-
-  .modal-backdrop .show {
-    z-index: 1050 !important; /* tetap di bawah modal */
   }
 
   .modal-content {
@@ -1010,16 +789,6 @@ use CodeIgniter\I18n\Time; ?>
     terimaModal.style.display = 'none';
   })
 
-  //   ================ Pop Up Tolak =================
-  const btnTolak = document.getElementById('btnTolak');
-  const tolakModal = document.getElementById('tolakModal');
-  const closeTolak = document.getElementById('closeTolak')
-  btnTolak.addEventListener('click', () => {
-    tolakModal.style.display = 'block';
-  })
-  closeTolak.addEventListener('click', () => {
-    tolakModal.style.display = 'none';
-  })
   //   ================ Pop Up Tolak =================
   const btnTolak = document.getElementById('btnTolak');
   const tolakModal = document.getElementById('tolakModal');
