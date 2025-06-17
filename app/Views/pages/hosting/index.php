@@ -55,99 +55,49 @@
                     <table id="hostingTable" class="table align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th class="text-center border-end" style="width: 60px;">
-                                    <span class="fw-semibold">No</span>
-                                </th>
-                                <th class="text-center border-end" style="min-width: 200px;">
-                                    <div class="d-flex align-items-center justify-content-center gap-2">
-                                        <span class="icon-circle bg-primary bg-opacity-10 text-primary">
-                                            <i class="bi bi-globe"></i>
-                                        </span>
-                                        <span class="fw-semibold">Domain Utama</span>
-                                    </div>
-                                </th>
-                                <th class="text-center border-end" style="min-width: 150px;">
-                                    <div class="d-flex align-items-center justify-content-center gap-2">
-                                        <span class="icon-circle bg-success bg-opacity-10 text-success">
-                                            <i class="bi bi-person-fill"></i>
-                                        </span>
-                                        <span class="fw-semibold">Username</span>
-                                    </div>
-                                </th>
-                                <th class="text-center border-end" style="min-width: 150px;">
-                                    <div class="d-flex align-items-center justify-content-center gap-2">
-                                        <span class="icon-circle bg-danger bg-opacity-10 text-danger">
-                                            <i class="bi bi-lock-fill"></i>
-                                        </span>
-                                        <span class="fw-semibold">Password</span>
-                                    </div>
-                                </th>
-                                <th class="text-center border-end" style="min-width: 200px;">
-                                    <div class="d-flex align-items-center justify-content-center gap-2">
-                                        <span class="icon-circle bg-warning bg-opacity-10 text-warning">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </span>
-                                        <span class="fw-semibold">Add On Domain</span>
-                                    </div>
-                                </th>
-                                <th class="text-center" style="width: 100px;">
-                                    <span class="fw-semibold">Aksi</span>
-                                </th>
+                                <th class="cell" width="5%">No</th>
+                                <th class="cell" width="15%">Hosting</th>
+                                <th class="cell" width="15%">Exp Hosting</th>
+                                <th class="cell" width="15%">Domain Utama</th>
+                                <th class="cell" width="15%">Exp Domain</th>
+                                <th class="cell" width="10%">Username</th>
+                                <th class="cell" width="10%">Password</th>
+                                <th class="cell" width="15%">Add-on Domains</th>
+                                <th class="cell" width="15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($allHosting as $i => $host): ?>
+                            <?php $counter = 1; ?>
+                            <?php foreach ($allHosting as $host) : ?>
                                 <tr>
-                                    <td class="text-center border-end">
-                                        <span class="text-muted fw-medium"><?= $i + 1 ?></span>
+                                    <td class="cell"><?= $counter++ ?></td>
+                                    <td class="cell fw-bold">
+                                        <a href="https://<?= esc($host['hosting']) ?>" target="_blank" class="text-decoration-none text-secondary">
+                                            <?= esc($host['hosting']) ?>
+                                        </a>
                                     </td>
-                                    <td class="border-end">
-                                        <div class="d-flex align-items-center py-2">
-                                            <!-- <div class="flex-shrink-0 me-3">
-                                                <div class="avatar-wrapper">
-                                                    <div class="avatar-img d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 45px; height: 45px;">
-                                                        <i class="bi bi-globe fs-5"></i>
-                                                    </div>
-                                                </div> 
-                                            </div> -->
-                                            <div class="flex-grow-1 min-width-0">
-                                                <div class="mb-1">
-                                                    <a href="https://<?= esc($host['domain_utama']) ?>" target="_blank"
-                                                        class="text-decoration-none text-dark fw-semibold user-name-link">
-                                                        <?= esc($host['domain_utama']); ?>
-                                                    </a>
-                                                </div>
-                                                <!-- <div class="d-flex align-items-center gap-2">
-                                                    <small class="text-muted">Domain Hosting</small>
-                                                    <span class="status-badge status-active">
-                                                        AKTIF
-                                                    </span>
-                                                </div> -->
-                                            </div>
-                                        </div>
+                                    <td class="cell"><?= esc($host['tgl_exp_hosting']) ?></td>
+                                    <td class="cell fw-bold">
+                                        <a href="https://<?= esc($host['domain_utama']) ?>" target="_blank" class="text-decoration-none text-secondary">
+                                            <?= esc($host['domain_utama']) ?>
+                                        </a>
                                     </td>
-                                    <td class="text-center border-end">
-                                        <span class="text-truncate d-inline-block fw-medium" style="max-width: 150px;"
-                                            title="<?= esc($host['username_hosting']); ?>">
-                                            <?= esc($host['username_hosting']); ?>
-                                        </span>
-                                    </td>
-                                    <td class="text-center border-end">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <span class="password-mask text-muted">••••••••</span>
-                                            <button class="btn btn-sm btn-outline-primary ms-2 toggle-password" 
-                                                    data-password="<?= esc($host['password_hosting']) ?>" type="button">
+                                    <td class="cell"><?= esc($host['tgl_exp_domain']) ?></td>
+                                    <td class="cell"><?= esc($host['username_hosting']) ?></td>
+                                    <td class="cell">
+                                        <div class="d-flex align-items-center">
+                                            <span class="password-mask">••••••••</span>
+                                            <button class="btn btn-sm btn-outline-primary ms-2 toggle-password" data-password="<?= esc($host['password_hosting']) ?>" type="button">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </div>
                                     </td>
                                     <td class="text-center border-end">
                                         <?php if (!empty($host['add_on_domain'])): ?>
-                                            <button type="button" class="btn btn-sm btn-outline-info view-addon-domains" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#addonModal<?= $host['id_hosting'] ?>">
-                                                <i class="fas fa-external-link-alt me-1"></i> 
-                                                <span class="d-none d-sm-inline">Lihat Domain</span>
+                                            <button type="button" class="btn btn-sm btn-outline-info view-addon-domains"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#addonModal<?= $host['id_hosting'] ?>">
+                                                <i class="fas fa-external-link-alt me-1"></i> Lihat Add-on Domain
                                                 <span class="badge bg-secondary ms-1"><?= substr_count($host['add_on_domain'], ',') + 1 ?></span>
                                             </button>
                                         <?php else: ?>
@@ -188,7 +138,7 @@
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
-                            
+
                             <?php if (empty($allHosting)) : ?>
                                 <tr>
                                     <td colspan="6" class="text-center py-5">
@@ -282,6 +232,7 @@
     </div>
     <?php endif; ?>
 <?php endforeach; ?>
+
 
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">

@@ -1,42 +1,38 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
 
-<title>Tambah Data Hosting</title>
+<div class="app-content pt-3 p-md-3 p-lg-4">
+    <div class="container-xl">
+        <h1 class="app-page-title mb-4">Tambah Hosting</h1>
 
-<body>
-    <div class="container-fluid">
-        <div class="form-container shadow rounded">
-            <div class="form-header">
-                <h2 class="display-7 fw-bolder mb-4 text-dark">
-                    Tambah Hosting
-                </h2>
-            </div>
-            <form action="<?= base_url('hosting/simpan') ?>" method="post" id="hostingForm">
-                <?= csrf_field() ?>
-                <div class="row g-4">
-                    <!-- Domain Utama -->
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="domain_utama" name="domain_utama" placeholder="example.com" required>
-                            <label for="domain_utama">
-                                <i class="bi bi-globe me-2"></i>Domain Utama
-                            </label>
-                            <div class="invalid-feedback">
-                                Domain utama harus diisi
-                            </div>
+        <?php if (session()->has('error')) : ?>
+            <div class="alert alert-danger"><?= session('error') ?></div>
+        <?php endif; ?>
+
+        <div class="row g-4 settings-section">
+            <div class="col-12">
+                <div class="app-card app-card-settings shadow-sm p-4">
+                    <form action="<?= base_url('hosting/simpan') ?>" method="post" id="hostingForm">
+                        <?= csrf_field() ?>
+                        <div class="mb-3">
+                            <label for="hosting" class="form-label">Hosting</label>
+                            <input type="text" class="form-control" id="hosting" name="hosting" required>
                         </div>
-                    </div>
-
-                    <!-- Username Hosting -->
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="username_hosting" name="username_hosting" placeholder="Username" required>
-                            <label for="username_hosting">
-                                <i class="bi bi-person me-2"></i>Username Hosting
-                            </label>
-                            <div class="invalid-feedback">
-                                Username hosting harus diisi
-                            </div>
+                        <div class="mb-3">
+                            <label for="tgl_exp_hosting" class="form-label">Exp Hosting</label>
+                            <input type="date" class="form-control" id="tgl_exp_hosting" name="tgl_exp_hosting" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="domain_utama" class="form-label">Domain Utama</label>
+                            <input type="text" class="form-control" id="domain_utama" name="domain_utama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tgl_exp_domain" class="form-label">Exp Domain</label>
+                            <input type="date" class="form-control" id="tgl_exp_domain" name="tgl_exp_domain" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username_hosting" class="form-label">Username Hosting</label>
+                            <input type="text" class="form-control" id="username_hosting" name="username_hosting" required>
                         </div>
                     </div>
 
@@ -63,18 +59,10 @@
                             </div>
                             
                             <div id="addon-container">
-                                <div class="row mb-3">
-                                    <div class="col-md-10">
-                                        <div class="form-floating">
-                                            <input type="text" name="add_on_domain[]" class="form-control" id="add_on_domain_0" placeholder="example.com">
-                                            <label for="add_on_domain_0">Domain Tambahan</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-info text-white w-100" onclick="tambahAddOn()">
-                                            Tambah
-                                        </button>
-                                    </div>
+                                <div class="input-group mb-2">
+                                    <input type="text" name="add_on_domain[]" class="form-control" placeholder="Masukkan add on domain">
+                                    <input type="date" name="tgl_exp_add_domain[]" class="form-control" placeholder="Masukkan exp add on domain">
+                                    <button type="button" class="btn btn-outline-secondary btn-add-addon">Tambah</button>
                                 </div>
                             </div>
                             
@@ -99,50 +87,22 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('hostingForm');
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('addon-container');
 
-            // Form validation
-            if (form) {
-                form.addEventListener('submit', function(event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            }
-        });
-
-        let addOnIndex = 1;
-
-        function tambahAddOn() {
-            const container = document.getElementById('addon-container');
-
-            const row = document.createElement('div');
-            row.classList.add('row', 'mb-3', 'addon-entry');
-            row.innerHTML = `
-                <div class="col-md-10">
-                    <div class="form-floating">
-                        <input type="text" name="add_on_domain[]" class="form-control" id="add_on_domain_${addOnIndex}" placeholder="example.com">
-                        <label for="add_on_domain_${addOnIndex}">Domain Tambahan</label>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-danger text-white w-100" onclick="hapusAddOn(this)">Hapus</button>
-                </div>
-            `;
-
-            container.appendChild(row);
-            addOnIndex++;
-        }
-
-        function hapusAddOn(button) {
-            const row = button.closest('.addon-entry');
-            if (row) {
-                row.remove();
+        container.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-add-addon')) {
+                const newInputGroup = document.createElement('div');
+                newInputGroup.className = 'input-group mb-2';
+                newInputGroup.innerHTML = `
+                    <input type="text" name="add_on_domain[]" class="form-control" placeholder="Masukkan add on domain">
+                    <input type="date" name="tgl_exp_add_domain[]" class="form-control" placeholder="Masukkan Exp add on domain">
+                    <button type="button" class="btn btn-outline-danger btn-remove-addon">Hapus</button>
+                `;
+                container.appendChild(newInputGroup);
+            } else if (e.target.classList.contains('btn-remove-addon')) {
+                e.target.parentElement.remove();
             }
         }
     </script>

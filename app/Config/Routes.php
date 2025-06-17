@@ -253,3 +253,10 @@ $routes->group('tugasPiket', function ($routes) {
         $routes->post('delete/(:num)', 'TugasPiketController::delete/$1', ['as' => 'tugasPiket.delete']);
     });
 });
+
+$routes->group('profile', function ($routes) {
+    $routes->get('/', 'ProfileController::index');
+    $routes->post('update/(:num)', 'ProfileController::update/$1', ['as' => 'profile.update']);
+    $routes->post('update-password', 'ProfileController::updatePassword');
+    $routes->post('update-foto', 'ProfileController::updateFoto');
+});
