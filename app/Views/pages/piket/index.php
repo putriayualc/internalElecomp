@@ -95,8 +95,9 @@
 
     .piket-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 25px;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr 1fr 1fr)); */
+        gap: 20px;
         margin-top: 30px;
         padding: 15px;
     }
@@ -519,49 +520,70 @@
 
 <?= $this->section('content'); ?>
 
+<div class="container-fluid py-3">
+    <div class="rounded-3 shadow-sm mb-4"
+        style="background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
+        <div class="d-flex justify-content-between align-items-center p-4 text-white">
+            <div>
+                <h1 class="h1 fw-bold">Jadwal Piket</h1>
+                <p class="text-white-70 small mb-0">Kelola data piket siswa yang sedang melakukan magang</p>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a href="<?= route_to('tugasPiket') ?>" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    <span class="d-none d-sm-inline">Manage Tugas Piket</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="piket">
-    <h1 class="display-6 fw-bold mb-4">Jadwal Piket Kelas</h1>
     <div class="piket-container">
         <?php foreach ($piketData as $hari => $namaList): ?>
             <?php
             $lowerHari = strtolower($hari);
             $class = 'piket-box ' . $lowerHari;
 
-$icons = [
-    'senin'  => 'calendar-day me-3 ps-3',
-    'selasa' => 'calendar-day me-3 ps-3',
-    'rabu'   => 'calendar-day me-3 ps-3',
-    'kamis'  => 'calendar-day me-3 ps-3',
-    'jumat'  => 'calendar-day me-3 ps-3',
-    'sabtu'  => 'calendar-day me-3 ps-3'
-];
+            $icons = [
+                'senin'  => 'calendar-day me-3 ps-3',
+                'selasa' => 'calendar-day me-3 ps-3',
+                'rabu'   => 'calendar-day me-3 ps-3',
+                'kamis'  => 'calendar-day me-3 ps-3',
+                'jumat'  => 'calendar-day me-3 ps-3',
+                'sabtu'  => 'calendar-day me-3 ps-3'
+            ];
 
-$colors = [
-    'senin'  => '#ef4444',
-    'selasa' => '#0ea5e9',
-    'rabu'   => '#22c55e',
-    'kamis'  => '#eab308',
-    'jumat'  => '#3b82f6',
-    'sabtu'  => '#8b5cf6'
-];
+            $colors = [
+                'senin'  => '#ef4444',
+                'selasa' => '#0ea5e9',
+                'rabu'   => '#22c55e',
+                'kamis'  => '#eab308',
+                'jumat'  => '#3b82f6',
+                'sabtu'  => '#8b5cf6'
+            ];
 
-$icon = isset($icons[$lowerHari]) ? $icons[$lowerHari] : 'calendar-day me-3 ps-3';
-$color = isset($colors[$lowerHari]) ? $colors[$lowerHari] : '#0d6efd';
-?>
+            $icon = isset($icons[$lowerHari]) ? $icons[$lowerHari] : 'calendar-day me-3 ps-3';
+            $color = isset($colors[$lowerHari]) ? $colors[$lowerHari] : '#0d6efd';
+            ?>
 
-<div class="<?= $class ?>">
-    <h3>
-        <span><i class="fas fa-<?= $icon ?>"></i> <?= $hari ?></span>
-        <a href="<?= base_url('piket/edit/' . strtolower($hari)) ?>" title="Edit Jadwal">
-            <span>
-                <i class="fas fa-edit pe-0"
-                   style="color: <?= $color ?>;"
-                   onmouseover="this.style.color='<?= $color ?>';"
-                   onmouseout="this.style.color='<?= $color ?>';">
-                </i>
-            </span>
-        </a>
-    </h3>
+            <div class="<?= $class ?>">
+                <h3>
+                    <span><i class="fas fa-<?= $icon ?>"></i> <?= $hari ?></span>
+                    <?php if (session()->get('role')  === 'admin') : ?>
+                        <a href="<?= base_url('piket/edit/' . strtolower($hari)) ?>" title="Edit Jadwal">
+                            <span>
+                                <i class="fas fa-edit pe-0"
+                                    style="color: <?= $color ?>;"
+                                    onmouseover="this.style.color='<?= $color ?>';"
+                                    onmouseout="this.style.color='<?= $color ?>';">
+                                </i>
+                            </span>
+                        </a>
+                    <?php endif; ?>
+                </h3>
                 <ul>
                     <?php foreach ($namaList as $nama): ?>
                         <li><?= $nama ?></li>
@@ -573,6 +595,12 @@ $color = isset($colors[$lowerHari]) ? $colors[$lowerHari] : '#0d6efd';
 </div>
 
 <!-- JavaScript untuk animasi dan interaksi -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // animasi dan hover list item
+    });
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Animasi untuk piket box saat halaman dimuat
@@ -598,4 +626,31 @@ $color = isset($colors[$lowerHari]) ? $colors[$lowerHari] : '#0d6efd';
     });
 </script>
 
-<?= $this->endSection('content'); ?>
+<!-- Tambahkan ini untuk popup pengingat -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- bagian lain dari halaman HTML -->
+
+<?php if (isset($harusPiket) && $harusPiket): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tugasArray = <?= json_encode($tugasHariIni, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+
+            Swal.fire({
+                title: 'Pengingat Piket!',
+                icon: 'info',
+                html: tugasArray.length > 0 ?
+                    `Hari ini giliran kamu piket!<br><br><strong>Tugas:</strong><br>` + tugasArray.map(t => _.escape(t)).join('<br>') : 'Hari ini kamu tidak ada tugas piket.',
+                confirmButtonText: 'Siap!'
+            });
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
+<?php endif; ?>
+
+<!-- bagian lain halaman -->
+
+
+<?= $this->endSection(); ?>

@@ -55,22 +55,21 @@
                         </div>
                     </div>
 
-                    <!-- Jenis Kelamin -->
                     <div class="col-md-6">
                         <div class="form-floating">
                             <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
                                 <option value="">Pilih Jenis Kelamin</option>
-                                <option value="l" <?= $siswa['jenis_kelamin'] === 'l' ? 'selected' : '' ?>>Laki-laki</option>
-                                <option value="p" <?= $siswa['jenis_kelamin'] === 'p' ? 'selected' : '' ?>>Perempuan</option>
+                                <?php foreach ($jenisKelaminList as $jk): ?>
+                                    <option value="<?= $jk ?>" <?= isset($siswa['jenis_kelamin']) && $siswa['jenis_kelamin'] === $jk ? 'selected' : '' ?>>
+                                        <?= $jk === 'l' ? 'Laki-laki' : ($jk === 'p' ? 'Perempuan' : $jk) ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
-                            <label for="jenis_kelamin">
-                                <i class="bi bi-gender-ambiguous me-2"></i>Jenis Kelamin
-                            </label>
-                            <div class="invalid-feedback">
-                                Jenis kelamin harus dipilih
-                            </div>
+                            <label for="jenis_kelamin"><i class="bi bi-gender-ambiguous me-2"></i>Jenis Kelamin</label>
+                            <div class="invalid-feedback">Jenis kelamin harus dipilih</div>
                         </div>
                     </div>
+
 
 
                     <!-- Nomor Telepon -->
@@ -135,35 +134,94 @@
                         </div>
                     </div>
 
-                    <!-- Status -->
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <select class="form-select" id="status" name="status" required>
-                                <option value="">Pilih Status</option>
-                                <option value="Aktif" <?= $siswa['status'] === 'Aktif' ? 'selected' : '' ?>>Aktif</option>
-                                <option value="Selesai" <?= $siswa['status'] === 'Selesai' ? 'selected' : '' ?>>Selesai</option>
-                            </select>
-                            <label for="status">
-                                <i class="bi bi-check-circle me-2"></i>Status
-                            </label>
-                            <div class="invalid-feedback">
-                                Status harus dipilih
+                    <!-- Sosmed -->
+                    <div id="sosmed-container">
+                        <?php if (!empty($sosmed)) : ?>
+                            <?php foreach ($sosmed as $i => $row) : ?>
+                                <div class="row mb-3 sosmed-row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" name="sosmed[<?= $i ?>][platform]" required>
+                                                <option value="" disabled <?= !$row['platform'] ? 'selected' : '' ?>>Pilih Platform</option>
+                                                <?php foreach ($platformList as $platform): ?>
+                                                    <option value="<?= $platform ?>" <?= $row['platform'] == $platform ? 'selected' : '' ?>>
+                                                        <?= ucfirst($platform) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <label><i class="bi bi-globe me-2"></i>Platform Sosmed</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="row mb-3 align-items-end">
+                                            <div class="col-md-9">
+                                                <div class="form-floating">
+                                                    <input type="text"
+                                                        class="form-control"
+                                                        name="sosmed[<?= $i ?>][username_sosmed]"
+                                                        placeholder="username"
+                                                        value="<?= esc($row['username_sosmed']) ?>"
+                                                        required>
+                                                    <label><i class="bi bi-person-circle me-2"></i>Username</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <?php if ($i === array_key_last($sosmed)) : ?>
+                                                    <button type="button" class="btn btn-info text-white w-100" onclick="tambahSosmed()">
+                                                        Tambah
+                                                    </button>
+                                                <?php else: ?>
+                                                    <button type="button" class="btn btn-danger w-100" onclick="hapusBarisIni(this)">
+                                                        Hapus
+                                                    </button>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <!-- Kosong, render 1 input default -->
+                            <div class="row mb-3 sosmed-row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" name="sosmed[0][platform]" required>
+                                            <option value="" disabled selected>Pilih Platform</option>
+                                            <?php foreach ($platformList as $platform): ?>
+                                                <option value="<?= $platform ?>"><?= ucfirst($platform) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <label><i class="bi bi-globe me-2"></i>Platform Sosmed</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row mb-3 align-items-end">
+                                        <div class="col-md-9">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" name="sosmed[0][username_sosmed]" placeholder="username" required>
+                                                <label><i class="bi bi-person-circle me-2"></i>Username</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-info text-white w-100" onclick="tambahSosmed()">
+                                                Tambah
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
 
-                    <!-- Info Lainnya (input biasa) -->
-                    <div class="col-12">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="keterangan" name="keterangan" placeholder="Info Lainnya" value="<?= $siswa['keterangan'] ?>">
-                            <label for="keterangan">
-                                <i class="bi bi-info-circle me-2"></i>Info Lainnya
-                            </label>
-                        </div>
-                    </div>
+
 
 
                     <!-- Foto -->
+                    <!-- HTML FORM -->
                     <div class="col-12">
                         <div class="border p-3 rounded">
                             <div class="d-flex align-items-center justify-content-between mb-2">
@@ -175,8 +233,11 @@
                                 <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
                             </div>
 
-                            <!-- Preview Image yang sudah ada -->
-                            <img id="previewImage" src="<?= base_url('assets/img/user/' . $siswa['foto']) ?>" alt="Preview Foto" class="img-thumbnail mt-3" style="max-width: 200px;">
+                            <img id="previewImage"
+                                src="<?= isset($siswa['foto']) && $siswa['foto'] ? base_url('assets/img/user/' . $siswa['foto']) . '?v=' . time() : '#' ?>"
+                                alt="Preview Foto"
+                                class="img-thumbnail mt-3 <?= isset($siswa['foto']) && $siswa['foto'] ? '' : 'd-none' ?>"
+                                style="max-width: 200px;">
 
                             <small class="text-muted d-block mt-2">
                                 <i class="bi bi-info-circle me-2"></i>
@@ -185,13 +246,16 @@
                         </div>
                     </div>
 
+                    <!-- JS PREVIEW SCRIPT -->
+
+
                     <!-- Submit Button -->
                     <div class="d-flex justify-content-end gap-2 mt-4">
                         <a href="<?= route_to('siswa') ?>" class="btn btn-secondary btn-lg d-flex align-items-center">
                             <span>Kembali</span>
                         </a>
                         <button type="submit" class="btn btn-primary btn-lg d-flex align-items-center">
-                            <i class="fas fa-save me-2"></i><span>Simpan</span>
+                            <span>Update</span>
                         </button>
                     </div>
                 </div>
@@ -229,20 +293,115 @@
                     tglKeluar.setCustomValidity('');
                 }
             });
-
-            // Foto preview
-            document.getElementById('foto').addEventListener('change', function(e) {
-                var file = e.target.files[0];
-                if (file) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById('previewImage').src = e.target.result;
-                        document.getElementById('previewImage').classList.remove('d-none');
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
         });
     </script>
+
+    <script>
+        // Ambil jumlah data awal dari PHP
+        let sosmedIndex = <?= isset($sosmed) && is_array($sosmed) ? count($sosmed) : 1 ?>;
+
+        function tambahSosmed() {
+            const container = document.getElementById('sosmed-container');
+
+            // Hilangkan tombol tambah di baris terakhir sebelumnya (ganti jadi hapus)
+            const lastButtons = container.querySelectorAll('.sosmed-row:last-child .btn');
+            if (lastButtons.length > 0) {
+                lastButtons.forEach(btn => {
+                    btn.classList.remove('btn-info', 'text-white');
+                    btn.classList.add('btn-danger');
+                    btn.textContent = 'Hapus';
+                    btn.setAttribute('onclick', 'hapusSosmed(this)');
+                });
+            }
+
+            const row = document.createElement('div');
+            row.classList.add('row', 'mb-3', 'sosmed-row');
+            row.innerHTML = `
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    <select class="form-select" name="sosmed[${sosmedIndex}][platform]" required>
+                        <option value="" disabled selected>Pilih Platform</option>
+                        <?php foreach ($platformList as $platform): ?>
+                            <option value="<?= $platform ?>"><?= ucfirst($platform) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <label><i class="bi bi-globe me-2"></i>Platform Sosmed</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row mb-3 align-items-end">
+                    <div class="col-md-9">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="sosmed[${sosmedIndex}][username_sosmed]" placeholder="username" required>
+                            <label><i class="bi bi-person-circle me-2"></i>Username</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-info text-white w-100" onclick="tambahSosmed()">Tambah</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+            container.appendChild(row);
+            sosmedIndex++;
+        }
+
+        function hapusSosmed(button) {
+            const row = button.closest('.sosmed-row');
+            if (!row) return;
+
+            const container = document.getElementById('sosmed-container');
+            const allRows = container.querySelectorAll('.sosmed-row');
+
+            // Jika hanya 1 baris, jangan hapus
+            if (allRows.length === 1) return;
+
+            row.remove();
+
+            // Setelah hapus, pastikan hanya baris terakhir yang punya tombol Tambah
+            const newRows = container.querySelectorAll('.sosmed-row');
+            newRows.forEach((r, i) => {
+                const btn = r.querySelector('.btn');
+                if (i === newRows.length - 1) {
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-info', 'text-white');
+                    btn.textContent = 'Tambah';
+                    btn.setAttribute('onclick', 'tambahSosmed()');
+                } else {
+                    btn.classList.remove('btn-info', 'text-white');
+                    btn.classList.add('btn-danger');
+                    btn.textContent = 'Hapus';
+                    btn.setAttribute('onclick', 'hapusSosmed(this)');
+                }
+            });
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fotoInput = document.getElementById('foto');
+            const previewImage = document.getElementById('previewImage');
+
+            if (fotoInput && previewImage) {
+                fotoInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            previewImage.src = event.target.result;
+                            previewImage.classList.remove('d-none');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            } else {
+                console.warn("Elemen foto atau previewImage tidak ditemukan.");
+            }
+        });
+    </script>
+
+
 
     <?= $this->endSection(); ?>

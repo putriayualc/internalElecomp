@@ -43,6 +43,16 @@ class HostingModel extends Model
             ->getResultArray();
     }
 
+public function getHostingWithAddonCount()
+    {
+        return $this->db->table('tb_hosting')
+            ->select('tb_hosting.id_hosting, tb_hosting.domain_utama, COUNT(tb_domains.id_domains) as total_addon')
+            ->join('tb_domains', 'tb_hosting.id_hosting = tb_domains.id_hosting', 'left')
+            ->groupBy('tb_hosting.id_hosting')
+            ->get()
+            ->getResultArray();
+    }
+
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 

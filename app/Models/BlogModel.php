@@ -63,4 +63,22 @@ class BlogModel extends Model
 
         return $builder->findAll();
     }
+
+    public function getBlogPerMinggu($bulan, $tahun)
+{
+    return $this->db->table('tb_blog')
+        ->select("WEEK(created_at, 3) - WEEK(DATE_SUB(created_at, INTERVAL DAYOFMONTH(created_at)-1 DAY), 3) + 1 AS minggu, COUNT(*) AS total")
+        ->where('MONTH(created_at)', $bulan)
+        ->where('YEAR(created_at)', $tahun)
+        ->groupBy('minggu')
+        ->orderBy('minggu')
+        ->get()
+        ->getResultArray();
+}
+
+public function getTotalBlog()
+{
+    return $this->db->table('tb_blog')->countAll();
+}
+
 }

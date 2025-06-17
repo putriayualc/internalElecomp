@@ -22,10 +22,16 @@ class ArtikelInternalController extends BaseController
 
     public function index()
     {
+        if (session()->get('role') === 'user') {
+            $allArtikel = $this->artikelModel->getArtikelWithRelations(session()->get('id_user'));
+        } else {
+            $allArtikel = $this->artikelModel->getArtikelWithRelations();
+        }
+
         $data = [
             'allBisnis'  => $this->bisnisModel->findAll(),
             'allUsers'   => $this->usersModel->findAll(),
-            'allArtikel' => $this->artikelModel->getArtikelWithRelations(),
+            'allArtikel' => $allArtikel,
 
         ];
 
@@ -45,6 +51,11 @@ class ArtikelInternalController extends BaseController
     public function simpan()
     {
         $postData = $this->request->getPost();
+        if (session()->get('role') === 'admin') {
+            $postData['id_user'] = $this->request->getPost('id_user');
+        } else {
+            $postData['id_user'] = session()->get('id_user');
+        }
 
         $this->artikelModel->insert([
             'id_bisnis'     => $postData['id_bisnis'],
@@ -78,6 +89,11 @@ class ArtikelInternalController extends BaseController
     public function update($id)
     {
         $postData = $this->request->getPost();
+        if (session()->get('role') === 'admin') {
+            $postData['id_user'] = $this->request->getPost('id_user');
+        } else {
+            $postData['id_user'] = session()->get('id_user');
+        }
 
         $this->artikelModel->update($id, [
             'id_bisnis'     => $postData['id_bisnis'],

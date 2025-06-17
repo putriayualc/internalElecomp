@@ -1,220 +1,417 @@
 <?= $this->extend('layout/template'); ?>
-<?= $this->Section('content'); ?>
+<?= $this->section('content'); ?>
 
 <div class="app-content pt-3 p-md-3 p-lg-4">
     <div class="container-xl">
-        <!-- Judul dan Tombol Kembali -->
         <div class="row g-3 mb-4 align-items-center justify-content-between">
             <div class="col-auto">
-                <h1 class="app-page-title mb-0">Detail Prospek: Prospek ECP</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="<?= base_url('email') ?>">
+                                <i class="fas fa-envelope me-1"></i>Prospek Email
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <?= esc($prospek['judul']) ?>
+                        </li>
+                    </ol>
+                </nav>
+                <h1 class="app-page-title mb-0">
+                    <i class="fas fa-list-alt me-2"></i><?= esc($prospek['judul']) ?>
+                </h1>
+                <p class="text-muted mb-0">
+                    <i class="fas fa-tag me-1"></i>Sumber: <?= esc($prospek['sumber_data']) ?>
+                </p>
             </div>
             <div class="col-auto">
-                <a href="<?= route_to('prospek') ?>" class="btn btn-secondary">
+                <button class="btn btn-primary" id="btnAddEmail" data-id-prospek="<?= $prospek['id_prospek'] ?>">
+                    <i class="fas fa-plus me-2"></i>Tambah Email
+                </button>
+                <a href="<?= base_url('email') ?>" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-2"></i>Kembali
                 </a>
             </div>
         </div>
 
-        <!-- Tabel Kontak -->
         <div class="app-card app-card-orders-table shadow-sm mb-5">
             <div class="app-card-header p-3">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <h4 class="app-card-title">Daftar Kontak Email</h4>
-                    </div>
-                </div>
+                 <h4 class="app-card-title"><i class="fas fa-history me-2"></i>Riwayat Email</h4>
             </div>
             <div class="app-card-body">
-                <div class="table-responsive">
-                    <table class="table app-table-hover mb-0 text-left">
-                        <thead>
-                            <tr>
-                                <th class="cell" width="5%">No</th>
-                                <th class="cell" width="20%">Nama</th>
-                                <th class="cell" width="15%">Email</th>
-                                <th class="cell" width="30%">Pesan yang dikirim</th>
-                                <th class="cell" width="10%">Status</th>
-                                <th class="cell" width="20%">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Data Statis -->
-                            <tr>
-                                <td class="cell">1</td>
-                                <td class="cell">Ahmad Fauzi</td>
-                                <td class="cell">ahmad.fauzi@email.com</td>
-                                <td class="cell">Halo Bapak Ahmad, kami menawarkan produk ECP terbaru dengan diskon 20%...</td>
-                                <td class="cell"><span class="badge bg-success">Terkirim</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cell">2</td>
-                                <td class="cell">Siti Nurhayati</td>
-                                <td class="cell">siti.nur@email.com</td>
-                                <td class="cell">Selamat siang Ibu Siti, perkenalkan kami dari ECP ingin menawarkan...</td>
-                                <td class="cell"><span class="badge bg-success">Terkirim</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cell">3</td>
-                                <td class="cell">Budi Santoso</td>
-                                <td class="cell">budi.santoso@gmail.com</td>
-                                <td class="cell">Halo Pak Budi, kami menawarkan produk ECP dengan fitur terbaru...</td>
-                                <td class="cell"><span class="badge bg-danger">Gagal</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cell">4</td>
-                                <td class="cell">Dewi Anggraini</td>
-                                <td class="cell">dewi.a@company.co.id</td>
-                                <td class="cell">Selamat pagi Bu Dewi, kami ingin menginformasikan tentang produk ECP...</td>
-                                <td class="cell"><span class="badge bg-success">Terkirim</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cell">5</td>
-                                <td class="cell">Rudi Hermawan</td>
-                                <td class="cell">rudi.h@email.net</td>
-                                <td class="cell">Halo Pak Rudi, apakah Anda tertarik dengan produk ECP kami yang baru?</td>
-                                <td class="cell"><span class="badge bg-warning text-dark">Pending</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cell">6</td>
-                                <td class="cell">Maya Wulandari</td>
-                                <td class="cell">maya.w@email.com</td>
-                                <td class="cell">Halo Ibu Maya, kami ingin menawarkan paket spesial untuk produk ECP...</td>
-                                <td class="cell"><span class="badge bg-success">Terkirim</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cell">7</td>
-                                <td class="cell">Andi Suryanto</td>
-                                <td class="cell">andi.s@corporate.com</td>
-                                <td class="cell">Halo Pak Andi, kami dari ECP menawarkan produk dengan diskon 25%...</td>
-                                <td class="cell"><span class="badge bg-success">Terkirim</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cell">8</td>
-                                <td class="cell">Nina Agustina</td>
-                                <td class="cell">nina.a@business.id</td>
-                                <td class="cell">Selamat sore Bu Nina, kami ingin menginformasikan promo terbaru produk ECP...</td>
-                                <td class="cell"><span class="badge bg-warning text-dark">Pending</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cell">9</td>
-                                <td class="cell">Hendra Wijaya</td>
-                                <td class="cell">hendra.w@mail.co.id</td>
-                                <td class="cell">Halo Pak Hendra, kami ingin memberitahu tentang fitur baru pada produk ECP...</td>
-                                <td class="cell"><span class="badge bg-danger">Gagal</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cell">10</td>
-                                <td class="cell">Ratna Sari</td>
-                                <td class="cell">ratna.s@email.com</td>
-                                <td class="cell">Selamat pagi Bu Ratna, kami mengundang Anda untuk mencoba produk ECP terbaru...</td>
-                                <td class="cell"><span class="badge bg-success">Terkirim</span></td>
-                                <td class="cell">
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye me-1"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash me-1"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <?php if (empty($email_history)): ?>
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-inbox fa-3x mb-3"></i>
+                        <h5>Belum Ada Email Terkirim</h5>
+                        <p>Riwayat email untuk prospek ini akan muncul di sini.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table app-table-hover mb-0 text-left">
+                            <thead>
+                                <tr>
+                                    <th class="cell" width="5%">No</th>
+                                    <th class="cell" width="25%">Perusahaan</th>
+                                    <th class="cell" width="15%">Tanggal Kirim</th>
+                                    <th class="cell" width="15%">Status</th>
+                                    <th class="cell" width="20%">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($email_history as $index => $email): ?>
+                                    <tr>
+                                        <td class="cell"><?= $index + 1 ?></td>
+                                        <td class="cell fw-bold"><?= esc($email['nama_perusahaan']) ?></td>
+                                        <td class="cell"><?= date('d/m/Y H:i', strtotime($email['tanggal'])) ?></td>
+                                        <td class="cell">
+                                            <?php
+                                            $statusClass = ['terkirim' => 'bg-success', 'pending' => 'bg-warning', 'gagal' => 'bg-danger'];
+                                            $statusText = ['terkirim' => 'Terkirim', 'pending' => 'Pending', 'gagal' => 'Gagal'];
+                                            ?>
+                                            <span class="badge <?= $statusClass[$email['status']] ?? 'bg-secondary' ?>">
+                                                <?= $statusText[$email['status']] ?? 'N/A' ?>
+                                            </span>
+                                            <?php if (!empty($email['keterangan'])): ?>
+                                                <br><small class="text-muted"><?= esc($email['keterangan']) ?></small>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="cell">
+                                            <div class="btn-group" role="group">
+                                                 <button type="button" class="btn btn-sm btn-info btn-view-message" data-bs-toggle="modal" data-bs-target="#messageModal" data-company="<?= esc($email['nama_perusahaan']) ?>" data-date="<?= date('d/m/Y H:i', strtotime($email['tanggal'])) ?>" data-message="<?= esc($email['pesan']) ?>" title="Lihat Pesan"><i class="fas fa-eye"></i></button>
+                                                 <button type="button" class="btn btn-sm btn-warning btn-edit-email" data-id="<?= $email['id_prospek_email'] ?>" data-id-detail="<?= $email['id_detail_prospek'] ?? '' ?>" data-company="<?= esc($email['nama_perusahaan']) ?>" data-message="<?= esc($email['pesan']) ?>" data-status="<?= esc($email['status']) ?>" data-keterangan="<?= esc($email['keterangan'] ?? '') ?>" title="Edit"><i class="fas fa-edit"></i></button>
+                                                 <button type="button" class="btn btn-sm btn-danger btn-delete-email" data-id="<?= $email['id_prospek_email'] ?>" data-company="<?= esc($email['nama_perusahaan']) ?>" title="Hapus"><i class="fas fa-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 </div>
 
-<?= $this->endSection('content') ?>
+<div class="modal fade" id="addMultipleEmailsModal" tabindex="-1" aria-labelledby="addMultipleEmailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="addMultipleEmailsModalLabel"><i class="fas fa-paper-plane me-2"></i>Kirim Email Baru</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addMultipleEmailsForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                             <label class="form-label fw-bold">Pilih Perusahaan Penerima</label>
+                             <div>
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="selectAllCompanies"><i class="fas fa-check-double me-1"></i>Pilih Semua</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="unselectAllCompanies"><i class="fas fa-times me-1"></i>Batal Semua</button>
+                            </div>
+                        </div>
+                        <div id="companyListContainer" class="border rounded p-3" style="max-height: 250px; overflow-y: auto;">
+                            <div class="text-center text-muted p-3">Memuat perusahaan...</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="pesan_multiple" class="form-label fw-bold">Pesan Email</label>
+                        <textarea class="form-control" id="pesan_multiple" name="pesan" rows="6" required minlength="10" placeholder="Tulis template pesan email di sini..."></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="status_multiple" class="form-label fw-bold">Status</label>
+                            <select class="form-select" id="status_multiple" name="status" required>
+                                <option value="terkirim" selected>Terkirim</option>
+                                <option value="pending">Pending</option>
+                                <option value="gagal">Gagal</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="keterangan_multiple" class="form-label fw-bold">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan_multiple" name="keterangan" placeholder="Opsional (misal: Follow Up ke-2)">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span class="me-auto text-muted" id="selectedCountText">0 perusahaan dipilih</span>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="btnSaveMultipleEmails" disabled>
+                        <i class="fas fa-save me-2"></i>Simpan & Kirim
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editEmailModal" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+             <div class="modal-header bg-warning">
+                <h5 class="modal-title" id="editEmailModalLabel"><i class="fas fa-edit me-2"></i>Edit Riwayat Email</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+             <form id="editEmailForm" method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="edit_id_prospek_email" name="id_prospek_email">
+                    <div class="mb-3">
+                        <label for="edit_nama_perusahaan" class="form-label">Perusahaan</label>
+                        <input type="text" class="form-control" id="edit_nama_perusahaan" name="nama_perusahaan" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_pesan" class="form-label">Pesan Email</label>
+                        <textarea class="form-control" id="edit_pesan" name="pesan" rows="8" required></textarea>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit_status" class="form-label">Status</label>
+                            <select class="form-select" id="edit_status" name="status" required>
+                                <option value="terkirim">Terkirim</option>
+                                <option value="pending">Pending</option>
+                                <option value="gagal">Gagal</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="edit_keterangan" class="form-label">Keterangan</label>
+                            <input type="text" class="form-control" id="edit_keterangan" name="keterangan" placeholder="Opsional">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-warning" id="btnUpdateEmail">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="messageModalLabel"><i class="fas fa-envelope-open me-2"></i>Detail Pesan Email</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Perusahaan:</strong> <span id="modal-company"></span></p>
+                <p><strong>Tanggal Kirim:</strong> <span id="modal-date"></span></p>
+                <strong>Pesan:</strong>
+                <div id="modal-message" class="border rounded p-3 bg-light mt-2" style="white-space: pre-wrap;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteConfirmModalLabel"><i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Hapus</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Anda yakin ingin menghapus riwayat email untuk perusahaan <strong id="companyToDelete"></strong>?</p>
+                <p class="text-danger">Tindakan ini tidak dapat dibatalkan.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+$(document).ready(function() {
+    // Variabel global
+    let selectedEmailId = null;
+    const addMultipleEmailsModal = new bootstrap.Modal(document.getElementById('addMultipleEmailsModal'));
+    const editEmailModal = new bootstrap.Modal(document.getElementById('editEmailModal'));
+    const deleteConfirmModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+
+    // --- FUNGSI BARU UNTUK TAMBAH MULTIPLE EMAIL ---
+
+    // 1. Tombol utama "Tambah Email" ditekan
+    $('#btnAddEmail').click(function() {
+        const idProspek = $(this).data('id-prospek');
+        $('#addMultipleEmailsForm')[0].reset();
+        loadCompaniesForNewEmail(idProspek);
+        addMultipleEmailsModal.show();
+    });
+
+    // 2. Memuat daftar perusahaan dengan checkbox ke dalam modal
+    function loadCompaniesForNewEmail(idProspek) {
+        const container = $('#companyListContainer');
+        container.html('<div class="text-center text-muted p-3"><div class="spinner-border spinner-border-sm"></div> Memuat...</div>');
+        
+        $.ajax({
+            url: '<?= base_url('email/get-prospek-details') ?>/' + idProspek,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                let html = '';
+                if (response.success && response.details.length > 0) {
+                    response.details.forEach(function(company) {
+                        html += `
+                        <div class="form-check">
+                            <input class="form-check-input company-checkbox" type="checkbox" value="${company.id_detail_prospek}" id="company_${company.id_detail_prospek}">
+                            <label class="form-check-label" for="company_${company.id_detail_prospek}">
+                                <strong>${company.nama_perusahaan}</strong> <br>
+                                <small class="text-muted">${company.email || 'Tidak ada email'}</small>
+                            </label>
+                        </div>`;
+                    });
+                } else {
+                    html = '<div class="text-center text-muted p-3">Tidak ada perusahaan dengan email valid di prospek ini.</div>';
+                }
+                container.html(html);
+                updateSelectedCount();
+            },
+            error: function() {
+                container.html('<div class="text-center text-danger p-3">Gagal memuat data.</div>');
+            }
+        });
+    }
+
+    // 3. Update counter & status tombol simpan saat checkbox berubah
+    $(document).on('change', '.company-checkbox', updateSelectedCount);
+    
+    $('#selectAllCompanies').click(function() {
+        $('.company-checkbox').prop('checked', true);
+        updateSelectedCount();
+    });
+
+    $('#unselectAllCompanies').click(function() {
+        $('.company-checkbox').prop('checked', false);
+        updateSelectedCount();
+    });
+
+    function updateSelectedCount() {
+        const count = $('.company-checkbox:checked').length;
+        $('#selectedCountText').text(count + ' perusahaan dipilih');
+        $('#btnSaveMultipleEmails').prop('disabled', count === 0);
+    }
+
+    // 4. Submit form untuk mengirim email ke banyak perusahaan
+    $('#addMultipleEmailsForm').submit(function(e) {
+        e.preventDefault();
+
+        const selectedCompanies = $('.company-checkbox:checked').map(function() {
+            return this.value;
+        }).get();
+
+        const formData = {
+            selected_companies: selectedCompanies,
+            pesan: $('#pesan_multiple').val(),
+            status: $('#status_multiple').val(),
+            keterangan: $('#keterangan_multiple').val(),
+            '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+        };
+
+        $.ajax({
+            url: '<?= base_url('email/storeEmail') ?>',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            beforeSend: function() {
+                $('#btnSaveMultipleEmails').prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Menyimpan...');
+            },
+            success: function(response) {
+                if (response.success) {
+                    addMultipleEmailsModal.hide();
+                    Swal.fire('Berhasil!', response.message, 'success').then(() => location.reload());
+                } else {
+                    Swal.fire('Gagal!', response.message || 'Terjadi kesalahan.', 'error');
+                }
+            },
+            error: function() {
+                Swal.fire('Error!', 'Tidak dapat terhubung ke server.', 'error');
+            },
+            complete: function() {
+                 $('#btnSaveMultipleEmails').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Simpan & Kirim');
+            }
+        });
+    });
+
+
+    // --- FUNGSI LAMA UNTUK LIHAT, EDIT, HAPUS (TETAP DIPERLUKAN) ---
+
+    // Event handler untuk tombol "Lihat Pesan"
+    $(document).on('click', '.btn-view-message', function() {
+        $('#modal-company').text($(this).data('company'));
+        $('#modal-date').text($(this).data('date'));
+        $('#modal-message').text($(this).data('message'));
+    });
+
+    // Event handler untuk tombol edit email
+    $(document).on('click', '.btn-edit-email', function() {
+        $('#edit_id_prospek_email').val($(this).data('id'));
+        $('#edit_nama_perusahaan').val($(this).data('company'));
+        $('#edit_pesan').val($(this).data('message'));
+        $('#edit_status').val($(this).data('status'));
+        $('#edit_keterangan').val($(this).data('keterangan'));
+        editEmailModal.show();
+    });
+    
+    // Submit form edit
+    $('#editEmailForm').submit(function(e) {
+        e.preventDefault();
+        const id = $('#edit_id_prospek_email').val();
+        const formData = $(this).serialize() + '&<?= csrf_token() ?>=' + '<?= csrf_hash() ?>';
+
+        $.ajax({
+            url: '<?= base_url('email/updateEmail') ?>/' + id,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    editEmailModal.hide();
+                    Swal.fire('Berhasil!', response.message, 'success').then(() => location.reload());
+                } else {
+                    Swal.fire('Gagal!', response.message || 'Gagal memperbarui.', 'error');
+                }
+            }
+        });
+    });
+
+    // Event handler untuk tombol hapus email
+    $(document).on('click', '.btn-delete-email', function() {
+        selectedEmailId = $(this).data('id');
+        $('#companyToDelete').text($(this).data('company'));
+        deleteConfirmModal.show();
+    });
+
+    // Event handler untuk konfirmasi hapus
+    $('#btnConfirmDelete').click(function() {
+        $.ajax({
+            url: '<?= base_url('email/deleteEmail') ?>/' + selectedEmailId,
+            type: 'POST',
+            data: {'<?= csrf_token() ?>': '<?= csrf_hash() ?>'},
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    deleteConfirmModal.hide();
+                    Swal.fire('Dihapus!', response.message, 'success').then(() => location.reload());
+                } else {
+                    Swal.fire('Gagal!', response.message || 'Gagal menghapus.', 'error');
+                }
+            }
+        });
+    });
+});
+</script>
+
+<?= $this->endSection(); ?>

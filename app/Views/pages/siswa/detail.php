@@ -10,7 +10,7 @@
         background-color: #fff;
         border-radius: 10px;
         padding: 20px;
-        margin-bottom: 25px; 
+        margin-bottom: 25px;
         box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         position: relative;
     }
@@ -65,6 +65,7 @@
         color: white;
         position: relative;
         overflow: hidden;
+        height: 440px;
     }
 
     .profile-card::before {
@@ -97,12 +98,12 @@
         position: absolute;
         bottom: 10px;
         right: calc(50% - 80px);
-        background-color: #1cc88a;
         color: white;
         font-size: 0.8rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 30px;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
         font-weight: 500;
+        white-space: nowrap;
     }
 
     .customer-name {
@@ -134,6 +135,10 @@
         border-radius: 50%;
         color: white;
         transition: all 0.3s ease;
+        pointer-events: auto;
+        /* pastikan link bisa diklik */
+        z-index: 1;
+        position: relative;
     }
 
     .social-icons a:hover {
@@ -167,7 +172,7 @@
     }
 
     .info-card {
-        height: 434px;
+        height: auto;
     }
 
     .info-group {
@@ -379,11 +384,22 @@
                         <div class="profile-image-container">
                             <img src="<?= base_url('assets/img/user/' . ($siswa['foto'] ?? 'default.jpg')); ?>"
                                 alt="<?= $siswa['nama'] ?>" class="profile-image">
-                            <span class="profile-badge">
-                                <i class="fas fa-circle me-1"></i> <?= $siswa['status'] ?>
-                            </span>
-                        </div>
+                            <!-- Wrapper untuk Icon Jenis Kelamin dan Status -->
+                            <div class="d-flex justify-content-center align-items-center gap-5 position-absolute"
+                                style="bottom: 10px; left: 50%; transform: translateX(-50%);">
+                                <!-- Icon Jenis Kelamin dalam Circle -->
+                                <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light border"
+                                    style="width: 30px; height: 30px; margin-left: 30px;">
+                                    <i class="fa-solid <?= strtolower($siswa['jenis_kelamin']) === 'l' ? 'fa-mars text-primary' : 'fa-venus text-danger' ?> fs-6"
+                                        title="<?= strtolower($siswa['jenis_kelamin']) === 'l' ? 'Laki-laki' : 'Perempuan' ?>"></i>
+                                </span>
 
+                                <!-- Status Badge -->
+                                <span class="profile-badge position-static ms-3 <?= strtolower($siswa['status']) === 'aktif' ? 'bg-success' : 'bg-secondary' ?>">
+                                    <i class="fas fa-circle me-1"></i> <?= esc($siswa['status']) ?>
+                                </span>
+                            </div>
+                        </div>
 
                         <h2 class="customer-name"><?= $siswa['nama'] ?></h2>
                         <p class="joined-date">
@@ -391,10 +407,31 @@
                         </p>
 
                         <div class="social-icons">
-                            <a href="#"><i class="fab fa-linkedin"></i></a>
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <?php if (!empty($sosmed)) : ?>
+                                <?php foreach ($sosmed as $s) :
+                                    $platform = strtolower($s['platform']);
+                                    $icon = match ($platform) {
+                                        'instagram' => 'fab fa-instagram',
+                                        'facebook'  => 'fab fa-facebook-f',
+                                        'linkedin'  => 'fab fa-linkedin',
+                                        'tiktok'    => 'fab fa-tiktok',
+                                        default     => 'fas fa-globe',
+                                    };
+                                ?>
+                                    <a href="<?= htmlspecialchars($s['link'], ENT_QUOTES, 'UTF-8') ?>"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="sosmed-link me-2"
+                                        title="<?= htmlspecialchars($s['username_sosmed'], ENT_QUOTES, 'UTF-8') ?>"
+                                        onclick="event.stopPropagation();">
+                                        <i class="<?= htmlspecialchars($icon, ENT_QUOTES, 'UTF-8') ?>"></i>
+                                    </a>
+
+
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <span class="text-muted">Belum ada sosial media</span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -412,6 +449,10 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="info-group">
+                                    <div class="info-label"><i class="fas fa-user me-2"></i> Username</div>
+                                    <p class="info-value"><?= esc($username) ?></p>
+                                </div>
+                                <div class="info-group">
                                     <div class="info-label"><i class="fas fa-map-marker-alt me-2"></i> Alamat</div>
                                     <p class="info-value"><?= $siswa['alamat'] ?></p>
                                 </div>
@@ -426,13 +467,6 @@
                                 <div class="info-group">
                                     <div class="info-label"><i class="fas fa-phone me-2"></i> Telepon</div>
                                     <p class="info-value"><?= $siswa['no_telepon'] ?></p>
-                                </div>
-
-                                <div class="info-group">
-                                    <div class="info-label"><i class="fas fa-venus-mars me-2"></i> Jenis Kelamin</div>
-                                    <p class="info-value">
-                                        <?= $siswa['jenis_kelamin'] === 'p' ? 'Perempuan' : 'Laki-laki' ?>
-                                    </p>
                                 </div>
 
                             </div>
@@ -470,55 +504,6 @@
         </div>
     </div>
 
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center p-4">
-                    <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
-                    <h4 class="mt-3">Are you sure?</h4>
-                    <p class="text-muted">You are about to delete this customer. This action cannot be undone.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-                    <a href="<?= site_url('siswa/delete/' . $siswa['id_siswa']) ?>" class="btn btn-danger">
-                        <i class="fas fa-trash me-1"></i> Yes, Delete
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reset Password Modal -->
-    <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resetPasswordModalLabel">Reset Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center p-4">
-                    <i class="fas fa-key text-primary" style="font-size: 3rem;"></i>
-                    <h4 class="mt-3">Reset Password</h4>
-                    <p class="text-muted">Are you sure you want to reset the password for this customer? They will receive an email with instructions.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-                    <a href="<?= site_url('customers/reset-password/' . $siswa['id_siswa']) ?>" class="btn btn-primary">
-                        <i class="fas fa-check me-1"></i> Yes, Reset
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
         // Add animation when page loads
         document.addEventListener('DOMContentLoaded', function() {
@@ -532,6 +517,9 @@
             }, 300);
         });
     </script>
+
+
+
 </body>
 
 <?= $this->endSection(); ?>

@@ -4,20 +4,44 @@ namespace App\Controllers;
 
 use App\Models\PiketModel;
 use App\Models\HariModel;
-    use App\Models\SiswaModel;
+use App\Models\SiswaModel;
 
 class PiketController extends BaseController
 {
     public function index()
     {
         $piketModel = new PiketModel();
-        $results = $piketModel->getPiketWithJoin();
+
+        // Ambil daftar siswa piket per hari (join tabel)
+        $resultsJoin = $piketModel->getPiketWithJoin();
+
+        // Ambil daftar tugas urut berdasarkan bobot DESC
+        $tasks = $piketModel->getAllTugasOrderByBobot();
 
         $piketData = [];
+        $taskAssignment = []; // Simpan tugas tiap siswa per hari
 
-        foreach ($results as $row) {
+        $weekNumber = date('W'); // Nomor minggu dalam setahun
+
+        $hariMap = [
+            1 => 'Senin',
+            2 => 'Selasa',
+            3 => 'Rabu',
+            4 => 'Kamis',
+            5 => 'Jumat',
+            6 => 'Sabtu',
+        ];
+
+        $hariIni = $hariMap[date('N')];
+
+        $userLogin = session()->get('username');
+        $harusPiket = false;
+        $tugasHariIni = [];
+
+        // Susun data piket tanpa tugas dulu
+        foreach ($resultsJoin as $row) {
             $hari = $row['hari'];
-            $siswa = $row['nama'];
+            $siswa = $row['username'];
 
             if (!isset($piketData[$hari])) {
                 $piketData[$hari] = [];
@@ -26,10 +50,82 @@ class PiketController extends BaseController
             $piketData[$hari][] = $siswa;
         }
 
+        // Bagi tugas berdasarkan bobot
+        $tugasBobot4 = array_values(array_filter($tasks, fn($t) => $t['bobot'] == 4));
+        $tugasBobot2 = array_values(array_filter($tasks, fn($t) => $t['bobot'] == 2));
+
+        // Fungsi bantu rotate array (geser)
+        $rotate = function (array $arr, int $steps): array {
+            $count = count($arr);
+            if ($count === 0) return $arr;
+            $steps = $steps % $count;
+            return array_merge(array_slice($arr, $steps), array_slice($arr, 0, $steps));
+        };
+
+        // Geser tugas berdasarkan minggu berjalan (rotasi)
+        $tugasBobot4Rotated = $rotate($tugasBobot4, $weekNumber);
+        $tugasBobot2Rotated = $rotate($tugasBobot2, $weekNumber);
+
+        // Assign tugas ke siswa per hari berdasarkan aturan dan minggu
+        foreach ($piketData as $hari => $siswaList) {
+            $expectedSiswa = ($hari === 'Sabtu') ? 4 : 3;
+
+            // Rotasi siswa berdasarkan minggu agar giliran adil
+            $jumlahSiswa = count($siswaList);
+            if ($jumlahSiswa > 0) {
+                $offset = $weekNumber % $jumlahSiswa;
+                $rotatedSiswaList = array_merge(
+                    array_slice($siswaList, $offset),
+                    array_slice($siswaList, 0, $offset)
+                );
+            } else {
+                $rotatedSiswaList = [];
+            }
+
+            $actualSiswaList = array_slice($rotatedSiswaList, 0, $expectedSiswa);
+
+            foreach ($actualSiswaList as $index => $siswa) {
+                $tugasUntukSiswa = [];
+
+                if ($index === 0 && count($tugasBobot4Rotated) > 0) {
+                    // Anak pertama dapat 1 tugas bobot 4 yang bergilir per minggu dan hari
+                    $taskIndex = ($weekNumber + array_search($hari, array_keys($piketData))) % count($tugasBobot4Rotated);
+                    $task = $tugasBobot4Rotated[$taskIndex];
+                    $tugasUntukSiswa[] = $task['nama_tugas'];
+                } else {
+                    // Anak lain dapat 2 tugas bobot 2 sesuai rotasi
+                    $countTugas2 = count($tugasBobot2Rotated);
+                    if ($countTugas2 >= 2) {
+                        $pos1 = ($index * 2) % $countTugas2;
+                        $pos2 = ($pos1 + 1) % $countTugas2;
+                        $tugasUntukSiswa[] = $tugasBobot2Rotated[$pos1]['nama_tugas'];
+                        $tugasUntukSiswa[] = $tugasBobot2Rotated[$pos2]['nama_tugas'];
+                    }
+                }
+
+                if (!isset($taskAssignment[$hari])) {
+                    $taskAssignment[$hari] = [];
+                }
+                $taskAssignment[$hari][$siswa] = $tugasUntukSiswa;
+
+                // Tandai jika ini hari dan siswa login
+                if ($hari === $hariIni && $siswa === $userLogin) {
+                    $harusPiket = true;
+                    $tugasHariIni = $tugasUntukSiswa;
+                }
+            }
+        }
+
+
         return view('pages/piket/index', [
-            'piketData' => $piketData
+            'piketData' => $piketData,
+            'taskAssignment' => $taskAssignment,
+            'harusPiket' => $harusPiket,
+            'tugasHariIni' => $tugasHariIni
         ]);
     }
+
+
 
     public function edit($hari)
     {

@@ -33,7 +33,9 @@
                                 <th>Link</th>
                                 <th>Keyword</th>
                                 <th>Bisnis</th>
-                                <th>User</th>
+                                <?php if (session()->get('role')  === 'admin') : ?>
+                                    <th>User</th>
+                                <?php endif; ?>
                                 <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -54,7 +56,9 @@
                                         <td class="text-break"><?= esc($artikel['link']) ?></td>
                                         <td><?= esc($artikel['keyword']) ?></td>
                                         <td><?= esc($artikel['nama_bisnis']) ?></td>
-                                        <td><?= esc($artikel['username']) ?></td>
+                                        <?php if (session()->get('role')  === 'admin') : ?>
+                                            <td><?= esc($artikel['username']) ?></td>
+                                        <?php endif; ?>
                                         <td class="text-center">
                                             <a href="<?= base_url('artikel_internal/edit/' . $artikel['id_artikel_internal']) ?>" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit me-1"></i> Edit
