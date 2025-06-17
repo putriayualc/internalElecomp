@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class TugasPiketModel extends Model
 {
-    protected $table            = 'tugas_piket';
+    protected $table            = 'tb_tugas_piket';
     protected $primaryKey       = 'id_tugas_piket';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
