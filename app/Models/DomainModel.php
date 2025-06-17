@@ -12,7 +12,7 @@ class DomainModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_hosting', 'add_on_domains'];
+    protected $allowedFields    = ['id_hosting', 'add_on_domain', 'tgl_exp_add_domain'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

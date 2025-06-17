@@ -15,8 +15,22 @@
                             <?= csrf_field() ?>
 
                             <div class="mb-3">
+                                <label for="hosting" class="form-label">Hosting</label>
+                                <input type="text" class="form-control" id="hosting" name="hosting" value="<?= esc($hosting['hosting']) ?>" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tgl_exp_hosting" class="form-label">Exp Hosting</label>
+                                <input type="date" class="form-control" id="tgl_exp_hosting" name="tgl_exp_hosting" value="<?= esc($hosting['tgl_exp_hosting']) ?>" required>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="domain_utama" class="form-label">Domain Utama</label>
                                 <input type="text" class="form-control" id="domain_utama" name="domain_utama" value="<?= esc($hosting['domain_utama']) ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tgl_exp_domain" class="form-label">Exp Domain Utama</label>
+                                <input type="date" class="form-control" id="tgl_exp_domain" name="tgl_exp_domain" value="<?= esc($hosting['tgl_exp_domain']) ?>" required>
                             </div>
 
                             <div class="mb-3">
@@ -32,18 +46,23 @@
                             <div class="mb-3">
                                 <label class="form-label">Add-On Domain</label>
                                 <div id="addon-container">
-                                    <?php if (isset($addons) && is_array($addons) && count($addons) > 0): ?>
-                                        <?php foreach ($addons as $addon): ?>
+                                    <?php if (!empty($addons)): ?>
+                                        <?php foreach ($addons as $index => $addon): ?>
                                             <div class="input-group mb-2">
                                                 <input type="text" class="form-control" name="add_on_domain[]" value="<?= esc($addon['add_on_domain']) ?>" placeholder="Masukkan add-on domain">
+                                                <input type="date" class="form-control" name="tgl_exp_add_domain[]" value="<?= esc($addon['tgl_exp_add_domain']) ?>" placeholder="Masukkan exp add-on domain">
                                                 <input type="hidden" name="domains_id[]" value="<?= esc($addon['id_domains']) ?>">
-                                                <button class="btn btn-success add-addon" type="button">+</button>
+                                                <?php if ($index == 0): ?>
+                                                    <button class="btn btn-success add-addon" type="button">+</button>
+                                                <?php endif; ?>
                                                 <button class="btn btn-danger remove-addon" type="button" data-bs-toggle="modal" data-bs-target="#deleteAddonModal<?= $addon['id_domains'] ?>">-</button>
-                                                </div>
+                                            </div>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <div class="input-group mb-2">
                                             <input type="text" class="form-control" name="add_on_domain[]" placeholder="Masukkan add-on domain">
+                                            <input type="date" class="form-control" name="tgl_exp_add_domain[]" placeholder="Masukkan exp add-on domain">
+                                            <input type="hidden" name="domains_id[]" value="0">
                                             <button class="btn btn-success add-addon" type="button">+</button>
                                         </div>
                                     <?php endif; ?>
@@ -51,68 +70,63 @@
                             </div>
 
                             <div class="d-flex justify-content-start gap-2">
-                                <a href="<?= route_to('hosting') ?>" class="btn btn-secondary">
-                                    ← Kembali
-                                </a>
-                                <button type="submit" class="btn btn-primary">
-                                    Update
-                                </button>
+                                <a href="<?= route_to('hosting') ?>" class="btn btn-secondary">← Kembali</a>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
         </div>
 
         <?php foreach ($addons as $addon): ?>
-    <div class="modal fade" id="deleteAddonModal<?= $addon['id_domains'] ?>" tabindex="-1" aria-labelledby="deleteAddonLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteAddonLabel">Konfirmasi Hapus Add-On Domain</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Apakah Anda yakin ingin menghapus add-on domain <strong><?= $addon['add_on_domain'] ?></strong>?</p>
-                    <p class="text-danger"><small><i class="fas fa-exclamation-triangle me-1"></i> Semua data terkait akan terhapus permanen!</small></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i> Batal
-                    </button>
-                    <!-- Link untuk menghapus add-on domain -->
-                    <a href="<?= route_to('domain.hapus', $addon['id_hosting'], $addon['id_domains']) ?>" class="btn btn-danger">
-                        <i class="fas fa-trash me-1"></i> Hapus
-                    </a>
+            <div class="modal fade" id="deleteAddonModal<?= $addon['id_domains'] ?>" tabindex="-1" aria-labelledby="deleteAddonLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title">Konfirmasi Hapus Add-On Domain</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Yakin ingin menghapus add-on domain <strong><?= esc($addon['add_on_domain']) ?></strong>?</p>
+                            <p class="text-danger"><small><i class="fas fa-exclamation-triangle me-1"></i> Data akan terhapus permanen!</small></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <a href="<?= route_to('domain.hapus', $addon['id_hosting'], $addon['id_domains']) ?>" class="btn btn-danger">
+                                Hapus
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-<?php endforeach; ?>
+        <?php endforeach; ?>
 
-        
         <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Menambahkan input domain baru
-        document.addEventListener('click', function(e) {
-            // Jika tombol tambah domain (+) diklik
-            if (e.target && e.target.classList.contains('add-addon')) {
-                const container = document.getElementById('addon-container');
-                const newGroup = document.createElement('div');
-                newGroup.className = 'input-group mb-2';
-                newGroup.innerHTML = `
-                    <input type="text" class="form-control" name="add_on_domain[]" placeholder="Masukkan add-on domain">
-                    <input type="hidden" name="domains_id[]" value="0">
-                    <button class="btn btn-danger remove-addon" type="button">-</button>
-                `;
-                container.appendChild(newGroup);
-            }
+            document.addEventListener('DOMContentLoaded', function() {
+                document.addEventListener('click', function(e) {
+                    if (e.target && e.target.classList.contains('add-addon')) {
+                        const container = document.getElementById('addon-container');
+                        const newGroup = document.createElement('div');
+                        newGroup.className = 'input-group mb-2';
+                        newGroup.innerHTML = `
+                            <input type="text" class="form-control" name="add_on_domain[]" placeholder="Masukkan add-on domain">
+                            <input type="date" class="form-control" name="tgl_exp_add_domain[]" placeholder="Masukkan add-on domain">
+                            <input type="hidden" name="domains_id[]" value="0">
+                            <button class="btn btn-danger remove-addon" type="button">-</button>
+                        `;
+                        container.appendChild(newGroup);
+                    }
 
-            // Menghapus input domain yang baru ditambahkan
-            if (e.target && e.target.classList.contains('remove-addon')) {
-                e.target.closest('.input-group').remove();
-            }
-        });
-    });
-</script>
+                    if (e.target && e.target.classList.contains('remove-addon') && !e.target.hasAttribute('data-bs-toggle')) {
+                        e.target.closest('.input-group').remove();
+                    }
+                });
+            });
+        </script>
 
-        <?= $this->endSection(); ?>
+    </div>
+</div>
+
+<?= $this->endSection(); ?>

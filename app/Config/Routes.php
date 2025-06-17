@@ -185,3 +185,10 @@ $routes->group('absenDashboard', ['filter' => 'role:admin'], function ($routes) 
     $routes->get('/', 'AbsenDashboardController::index');
     $routes->get('grafikMingguan', 'AbsenDashboardController::grafikMingguan');
 });
+
+$routes->group('profile', function ($routes) {
+    $routes->get('/', 'ProfileController::index');
+    $routes->post('update/(:num)', 'ProfileController::update/$1', ['as' => 'profile.update']);
+    $routes->post('update-password', 'ProfileController::updatePassword');
+    $routes->post('update-foto', 'ProfileController::updateFoto');
+});

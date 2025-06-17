@@ -50,11 +50,14 @@
                         <thead>
                             <tr>
                                 <th class="cell" width="5%">No</th>
+                                <th class="cell" width="15%">Hosting</th>
+                                <th class="cell" width="15%">Exp Hosting</th>
                                 <th class="cell" width="15%">Domain Utama</th>
-                                <th class="cell" width="15%">Username</th>
-                                <th class="cell" width="15%">Password</th>
-                                <th class="cell" width="25%">Add On Domain</th>
-                                <th class="cell" width="25%">Aksi</th>
+                                <th class="cell" width="15%">Exp Domain</th>
+                                <th class="cell" width="10%">Username</th>
+                                <th class="cell" width="10%">Password</th>
+                                <th class="cell" width="15%">Add-on Domains</th>
+                                <th class="cell" width="15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,10 +66,17 @@
                                 <tr>
                                     <td class="cell"><?= $counter++ ?></td>
                                     <td class="cell fw-bold">
+                                        <a href="https://<?= esc($host['hosting']) ?>" target="_blank" class="text-decoration-none text-secondary">
+                                            <?= esc($host['hosting']) ?>
+                                        </a>
+                                    </td>
+                                    <td class="cell"><?= esc($host['tgl_exp_hosting']) ?></td>
+                                    <td class="cell fw-bold">
                                         <a href="https://<?= esc($host['domain_utama']) ?>" target="_blank" class="text-decoration-none text-secondary">
                                             <?= esc($host['domain_utama']) ?>
                                         </a>
                                     </td>
+                                    <td class="cell"><?= esc($host['tgl_exp_domain']) ?></td>
                                     <td class="cell"><?= esc($host['username_hosting']) ?></td>
                                     <td class="cell">
                                         <div class="d-flex align-items-center">
@@ -78,9 +88,9 @@
                                     </td>
                                     <td class="cell">
                                         <?php if (!empty($host['add_on_domain'])): ?>
-                                            <button type="button" class="btn btn-sm btn-outline-info view-addon-domains" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#addonModal<?= $host['id_hosting'] ?>">
+                                            <button type="button" class="btn btn-sm btn-outline-info view-addon-domains"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#addonModal<?= $host['id_hosting'] ?>">
                                                 <i class="fas fa-external-link-alt me-1"></i> Lihat Add-on Domain
                                                 <span class="badge bg-secondary ms-1"><?= substr_count($host['add_on_domain'], ',') + 1 ?></span>
                                             </button>
@@ -103,7 +113,7 @@
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
-                            
+
                             <?php if (empty($allHosting)) : ?>
                                 <tr>
                                     <td colspan="6" class="text-center py-3">Tidak ada data yang tersedia</td>
@@ -180,6 +190,7 @@
     </div>
     <?php endif; ?>
 <?php endforeach; ?>
+
 
 <!-- Script untuk Toggle Password -->
 <script>

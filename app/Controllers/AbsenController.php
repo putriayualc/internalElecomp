@@ -15,14 +15,14 @@ class AbsenController extends BaseController
     {
         $absens = new AbsenModel();
         $hasil = $this->request->getPost('date');
-        
+
         if ($hasil) {
             $absen = $absens->search($hasil);
         } else {
             $absen = $absens->search('Masuk');
         }
 
-        foreach($absen as $key) {
+        foreach ($absen as $key) {
             $status = $key['status'];
         }
         $tanggalHariIni = Time::today()->toDateString();
@@ -37,7 +37,8 @@ class AbsenController extends BaseController
         return view('pages/absen/index', $data);
     }
 
-    public function terima($id_absen){
+    public function terima($id_absen)
+    {
         $absens = new AbsenModel();
 
         $absen = $absens->where('id_absen', $id_absen)->first();
@@ -51,7 +52,8 @@ class AbsenController extends BaseController
         return redirect()->back();
     }
 
-    public function tolak($id_absen){
+    public function tolak($id_absen)
+    {
         $absens = new AbsenModel();
 
         $absen = $absens->where('id_absen', $id_absen)->first();
@@ -65,7 +67,8 @@ class AbsenController extends BaseController
         return redirect()->back();
     }
 
-    public function reset($id_absen){
+    public function reset($id_absen)
+    {
         $absens = new AbsenModel();
 
         $absen = $absens->where('id_absen', $id_absen)->first();
@@ -83,7 +86,8 @@ class AbsenController extends BaseController
 
 
 
-    public function user(){
+    public function user()
+    {
         $this->cekAbsenBolos();
         $users = new UsersModel();
         $absens = new AbsenModel();
@@ -97,11 +101,11 @@ class AbsenController extends BaseController
         $mengisiKegiatan = $hariIni . ' 16:00:00';
 
         $sudahAbsen = $absens
-                        ->where('id_user', $id_user)
-                        ->where("DATE(tanggal_waktu)", $hariIni)
-                        // ->where('tanggal_waktu' , $hariIni)
-                        // ->where('tanggal_waktu <=' , $selesai)
-                        ->first();
+            ->where('id_user', $id_user)
+            ->where("DATE(tanggal_waktu)", $hariIni)
+            // ->where('tanggal_waktu' , $hariIni)
+            // ->where('tanggal_waktu <=' , $selesai)
+            ->first();
         $user = [
             'user' => $users->where('id_user', $id_user)->first(),
             'sudahAbsen' => $sudahAbsen,
@@ -114,7 +118,8 @@ class AbsenController extends BaseController
         return view('pages/absen/user', $user);
     }
 
-    public function masuk($id_user){
+    public function masuk($id_user)
+    {
         $this->hapusFotoLama();
         $users = new UsersModel();
         $absens = new AbsenModel();
@@ -125,41 +130,42 @@ class AbsenController extends BaseController
 
         $hariIni = date('Y-m-d');
         // Ubah jadi objek waktu
-        $mulai = Time::parse($hariIni . ' 08:00:00');
-        $selesai = Time::parse($hariIni . ' 08:15:00');
+        $mulai = Time::parse($hariIni . ' 07:45:00');
+        $selesai = Time::parse($hariIni . ' 08:59:00');
 
         $waktuAbsen = Time::now();
 
         // dd($mulai, $selesai);
 
-        if ($waktuAbsen <= $mulai && $waktuAbsen >= $selesai) {
+        if ($waktuAbsen >= $mulai && $waktuAbsen <= $selesai) {
             $data = [
                 'id_user' => $id_user,
-                'bukti_foto' =>$namaFile,
+                'bukti_foto' => $namaFile,
                 'tanggal_waktu' => date('Y-m-d H:i:s'),
                 // 'keterangan' => $this->request->getVar('keterangan'),
                 'keterangan' => '--',
                 'status' => 'Masuk',
                 'persetujuan' => 'Pending'
             ];
-        }else{
+        } else {
             $data = [
                 'id_user' => $id_user,
-                'bukti_foto' =>$namaFile,
+                'bukti_foto' => $namaFile,
                 'tanggal_waktu' => date('Y-m-d H:i:s'),
                 'keterangan' => '--',
                 // 'keterangan' => $this->request->getVar('keterangan'),
-                'status' => 'Bolos',
+                'status' => 'Bolos ',
                 'persetujuan' => 'Pending'
             ];
         }
-        
+
         $absens->insert($data);
 
         return redirect()->back();
     }
 
-    public function ijin($id_user){
+    public function ijin($id_user)
+    {
         $this->hapusFotoLama();
         $users = new UsersModel();
         $absens = new AbsenModel();
@@ -170,39 +176,40 @@ class AbsenController extends BaseController
 
         $hariIni = date('Y-m-d');
         // Ubah jadi objek waktu
-        $mulai = Time::parse($hariIni . ' 08:00:00');
+        $mulai = Time::parse($hariIni . ' 07:45:00');
         $selesai = Time::parse($hariIni . ' 08:15:00');
 
         $waktuAbsen = Time::now();
 
         // dd($mulai, $selesai);
 
-        if ($waktuAbsen <= $mulai && $waktuAbsen >= $selesai) {
+        if ($waktuAbsen >= $mulai && $waktuAbsen <= $selesai) {
             $data = [
                 'id_user' => $id_user,
-                'bukti_foto' =>$namaFile,
+                'bukti_foto' => $namaFile,
                 'tanggal_waktu' => date('Y-m-d H:i:s'),
                 'keterangan' => $this->request->getVar('keterangan'),
                 'status' => 'Ijin',
                 'persetujuan' => 'Pending'
             ];
-        }else{
+        } else {
             $data = [
                 'id_user' => $id_user,
-                'bukti_foto' =>$namaFile,
+                'bukti_foto' => $namaFile,
                 'tanggal_waktu' => date('Y-m-d H:i:s'),
                 'keterangan' => $this->request->getVar('keterangan'),
                 'status' => 'Bolos',
                 'persetujuan' => 'Pending'
             ];
         }
-        
+
         $absens->insert($data);
 
         return redirect()->back();
     }
 
-    public function sakit($id_user){
+    public function sakit($id_user)
+    {
         $this->hapusFotoLama();
         $users = new UsersModel();
         $absens = new AbsenModel();
@@ -213,33 +220,33 @@ class AbsenController extends BaseController
 
         $hariIni = date('Y-m-d');
         // Ubah jadi objek waktu
-        $mulai = Time::parse($hariIni . ' 08:00:00');
+        $mulai = Time::parse($hariIni . ' 07:45:00');
         $selesai = Time::parse($hariIni . ' 08:15:00');
 
         $waktuAbsen = Time::now();
 
         // dd($mulai, $selesai);
 
-        if ($waktuAbsen <= $mulai && $waktuAbsen >= $selesai) {
+        if ($waktuAbsen >= $mulai && $waktuAbsen <= $selesai) {
             $data = [
                 'id_user' => $id_user,
-                'bukti_foto' =>$namaFile,
+                'bukti_foto' => $namaFile,
                 'tanggal_waktu' => date('Y-m-d H:i:s'),
                 'keterangan' => $this->request->getVar('keterangan'),
                 'status' => 'Sakit',
                 'persetujuan' => 'Pending'
             ];
-        }else{
+        } else {
             $data = [
                 'id_user' => $id_user,
-                'bukti_foto' =>$namaFile,
+                'bukti_foto' => $namaFile,
                 'tanggal_waktu' => date('Y-m-d H:i:s'),
                 'keterangan' => $this->request->getVar('keterangan'),
                 'status' => 'Bolos',
                 'persetujuan' => 'Pending'
             ];
         }
-        
+
         $absens->insert($data);
 
         return redirect()->back();
@@ -251,7 +258,7 @@ class AbsenController extends BaseController
         $absen = new AbsenModel();
         $batasWaktu = date('Y-m-d H:i:s', strtotime('-7 days'));
         $dataLama = $absen->where('tanggal_waktu <=', $batasWaktu)->findAll();
-    // dd($batasWaktu, $dataLama);
+        // dd($batasWaktu, $dataLama);
         foreach ($dataLama as $data) {
             if ($data['bukti_foto']) {
                 $filePath = FCPATH . 'assets/img/absensi/' . $data['bukti_foto'];
@@ -266,7 +273,8 @@ class AbsenController extends BaseController
     }
 
 
-    public function keterangan($id_absen){
+    public function keterangan($id_absen)
+    {
         $absens = new AbsenModel();
 
         $waktuSekarang = date('Y-m-d H:i:s');
@@ -281,43 +289,53 @@ class AbsenController extends BaseController
     }
 
     private function cekAbsenBolos()
-{
-    // Waktu sekarang
-    $sekarang = date('H:i');
+    {
+        // Waktu sekarang
+        $sekarang = date('H:i');
 
-    // Hanya jalan kalau lewat dari jam 16:15
-    if ($sekarang < '16:15') {
-        return;
-    }
+        // Hanya jalan kalau lewat dari jam 16:15
+        if ($sekarang > '07:45' && $sekarang < '16:15') {
+            return;
+        }
 
-    $tanggalHariIni = date('Y-m-d');
+        $tanggalHariIni = date('Y-m-d');
 
-    $absenModel = new AbsenModel();
-    $userModel = new UsersModel();
+        $absenModel = new AbsenModel();
+        $userModel = new UsersModel();
 
-    $semuaUser = $userModel->where('id_user !=', 1)->findAll();
+        $semuaUser = $userModel->where('id_user !=', 1)->findAll();
 
-    foreach ($semuaUser as $user) {
-        $sudahAbsen = $absenModel
-            ->where('id_user', $user['id_user'])
-            ->where('DATE(tanggal_waktu)', $tanggalHariIni)
-            ->countAllResults();
+        foreach ($semuaUser as $user) {
+            $sudahAbsen = $absenModel
+                ->where('id_user', $user['id_user'])
+                ->where('DATE(tanggal_waktu)', $tanggalHariIni)
+                ->countAllResults();
 
-        if ($sudahAbsen == 0) {
-            $absenModel->insert([
-                'id_user'        => $user['id_user'],
-                'bukti_foto' => '-',
-                'tanggal_waktu'  => date('Y-m-d H:i:s'),
-                'status'         => 'bolos',
-                'keterangan' => '-',
-                'persetujuan' => 'Pending',
-            ]);
+            if ($sudahAbsen == 0) {
+                $absenModel->insert([
+                    'id_user'        => $user['id_user'],
+                    'bukti_foto' => '-',
+                    'tanggal_waktu'  => date('Y-m-d H:i:s'),
+                    'status'         => 'bolos',
+                    'keterangan' => '-',
+                    'persetujuan' => 'Pending',
+                ]);
+            }
         }
     }
+    public function editStatus($id)
+    {
+        $statusBaru = $this->request->getPost('status');
+
+        // Validasi sederhana (bisa ditambahkan lebih detail)
+        if (!in_array($statusBaru, ['masuk', 'bolos', 'ijin', 'sakit'])) {
+            return redirect()->back()->with('error', 'Status tidak valid');
+        }
+
+        // Update ke database
+        $absenModel = new AbsenModel();
+        $absenModel->update($id, ['status' => $statusBaru]);
+
+        return redirect()->back()->with('success', 'Status berhasil diperbarui.');
+    }
 }
-
-}
-
-
-
-

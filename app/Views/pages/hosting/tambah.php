@@ -15,8 +15,20 @@
                     <form action="<?= base_url('hosting/simpan') ?>" method="post" id="hostingForm">
                         <?= csrf_field() ?>
                         <div class="mb-3">
+                            <label for="hosting" class="form-label">Hosting</label>
+                            <input type="text" class="form-control" id="hosting" name="hosting" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tgl_exp_hosting" class="form-label">Exp Hosting</label>
+                            <input type="date" class="form-control" id="tgl_exp_hosting" name="tgl_exp_hosting" required>
+                        </div>
+                        <div class="mb-3">
                             <label for="domain_utama" class="form-label">Domain Utama</label>
                             <input type="text" class="form-control" id="domain_utama" name="domain_utama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tgl_exp_domain" class="form-label">Exp Domain</label>
+                            <input type="date" class="form-control" id="tgl_exp_domain" name="tgl_exp_domain" required>
                         </div>
                         <div class="mb-3">
                             <label for="username_hosting" class="form-label">Username Hosting</label>
@@ -31,6 +43,7 @@
                             <div id="addon-container">
                                 <div class="input-group mb-2">
                                     <input type="text" name="add_on_domain[]" class="form-control" placeholder="Masukkan add on domain">
+                                    <input type="date" name="tgl_exp_add_domain[]" class="form-control" placeholder="Masukkan exp add on domain">
                                     <button type="button" class="btn btn-outline-secondary btn-add-addon">Tambah</button>
                                 </div>
                             </div>
@@ -46,15 +59,16 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('addon-container');
 
-        container.addEventListener('click', function (e) {
+        container.addEventListener('click', function(e) {
             if (e.target.classList.contains('btn-add-addon')) {
                 const newInputGroup = document.createElement('div');
                 newInputGroup.className = 'input-group mb-2';
                 newInputGroup.innerHTML = `
                     <input type="text" name="add_on_domain[]" class="form-control" placeholder="Masukkan add on domain">
+                    <input type="date" name="tgl_exp_add_domain[]" class="form-control" placeholder="Masukkan Exp add on domain">
                     <button type="button" class="btn btn-outline-danger btn-remove-addon">Hapus</button>
                 `;
                 container.appendChild(newInputGroup);
