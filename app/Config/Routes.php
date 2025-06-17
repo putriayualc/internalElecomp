@@ -77,7 +77,7 @@ $routes->group('hosting', ['filter' => 'role:admin'], function ($routes) {
     $routes->post('simpan', 'HostingController::simpan');
     $routes->get('edit/(:num)', 'HostingController::edit/$1', ['as' => 'hosting.edit']);
     $routes->post('update/(:num)', 'HostingController::update/$1');
-    $routes->get('delete/(:num)', 'HostingController::delete/$1', ['as' => 'hosting.delete']);
+    $routes->post('delete/(:num)', 'HostingController::delete/$1', ['as' => 'hosting.delete']);
     $routes->get('detail/(:num)', 'HostingController::detail/$1', ['as' => 'hosting.detail']);
 });
 
@@ -111,7 +111,7 @@ $routes->group('artikel_internal', function ($routes) {
     $routes->post('simpan', 'ArtikelInternalController::simpan', ['as' => 'artikel_internal.simpan']);
     $routes->get('edit/(:num)', 'ArtikelInternalController::edit/$1', ['as' => 'artikel_internal.edit']);
     $routes->post('update/(:num)', 'ArtikelInternalController::update/$1', ['as' => 'artikel_internal.update']);
-    $routes->get('delete/(:num)', 'ArtikelInternalController::delete/$1', ['as' => 'artikel_internal.delete']);
+    $routes->post('delete/(:num)', 'ArtikelInternalController::delete/$1', ['as' => 'artikel_internal.delete']);
 });
 
 // MENU SOSMED

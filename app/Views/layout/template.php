@@ -12,7 +12,7 @@
     <meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
     <!-- Favicons -->
-    <link href="<?= base_url('favicon2.png') ?>" rel="icon">    
+    <link href="<?= base_url('favicon2.png') ?>" rel="icon">
 
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,6 +27,8 @@
     <!-- App CSS -->
     <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/portal.css') ?>">
     <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+    <link id="theme-style" rel="stylesheet" href="<?= base_url('assets/css/new.css') ?>">
+
 
     <!-- Include Bootstrap Icons & CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -57,7 +59,7 @@
     <?= $this->renderSection('css'); ?>
 
     <!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
