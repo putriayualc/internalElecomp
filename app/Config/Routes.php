@@ -260,3 +260,19 @@ $routes->group('profile', function ($routes) {
     $routes->post('update-password', 'ProfileController::updatePassword');
     $routes->post('update-foto', 'ProfileController::updateFoto');
 });
+
+// MENU NILAI HARIAN
+$routes->group('nilai', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'NilaiHarianController::index', ['as' => 'nilai']);
+    $routes->post('simpan', 'NilaiHarianController::autosave', ['as' => 'nilai.simpan']);
+    $routes->get('edit/(:num)', 'NilaiHarianController::edit/$1', ['as' => 'nilai.edit']);
+    $routes->post('proses_edit/(:num)', 'NilaiHarianController::update/$1', ['as' => 'nilai.update']);
+    $routes->get('delete/(:any)', 'NilaiHarianController::delete/$1', ['as' => 'nilai.hapus']);
+});
+
+// MENU NILAI AKHIR
+$routes->group('nilai_akhir', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'NilaiAkhirController::index', ['as' => 'na']);
+    $routes->post('hitung/(:num)', 'NilaiAkhirController::hitung/$1', ['as' => 'na.hitung']);
+    $routes->post('hitung_semua', 'NilaiAkhirController::hitung_semua', ['as' => 'na.hitung_semua']);
+});
