@@ -195,10 +195,13 @@ $routes->group('prospek', function ($routes) {
     $routes->post('store', 'ProspekController::store', ['as' => 'prospek.store']);
     $routes->get('edit/(:num)', 'ProspekController::edit/$1', ['as' => 'prospek.edit']);
     $routes->post('update/(:num)', 'ProspekController::update/$1', ['as' => 'prospek.update']);
-    $routes->get('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
+    $routes->post('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
     $routes->get('detail/(:num)/export', 'DetailProspekController::export/$1');
     $routes->post('detail/(:num)/import', 'DetailProspekController::import/$1');
+    $routes->post('detail/delete', 'DetailProspekController::delete/$1');
     $routes->get('detail/template/download', 'DetailProspekController::downloadTemplate');
+    $routes->post('import/(:num)', 'DetailProspekController::import/$1');
+
 
     // Group untuk detail prospek
     $routes->group('(:num)/perusahaan', function ($routes) {
@@ -265,9 +268,6 @@ $routes->group('profile', function ($routes) {
 $routes->group('nilai', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('/', 'NilaiHarianController::index', ['as' => 'nilai']);
     $routes->post('simpan', 'NilaiHarianController::autosave', ['as' => 'nilai.simpan']);
-    $routes->get('edit/(:num)', 'NilaiHarianController::edit/$1', ['as' => 'nilai.edit']);
-    $routes->post('proses_edit/(:num)', 'NilaiHarianController::update/$1', ['as' => 'nilai.update']);
-    $routes->get('delete/(:any)', 'NilaiHarianController::delete/$1', ['as' => 'nilai.hapus']);
 });
 
 // MENU NILAI AKHIR
@@ -275,4 +275,19 @@ $routes->group('nilai_akhir', ['filter' => 'role:admin'], function ($routes) {
     $routes->get('/', 'NilaiAkhirController::index', ['as' => 'na']);
     $routes->post('hitung/(:num)', 'NilaiAkhirController::hitung/$1', ['as' => 'na.hitung']);
     $routes->post('hitung_semua', 'NilaiAkhirController::hitung_semua', ['as' => 'na.hitung_semua']);
+});
+
+// MENU NILAI untuk USER
+$routes->group('penilaian', ['filter' => 'role:user'], function ($routes) {
+    $routes->get('/', 'NilaiController::index', ['as' => 'penilaian']);
+});
+
+// MENU Libur
+$routes->group('libur', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'LiburController::index', ['as' => 'libur']);
+    $routes->get('tambah', 'LiburController::tambah', ['as' => 'libur.tambah']);
+    $routes->post('simpan', 'LiburController::simpan', ['as' => 'libur.simpan']);
+    $routes->post('update/(:num)', 'LiburController::update/$1', ['as' => 'libur.update']);
+    $routes->post('delete/(:num)', 'LiburController::delete/$1', ['as' => 'libur.delete']); // Pastikan ini ada
+
 });

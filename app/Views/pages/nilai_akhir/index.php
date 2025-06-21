@@ -1,4 +1,44 @@
 <?= $this->extend('layout/template'); ?>
+<?= $this->section('css'); ?>
+<style>
+    /* ====================================================== */
+    /* ==      STYLE UNTUK PEWARNAAN BADGE NILAI           == */
+    /* ====================================================== */
+
+    .grade-badge {
+        display: inline-block;
+        padding: 0.4em 0.8em;
+        font-size: 0.9em;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 50rem;
+        /* Membuat bentuk pil */
+        width: 60px;
+        /* Lebar yang konsisten */
+    }
+
+    /* Kriteria: nilai >= 86 (Hijau) */
+    .grade-badge-success {
+        color: #0f5132;
+        background-color: #d1e7dd;
+    }
+
+    /* Kriteria: 71 s.d. 85 (Kuning) */
+    .grade-badge-warning {
+        color: #664d03;
+        background-color: #fff3cd;
+    }
+
+    /* Kriteria: <= 70 (Merah) */
+    .grade-badge-danger {
+        color: #58151c;
+        background-color: #f8d7da;
+    }
+</style>
+<?= $this->endSection(); ?>
 <?= $this->section('content'); ?>
 
 <div class="container-fluid py-3">
@@ -11,10 +51,6 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button class="btn btn-outline-light px-4 py-2 fs-6 d-flex align-items-center gap-2" onclick="exportData()">
-                    <i class="bi bi-download"></i>
-                    <span class="d-none d-sm-inline">Export Data</span>
-                </button>
                 <button class="btn btn-light text-dark px-4 py-2 fs-6 d-flex align-items-center gap-2" onclick="hitungSemuaNilai()">
                     <i class="bi bi-calculator"></i>
                     <span class="d-none d-sm-inline">Hitung Semua</span>
@@ -57,42 +93,50 @@
                                 <th class="text-center border-end" style="min-width: 200px;">
                                     <span class="fw-semibold">Nama Siswa</span>
                                 </th>
-                                <th class="text-center border-end" style="min-width: 150px;">
+                                <th class="text-center border-end" style="min-width: 140px;">
                                     <div class="d-flex align-items-center justify-content-center gap-2">
                                         <span class="icon-circle bg-primary bg-opacity-10 text-primary">
-                                            <i class="bi bi-building"></i>
+                                            <i class="bi bi-calendar"></i>
                                         </span>
                                         <span class="fw-semibold">Tanggal Selesai Magang</span>
                                     </div>
                                 </th>
-                                <th class="text-center border-end" style="min-width: 150px;">
+                                <th class="text-center border-end" style="min-width: 100px;">
                                     <div class="d-flex align-items-center justify-content-center gap-2">
                                         <span class="icon-circle bg-success bg-opacity-10 text-success">
-                                            <i class="bi bi-telephone-fill"></i>
+                                            <i class="bi bi-calendar-check"></i>
                                         </span>
                                         <span class="fw-semibold">Nilai Absensi</span>
                                     </div>
                                 </th>
-                                <th class="text-center border-end" style="min-width: 180px;">
+                                <th class="text-center border-end" style="min-width: 100px;">
                                     <div class="d-flex align-items-center justify-content-center gap-2">
-                                        <span class="icon-circle bg-danger bg-opacity-10 text-danger">
-                                            <i class="bi bi-envelope"></i>
+                                        <span class="icon-circle bg-primary bg-opacity-10 text-primary">
+                                            <i class="bi bi-code-slash"></i>
                                         </span>
                                         <span class="fw-semibold">Nilai Magang</span>
                                     </div>
                                 </th>
-                                <th class="text-center border-end" style="min-width: 180px;">
+                                <th class="text-center border-end" style="min-width: 100px;">
                                     <div class="d-flex align-items-center justify-content-center gap-2">
-                                        <span class="icon-circle bg-danger bg-opacity-10 text-danger">
-                                            <i class="bi bi-envelope"></i>
+                                        <span class="icon-circle bg-warning bg-opacity-10 text-warning">
+                                            <i class="bi bi-tools"></i>
                                         </span>
                                         <span class="fw-semibold">Nilai Operasional</span>
                                     </div>
                                 </th>
-                                <th class="text-center border-end" style="min-width: 150px;">
+                                <th class="text-center border-end" style="min-width: 100px;">
                                     <div class="d-flex align-items-center justify-content-center gap-2">
-                                        <span class="icon-circle bg-warning bg-opacity-10 text-warning">
-                                            <i class="bi bi-geo-alt-fill"></i>
+                                        <span class="icon-circle bg-danger bg-opacity-10 text-danger">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </span>
+                                        <span class="fw-semibold">Nilai Artikel</span>
+                                    </div>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 100px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-secondary bg-opacity-10 text-secondary">
+                                            <i class="bi bi-award"></i>
                                         </span>
                                         <span class="fw-semibold">Nilai Akhir</span>
                                     </div>
@@ -103,8 +147,22 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                            // Helper function untuk menentukan kelas CSS berdasarkan nilai
+                            function getGradeBadgeClass($grade)
+                            {
+                                $grade = floatval($grade); // Pastikan tipe datanya float
+                                if ($grade >= 86) {
+                                    return 'grade-badge-success';
+                                } elseif ($grade >= 71) {
+                                    return 'grade-badge-warning';
+                                } else {
+                                    return 'grade-badge-danger';
+                                }
+                            }
+                            ?>
                             <?php foreach ($allNilai as $i => $nilai): ?>
-                                <tr>
+                                <tr id="row-siswa-<?= $nilai['id_siswa'] ?>">
                                     <td class="text-center border-end">
                                         <span class="text-muted fw-medium"><?= $i + 1 ?></span>
                                     </td>
@@ -153,41 +211,47 @@
                                         </span>
                                     </td>
                                     <td class="text-center border-end">
-                                        <span class="text-truncate d-inline-block" style="max-width: 150px;"
+                                        <span class="grade-badge <?= getGradeBadgeClass($nilai['nilai_absensi']); ?>" style="max-width: 150px;"
                                             title="<?= esc($nilai['nilai_absensi']); ?>">
                                             <?= esc($nilai['nilai_absensi']); ?>
                                         </span>
                                     </td>
                                     <td class="text-center border-end">
-                                        <span class="text-truncate d-inline-block" style="max-width: 150px;"
+                                        <span class="grade-badge <?= getGradeBadgeClass($nilai['nilai_magang']); ?>" style="max-width: 150px;"
                                             title="<?= esc($nilai['nilai_magang']); ?>">
                                             <?= esc($nilai['nilai_magang']); ?>
                                         </span>
                                     </td>
                                     <td class="text-center border-end">
-                                        <span class="text-truncate d-inline-block" style="max-width: 150px;"
+                                        <span class="grade-badge <?= getGradeBadgeClass($nilai['nilai_operasional']); ?>" style="max-width: 150px;"
                                             title="<?= esc($nilai['nilai_operasional']); ?>">
                                             <?= esc($nilai['nilai_operasional']); ?>
                                         </span>
                                     </td>
                                     <td class="text-center border-end">
-                                        <span class="text-truncate d-inline-block" style="max-width: 190px;"
+                                        <span class="grade-badge <?= getGradeBadgeClass($nilai['nilai_artikel']); ?>" style="max-width: 150px;"
+                                            title="<?= esc($nilai['nilai_artikel']); ?>">
+                                            <?= esc($nilai['nilai_artikel']); ?>
+                                        </span>
+                                    </td>
+                                    <td class="text-center border-end">
+                                        <span id="total-nilai-<?= $nilai['id_siswa'] ?>" class="grade-badge <?= getGradeBadgeClass($nilai['total_nilai']); ?>" style="max-width: 190px;"
                                             title="<?= esc($nilai['total_nilai']); ?>">
                                             <?= esc($nilai['total_nilai']); ?>
                                         </span>
                                     </td>
                                     <td class="text-center">
                                         <a href="javascript:void(0);"
-                                            class="btn btn-sm btn-success me-1 btn-hitung"
+                                            class="btn btn-outline-success d-flex align-items-center justify-content-center gap-1 px-3 py-1 rounded-pill shadow-sm btn-hitung"
+                                            style="font-size: 0.85rem;"
                                             data-id="<?= $nilai['id_siswa'] ?>"
-                                            title="Hitung ulang nilai">
-                                            <i class="bi bi-calculator"></i>
-                                        </a>
-                                        <span class="text-muted"
                                             data-bs-toggle="tooltip"
-                                            title="Terakhir diupdate: <?= date('d M Y H:i', strtotime($nilai['updated_at'])) ?>">
-                                            <i class="bi bi-clock"></i>
-                                        </span>
+                                            data-bs-placement="top"
+                                            data-bs-html="true"
+                                            title="Hitung Ulang<br>Diupdate: <?= date('d M Y H:i', strtotime($nilai['updated_at'])) ?>">
+                                            <i class="bi bi-arrow-repeat"></i>
+                                            <span class="d-none d-md-inline">Hitung</span>
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -360,23 +424,66 @@
     $(document).on('click', '.btn-hitung', function() {
         const btn = $(this);
         const id = btn.data('id');
+        const row = btn.closest('tr'); // Dapatkan elemen <tr> dari baris ini
+
+        // Tandai baris yang sedang diupdate
+        row.css('background-color', '#e3f2fd'); // Warna biru muda sbg indikator
         btn.prop('disabled', true).html('<i class="spinner-border spinner-border-sm"></i>');
 
         $.ajax({
             url: '<?= base_url('nilai_akhir/hitung/') ?>' + id,
             method: 'POST',
             data: {
-                <?= csrf_token() ?>: '<?= csrf_hash() ?>'
+                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
             },
+            dataType: 'json', // Meskipun controller tidak kirim data, ini tetap praktik yang baik
             success: function(res) {
-                location.reload(); // atau update total_nilai langsung jika ingin tanpa reload
+                // Jika sukses, kita panggil fungsi untuk me-reload hanya baris ini
+                reloadRow(row, id);
             },
             error: function() {
                 alert('Gagal menghitung nilai.');
                 btn.prop('disabled', false).html('<i class="bi bi-calculator"></i>');
+                row.css('background-color', ''); // Hapus warna indikator jika gagal
             }
         });
     });
+
+    // Fungsi baru untuk melakukan partial reload pada baris tabel
+    function reloadRow(rowElement, idSiswa) {
+        const currentUrl = window.location.href; // Dapatkan URL halaman saat ini
+        const targetSelector = ' #row-siswa-' + idSiswa; // Selector untuk baris yang sama di halaman yang di-reload
+
+        // Gunakan jQuery .load() untuk mengambil konten baris baru dan mengganti yang lama
+        // Kita tambahkan ' > *' agar hanya konten di dalam <tr> yang diganti, ini lebih stabil
+        rowElement.load(currentUrl + targetSelector + " > *", function(response, status, xhr) {
+            if (status == "error") {
+                // Handle jika gagal me-reload bagian
+                alert("Gagal memperbarui tampilan baris.");
+                rowElement.css('background-color', '');
+            } else {
+                // Sukses, kembalikan style dan re-inisialisasi tooltip
+                rowElement.css('background-color', '');
+
+                // Inisialisasi ulang tooltip Bootstrap pada elemen yang baru dimuat
+                rowElement.find('[data-bs-toggle="tooltip"]').tooltip();
+
+                // Beri notifikasi (opsional, menggunakan SweetAlert)
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Nilai berhasil diperbarui!'
+                });
+            }
+        });
+    }
+
 
     function hitungSemuaNilai() {
         if (!confirm('Yakin ingin menghitung ulang semua nilai?')) return;

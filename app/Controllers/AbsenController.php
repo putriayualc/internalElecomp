@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\AbsenModel;
+use App\Models\LiburModel;
+use App\Models\SiswaModel;
 use App\Models\UsersModel;
 use CodeIgniter\I18n\Time;
 
@@ -15,7 +17,6 @@ class AbsenController extends BaseController
     {
         $absens = new AbsenModel();
         $hasil = $this->request->getPost('date');
-
         if ($hasil) {
             $absen = $absens->search($hasil);
         } else {
@@ -95,10 +96,10 @@ class AbsenController extends BaseController
 
         $hariIni = date('Y-m-d');
         $mulai = $hariIni . ' 08:00:00';
-        $selesai = $hariIni . ' 16:15:00';
+        $selesai = $hariIni . ' 18:00:00';
         $waktuSekarang = date('Y-m-d H:i:s');
 
-        $mengisiKegiatan = $hariIni . ' 16:00:00';
+        $mengisiKegiatan = $hariIni . ' 18:00:00';
 
         $sudahAbsen = $absens
             ->where('id_user', $id_user)
@@ -106,6 +107,16 @@ class AbsenController extends BaseController
             // ->where('tanggal_waktu' , $hariIni)
             // ->where('tanggal_waktu <=' , $selesai)
             ->first();
+
+        $hariKe = date('w'); // 0 = Minggu
+
+        $liburModel = new LiburModel();
+        $liburTanggal = $liburModel->select('tgl_libur')->findAll();
+        $daftarLibur = array_map(fn($row) => date('Y-m-d', strtotime($row['tgl_libur'])), $liburTanggal);
+
+        // Cek apakah absen hari ini ditutup
+        $absenDitutup = ($hariKe == 0) || in_array($hariIni, $daftarLibur);
+
         $user = [
             'user' => $users->where('id_user', $id_user)->first(),
             'sudahAbsen' => $sudahAbsen,
@@ -114,6 +125,7 @@ class AbsenController extends BaseController
             'waktuSekarang' => $waktuSekarang,
 
             'mengisiKegiatan' => $mengisiKegiatan,
+            'absenDitutup' => $absenDitutup
         ];
         return view('pages/absen/user', $user);
     }
@@ -131,7 +143,7 @@ class AbsenController extends BaseController
         $hariIni = date('Y-m-d');
         // Ubah jadi objek waktu
         $mulai = Time::parse($hariIni . ' 07:45:00');
-        $selesai = Time::parse($hariIni . ' 08:59:00');
+        $selesai = Time::parse($hariIni . ' 08:15:00');
 
         $waktuAbsen = Time::now();
 
@@ -290,52 +302,55 @@ class AbsenController extends BaseController
 
     private function cekAbsenBolos()
     {
-        // Waktu sekarang
-        $sekarang = date('H:i');
+        $tanggalHariIni = date('Y-m-d');
+        $waktuSekarang = date('H:i');
 
-        // Hanya jalan kalau lewat dari jam 16:15
-        if ($sekarang > '07:45' && $sekarang < '16:15') {
+        // Lewati jika belum lewat jam 18:00
+        if ($waktuSekarang <= '18:00') {
             return;
         }
 
-        $tanggalHariIni = date('Y-m-d');
+        // Lewati jika hari Minggu
+        if (date('w') == 0) {
+            return;
+        }
+
+        // Lewati jika hari ini adalah libur nasional
+        $liburModel = new LiburModel();
+        if ($liburModel->where('tgl_libur', $tanggalHariIni)->countAllResults() > 0) {
+            return;
+        }
 
         $absenModel = new AbsenModel();
-        $userModel = new UsersModel();
+        $siswaModel = new SiswaModel();
 
-        $semuaUser = $userModel->where('id_user !=', 1)->findAll();
+        // Ambil semua siswa yang statusnya AKTIF dan bukan admin (id_user != 1)
+        $siswaAktif = $siswaModel
+            ->where('status', 'AKTIF')
+            ->where('id_user !=', 1)
+            ->findAll();
 
-        foreach ($semuaUser as $user) {
+        foreach ($siswaAktif as $siswa) {
+            $idUser = $siswa['id_user'];
+
+            // Cek apakah user sudah absen hari ini
             $sudahAbsen = $absenModel
-                ->where('id_user', $user['id_user'])
+                ->where('id_user', $idUser)
                 ->where('DATE(tanggal_waktu)', $tanggalHariIni)
                 ->countAllResults();
 
-            if ($sudahAbsen == 0) {
+            if ($sudahAbsen === 0) {
                 $absenModel->insert([
-                    'id_user'        => $user['id_user'],
-                    'bukti_foto' => '-',
-                    'tanggal_waktu'  => date('Y-m-d H:i:s'),
-                    'status'         => 'bolos',
-                    'keterangan' => '-',
-                    'persetujuan' => 'Pending',
+                    'id_user'            => $idUser,
+                    'bukti_foto'         => '-',
+                    'tanggal_waktu'      => date('Y-m-d H:i:s'),
+                    'status'             => 'bolos',
+                    'keterangan'         => '-',
+                    'persetujuan'        => 'Pending',
+                    'nilai_magang'       => 0,
+                    'nilai_operasional'  => 0,
                 ]);
             }
         }
-    }
-    public function editStatus($id)
-    {
-        $statusBaru = $this->request->getPost('status');
-
-        // Validasi sederhana (bisa ditambahkan lebih detail)
-        if (!in_array($statusBaru, ['masuk', 'bolos', 'ijin', 'sakit'])) {
-            return redirect()->back()->with('error', 'Status tidak valid');
-        }
-
-        // Update ke database
-        $absenModel = new AbsenModel();
-        $absenModel->update($id, ['status' => $statusBaru]);
-
-        return redirect()->back()->with('success', 'Status berhasil diperbarui.');
     }
 }

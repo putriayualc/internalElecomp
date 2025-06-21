@@ -96,4 +96,21 @@ class SiswaModel extends Model
 
         return [];
     }
+
+    public function getTotalHariMagang($id_user)
+    {
+        $siswa = $this->select('tgl_masuk, tgl_keluar')
+            ->where('id_user', $id_user)
+            ->first();
+
+        if (!$siswa || !$siswa['tgl_masuk'] || !$siswa['tgl_keluar']) {
+            return 0; // jika data tidak lengkap, kembalikan 0
+        }
+
+        $start = new \DateTime($siswa['tgl_masuk']);
+        $end = new \DateTime($siswa['tgl_keluar']);
+
+        // Selisih hari +1 (karena termasuk hari masuk dan keluar)
+        return $start->diff($end)->days + 1;
+    }
 }

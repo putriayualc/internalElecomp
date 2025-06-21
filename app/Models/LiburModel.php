@@ -4,22 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class NilaiAkhirModel extends Model
+class LiburModel extends Model
 {
-    protected $table            = 'tb_nilai_akhir';
-    protected $primaryKey       = 'id_nilai_akhir';
+    protected $table            = 'tb_libur';
+    protected $primaryKey       = 'id_libur';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_siswa',
-        'nilai_absensi',
-        'nilai_magang',
-        'nilai_operasional',
-        'nilai_artikel',
-        'total_nilai',
-        'updated_at'
+        'tgl_libur',
+        'keterangan'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -52,24 +47,11 @@ class NilaiAkhirModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getAllNilai()
+    public function getHolidaysByMonthYear(int $month, int $year): array
     {
-        return $this->select('
-            tb_siswa.nama,
-            tb_siswa.jurusan,
-            tb_siswa.foto,
-            tb_siswa.tgl_keluar,
-            tb_siswa.status,
-            tb_siswa.id_siswa,
-            tb_nilai_akhir.nilai_artikel,
-            tb_nilai_akhir.nilai_absensi,
-            tb_nilai_akhir.nilai_magang,
-            tb_nilai_akhir.nilai_operasional,
-            tb_nilai_akhir.total_nilai,
-            tb_nilai_akhir.updated_at
-        ')
-            ->join('tb_siswa', 'tb_siswa.id_siswa = tb_nilai_akhir.id_siswa')
-            ->orderBy('tb_nilai_akhir.updated_at', 'DESC')
-            ->findAll();
+        return $this->where('MONTH(tgl_libur)', $month)
+                    ->where('YEAR(tgl_libur)', $year)
+                    ->orderBy('tgl_libur', 'ASC')
+                    ->findAll();
     }
 }

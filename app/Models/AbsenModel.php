@@ -113,4 +113,31 @@ class AbsenModel extends Model
             ->orderBy('tb_absen.tanggal_waktu', 'DESC')
             ->findAll();
     }
+
+    public function getNilaiHarianByUser($id_user)
+    {
+        return $this->select('
+            tb_absen.tanggal_waktu AS tgl_absen,
+            tb_absen.keterangan AS laporan_tugas,
+            tb_absen.nilai_magang,
+            tb_absen.nilai_operasional,
+            tb_absen.feedback
+        ')
+            ->where('tb_absen.id_user', $id_user)
+            ->orderBy('tb_absen.tanggal_waktu', 'ASC')
+            ->asArray()
+            ->findAll();
+    }
+
+    public function getAkumulasiSementara($id_user)
+    {
+        return $this->select('
+            COUNT(*) AS jumlah_masuk,
+            ROUND(AVG(nilai_magang), 1) AS rata_nilai_magang,
+            ROUND(AVG(nilai_operasional), 1) AS rata_nilai_operasional
+        ')
+            ->where('id_user', $id_user)
+            ->where('status', 'Masuk')
+            ->first();
+    }
 }

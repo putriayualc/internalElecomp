@@ -529,13 +529,14 @@
                 <p class="text-white-70 small mb-0">Kelola data piket siswa yang sedang melakukan magang</p>
             </div>
 
-            <div class="d-flex gap-2">
-                <a href="<?= route_to('tugasPiket') ?>" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2">
-                    <i class="fas fa-plus-circle me-2"></i>
-                    <span class="d-none d-sm-inline">Manage Tugas Piket</span>
-                </a>
-            </div>
-
+            <?php if (session()->get('role')  === 'admin') : ?>
+                <div class="d-flex gap-2">
+                    <a href="<?= route_to('tugasPiket') ?>" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        <span class="d-none d-sm-inline">Manage Tugas Piket</span>
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
