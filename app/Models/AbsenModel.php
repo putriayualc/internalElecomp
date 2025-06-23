@@ -101,6 +101,7 @@ class AbsenModel extends Model
             tb_absen.id_absen,
             tb_absen.tanggal_waktu AS tgl_absen,
             tb_absen.keterangan AS laporan_tugas,
+            tb_absen.status,
             tb_absen.nilai_magang,
             tb_absen.nilai_operasional,
             tb_absen.feedback,

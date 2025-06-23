@@ -161,8 +161,8 @@
                                         </td>
                                         <td class="text-center border-end">
                                             <span class="d-inline-block" style="max-width: 150px;"
-                                                title="<?= esc($nilai['laporan_tugas']); ?>">
-                                                <?= esc($nilai['laporan_tugas']); ?>
+                                                title="<?= esc($nilai['status'] === 'Bolos' ? 'Bolos' : ($nilai['status'] === 'Masuk' ? $nilai['laporan_tugas'] : $nilai['laporan_tugas'])); ?>">
+                                                <?= esc($nilai['status'] === 'Bolos' ? 'Bolos' : ($nilai['status'] === 'Masuk' ? $nilai['laporan_tugas'] : $nilai['laporan_tugas'])); ?>
                                             </span>
                                         </td>
                                         <td class="text-center border-end">
