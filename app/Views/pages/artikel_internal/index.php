@@ -271,10 +271,10 @@
             language: {
                 decimal: "",
                 emptyTable: "<div class='text-center py-5'><div class='d-flex flex-column align-items-center text-muted'><i class='bi bi-inbox fs-1 mb-3 opacity-50'></i><p class='mb-0 fs-6'>Belum ada artikel yang ditambahkan</p></div></div>",
-                info: "Menampilkan START - END dari TOTAL data",
+                info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
                 infoEmpty: "Menampilkan 0 - 0 dari 0 data",
-                infoFiltered: "(difilter dari MAX total data)",
-                lengthMenu: "Tampilkan MENU data",
+                infoFiltered: "(difilter dari _MAX_ total data)",
+                lengthMenu: "Tampilkan _MENU_ data",
                 loadingRecords: "Memuat...",
                 processing: "Memproses...",
                 search: "Cari:",
