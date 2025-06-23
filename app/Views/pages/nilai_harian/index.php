@@ -13,26 +13,36 @@
     </div>
 </div>
 
-
+<!-- Improved Filter Container -->
 <div class="filter-container bg-white p-4 rounded shadow-sm border mb-3">
     <div class="row g-3 align-items-end">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="filterDari" class="form-label">Dari Tanggal</label>
             <input type="date" id="filterDari" class="form-control form-control-sm">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="filterSampai" class="form-label">Sampai Tanggal</label>
             <input type="date" id="filterSampai" class="form-control form-control-sm">
         </div>
         <div class="col-md-3">
-            <button id="resetFilter" class="btn btn-primary btn-sm w-100 d-flex align-items-center justify-content-center gap-2">
+            <label for="filterStatus" class="form-label">Status Mahasiswa</label>
+            <select id="filterStatus" class="form-select form-select-sm">
+                <option value="">Semua Status</option>
+                <option value="AKTIF">Mahasiswa Aktif</option>
+                <option value="SELESAI">Mahasiswa Selesai</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button id="applyFilter" class="btn btn-primary btn-sm flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-funnel"></i>
+                <span>Terapkan Filter</span>
+            </button>
+            <button id="resetFilter" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center gap-2">
                 <i class="bi bi-arrow-clockwise"></i>
-                <span>Reset Filter</span>
             </button>
         </div>
     </div>
 </div>
-
 
 <!-- Main Content Card -->
 <div class="card border-0 shadow-sm">
@@ -41,23 +51,6 @@
             <div class="row align-items-start">
                 <div class="col">
                     <div class="row mb-3">
-                        <!-- <div class="col-md-3">
-                            <label for="filterDari" class="form-label">Dari Tanggal</label>
-                            <input type="date" id="filterDari" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="filterSampai" class="form-label">Sampai Tanggal</label>
-                            <input type="date" id="filterSampai" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-md-3 d-flex align-items-end mb-2">
-                            <button id="resetFilter" class="btn btn-secondary btn-sm w-100 d-flex align-items-center justify-content-center gap-2 bg-primary">
-                                <i class="bi bi-arrow-clockwise"></i>
-                                <span>Reset Filter</span>
-                            </button>
-                        </div>
-                    </div> -->
-
-                        <!-- Ganti Judul dengan Custom Toolbar -->
                         <div class="row" id="custom-toolbar">
                             <div class="col-md-6 d-flex align-items-center" id="custom-length"></div>
                             <div class="col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0" id="custom-search"></div>
@@ -65,7 +58,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- DataTable Container -->
             <div class="datatable-wrapper">
@@ -149,6 +141,22 @@
                                                     </div>
                                                     <div class="d-flex align-items-center gap-2">
                                                         <small class="text-muted"><?= esc($nilai['jurusan']); ?></small>
+                                                        <?php
+                                                        $status = strtoupper($nilai['status_siswa']);
+                                                        switch ($status) {
+                                                            case 'AKTIF':
+                                                                $badgeClass = 'status-badge status-active';
+                                                                break;
+                                                            case 'SELESAI':
+                                                                $badgeClass = 'status-badge status-completed';
+                                                                break;
+                                                            default:
+                                                                $badgeClass = 'status-badge status-inactive';
+                                                        }
+                                                        ?>
+                                                        <span class="<?= $badgeClass; ?>">
+                                                            <?= $status; ?>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -250,8 +258,6 @@
         </div>
     </div>
 
-
-
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
@@ -291,7 +297,6 @@
                         previous: "❮"
                     }
                 },
-                // DOM harus menyertakan 'l' dan 'f' agar bisa dipindahkan
                 dom: '<"dt-temp-toolbar"lf>rt<"row g-3 mt-2 pt-2 border-top"' +
                     '<"col-md-5 d-flex align-items-center"i>' +
                     '<"col-md-7 d-flex justify-content-md-end"p>>',
@@ -307,18 +312,15 @@
                 stateSave: true,
 
                 initComplete: function() {
-                    // Tambahkan styling bootstrap
                     $('.dataTables_length select').addClass('form-select form-select-sm me-2');
                     $('.dataTables_filter input').addClass('form-control form-control-sm').attr('placeholder', 'Ketik untuk mencari...');
                     $('.dataTables_length').addClass('d-flex align-items-center');
                     $('.dataTables_filter').addClass('d-flex align-items-center justify-content-end');
                     $('.dataTables_filter label').addClass('d-flex align-items-center mb-0');
 
-                    // Pindahkan kontrol ke tempat custom
                     $('#siswaTable_length').appendTo('#custom-length');
                     $('#siswaTable_filter').appendTo('#custom-search');
 
-                    // FIX tampilan "Tampilkan 10 data"
                     $('.dataTables_length label').addClass('d-flex align-items-center gap-2 mb-0');
                 },
 
@@ -327,7 +329,7 @@
                 }
             });
 
-            // Tambahkan penomoran otomatis di kolom pertama
+            // Add row numbers
             table.on('order.dt search.dt draw.dt', function() {
                 let i = 1;
                 table.column(0, {
@@ -337,128 +339,98 @@
                     cell.innerHTML = i++;
                 });
             }).draw();
-        });
+            
+            // Set today's date as default end date
+            const today = new Date().toISOString().split('T')[0];
+            $('#filterSampai').val(today);
+            
+            // Set start date as 7 days before today
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            $('#filterDari').val(sevenDaysAgo.toISOString().split('T')[0]);
 
-
-        function exportData() {
-            const table = document.getElementById('siswaTable');
-            const rows = table.querySelectorAll('tbody tr');
-            let csv = 'No,Nama,Jurusan,Status,Asal Instansi,Telepon,Email,Alamat,Info Lainnya\n';
-
-            rows.forEach((row, index) => {
-                const cols = row.querySelectorAll('td');
-
-                const namaElem = cols[1].querySelector('a');
-                const jurusanElem = cols[1].querySelector('small');
-                const statusElem = cols[1].querySelector('.status-badge');
-
-                const nama = namaElem ? namaElem.textContent.trim() : '';
-                const jurusan = jurusanElem ? jurusanElem.textContent.trim() : '';
-                const status = statusElem ? statusElem.textContent.trim() : '';
-
-                const instansi = cols[2]?.textContent.trim() ?? '';
-                const telepon = cols[3]?.textContent.trim() ?? '';
-                const email = cols[4]?.textContent.trim() ?? '';
-                const alamat = cols[5]?.textContent.trim() ?? '';
-                const info = cols[6]?.textContent.trim() ?? '';
-
-                csv += `${index + 1},"${nama}","${jurusan}","${status}","${instansi}","${telepon}","${email}","${alamat}","${info}"\n`;
-            });
-
-            // Buat dan unduh file CSV
-            const blob = new Blob([csv], {
-                type: 'text/csv;charset=utf-8;'
-            });
-            const url = URL.createObjectURL(blob);
-
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'data-siswa.csv';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-    </script>
-
-    <script>
-        // Tampilkan tombol simpan saat input diubah
-        $(document).on('input', '.input-nilai', function() {
-            $(this).siblings('.btn-simpan-nilai').removeClass('d-none');
-        });
-
-        // Simpan nilai saat tombol diklik
-        $(document).on('click', '.btn-simpan-nilai', function() {
-            const btn = $(this);
-            const input = btn.siblings('.input-nilai');
-            const id = btn.data('id');
-            const field = btn.data('field');
-            const value = input.val();
-
-            $.ajax({
-                url: '<?= route_to('nilai.simpan') ?>',
-                method: 'POST',
-                data: {
-                    id_absen: id,
-                    field: field,
-                    value: value,
-                    <?= csrf_token() ?>: '<?= csrf_hash() ?>'
-                },
-                success: function(res) {
-                    btn.addClass('d-none');
-                    input.addClass('is-valid');
-                    setTimeout(() => input.removeClass('is-valid'), 1000);
-                },
-                error: function(err) {
-                    input.addClass('is-invalid');
-                    setTimeout(() => input.removeClass('is-invalid'), 2000);
+            // Custom filtering function
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    var minDate = $('#filterDari').val();
+                    var maxDate = $('#filterSampai').val();
+                    var statusFilter = $('#filterStatus').val();
+                    
+                    // Get the date from the row (using data-order attribute)
+                    var rowDate = table.row(dataIndex).nodes().to$().find('td:eq(2)').data('order');
+                    if (!rowDate) return false;
+                    
+                    // Get status from the row
+                    var rowStatus = table.row(dataIndex).nodes().to$().find('.status-badge').text().trim().toUpperCase();
+                    
+                    // Date filtering
+                    var dateValid = true;
+                    if (minDate || maxDate) {
+                        if (minDate && rowDate < minDate) {
+                            dateValid = false;
+                        }
+                        if (maxDate && rowDate > maxDate) {
+                            dateValid = false;
+                        }
+                    }
+                    
+                    // Status filtering
+                    var statusValid = true;
+                    if (statusFilter && rowStatus !== statusFilter.toUpperCase()) {
+                        statusValid = false;
+                    }
+                    
+                    return dateValid && statusValid;
                 }
-            });
-        });
-    </script>
-    <!-- Moment.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/id.min.js"></script>
-    <script>
-        moment.locale('id');
-    </script>
+            );
 
-    <script>
-        $(document).ready(function() {
-            var table = $('#siswaTable').DataTable();
-
-            // Custom filter untuk tanggal
-            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                var min = $('#filterDari').val();
-                var max = $('#filterSampai').val();
-
-                // Ambil nilai asli dari atribut data-order (YYYY-MM-DD)
-                var tanggalOrder = table.row(dataIndex).nodes().to$().find('td:eq(2)').data('order');
-
-                if (!tanggalOrder) return false;
-
-                if ((!min && !max) ||
-                    (min && !max && tanggalOrder >= min) ||
-                    (!min && max && tanggalOrder <= max) ||
-                    (min && max && tanggalOrder >= min && tanggalOrder <= max)) {
-                    return true;
-                }
-                return false;
-            });
-
-            // Jalankan filter saat input berubah
-            $('#filterDari, #filterSampai').on('change', function() {
+            // Apply filter button
+            $('#applyFilter').on('click', function() {
                 table.draw();
             });
 
-            // Reset filter
+            // Reset filter button
             $('#resetFilter').on('click', function() {
                 $('#filterDari').val('');
                 $('#filterSampai').val('');
+                $('#filterStatus').val('');
                 table.draw();
+            });
+
+            // Tampilkan tombol simpan saat input diubah
+            $(document).on('input', '.input-nilai', function() {
+                $(this).siblings('.btn-simpan-nilai').removeClass('d-none');
+            });
+
+            // Simpan nilai saat tombol diklik
+            $(document).on('click', '.btn-simpan-nilai', function() {
+                const btn = $(this);
+                const input = btn.siblings('.input-nilai');
+                const id = btn.data('id');
+                const field = btn.data('field');
+                const value = input.val();
+
+                $.ajax({
+                    url: '<?= route_to('nilai.simpan') ?>',
+                    method: 'POST',
+                    data: {
+                        id_absen: id,
+                        field: field,
+                        value: value,
+                        <?= csrf_token() ?>: '<?= csrf_hash() ?>'
+                    },
+                    success: function(res) {
+                        btn.addClass('d-none');
+                        input.addClass('is-valid');
+                        setTimeout(() => input.removeClass('is-valid'), 1000);
+                    },
+                    error: function(err) {
+                        input.addClass('is-invalid');
+                        setTimeout(() => input.removeClass('is-invalid'), 2000);
+                    }
+                });
             });
         });
     </script>
 
-
-
-    <?= $this->endSection(); ?>
+<?= $this->endSection(); ?>

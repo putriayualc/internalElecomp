@@ -632,24 +632,7 @@
 
 <!-- bagian lain dari halaman HTML -->
 
-<?php if (isset($harusPiket) && $harusPiket): ?>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tugasArray = <?= json_encode($tugasHariIni, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
 
-            Swal.fire({
-                title: 'Pengingat Piket!',
-                icon: 'info',
-                html: tugasArray.length > 0 ?
-                    `Hari ini giliran kamu piket!<br><br><strong>Tugas:</strong><br>` + tugasArray.map(t => _.escape(t)).join('<br>') : 'Hari ini kamu tidak ada tugas piket.',
-                confirmButtonText: 'Siap!'
-            });
-        });
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
-
-<?php endif; ?>
 
 <!-- bagian lain halaman -->
 

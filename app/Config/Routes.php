@@ -106,7 +106,7 @@ $routes->group('bisnis', function ($routes) {
 
 // MENU ARTIKEL
 $routes->group('artikel_internal', function ($routes) {
-    $routes->get('/', 'ArtikelInternalController::index', ['as' => 'artikel_internal.index']);
+    $routes->get('/', 'ArtikelInternalController::index', ['as' => 'artikel_internal']);
     $routes->get('tambah', 'ArtikelInternalController::tambah', ['as' => 'artikel_internal.tambah']);
     $routes->post('simpan', 'ArtikelInternalController::simpan', ['as' => 'artikel_internal.simpan']);
     $routes->get('edit/(:num)', 'ArtikelInternalController::edit/$1', ['as' => 'artikel_internal.edit']);

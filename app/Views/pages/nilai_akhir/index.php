@@ -62,6 +62,37 @@
     </div>
 </div>
 
+<!-- Improved Filter Container -->
+<div class="filter-container bg-white p-4 rounded shadow-sm border mb-3">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+            <label for="filterDari" class="form-label">Dari Tanggal</label>
+            <input type="date" id="filterDari" class="form-control form-control-sm">
+        </div>
+        <div class="col-md-3">
+            <label for="filterSampai" class="form-label">Sampai Tanggal</label>
+            <input type="date" id="filterSampai" class="form-control form-control-sm">
+        </div>
+        <div class="col-md-3">
+            <label for="filterStatus" class="form-label">Status Mahasiswa</label>
+            <select id="filterStatus" class="form-select form-select-sm">
+                <option value="">Semua Status</option>
+                <option value="AKTIF">Mahasiswa Aktif</option>
+                <option value="SELESAI">Mahasiswa Selesai</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button id="applyFilter" class="btn btn-primary btn-sm flex-grow-1 d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-funnel"></i>
+                <span>Terapkan Filter</span>
+            </button>
+            <button id="resetFilter" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
 
 
 <!-- Main Content Card -->
@@ -332,7 +363,6 @@
                     previous: "❮"
                 }
             },
-            // DOM harus menyertakan 'l' dan 'f' agar bisa dipindahkan
             dom: '<"dt-temp-toolbar"lf>rt<"row g-3 mt-2 pt-2 border-top"' +
                 '<"col-md-5 d-flex align-items-center"i>' +
                 '<"col-md-7 d-flex justify-content-md-end"p>>',
@@ -346,29 +376,24 @@
             ],
             autoWidth: false,
             stateSave: true,
-
             initComplete: function() {
-                // Tambahkan styling bootstrap
                 $('.dataTables_length select').addClass('form-select form-select-sm me-2');
                 $('.dataTables_filter input').addClass('form-control form-control-sm').attr('placeholder', 'Ketik untuk mencari...');
                 $('.dataTables_length').addClass('d-flex align-items-center');
                 $('.dataTables_filter').addClass('d-flex align-items-center justify-content-end');
                 $('.dataTables_filter label').addClass('d-flex align-items-center mb-0');
 
-                // Pindahkan kontrol ke tempat custom
                 $('#siswaTable_length').appendTo('#custom-length');
                 $('#siswaTable_filter').appendTo('#custom-search');
 
-                // FIX tampilan "Tampilkan 10 data"
                 $('.dataTables_length label').addClass('d-flex align-items-center gap-2 mb-0');
             },
-
             drawCallback: function() {
                 $('[data-bs-toggle="tooltip"]').tooltip();
             }
         });
 
-        // Tambahkan penomoran otomatis di kolom pertama
+        // Add row numbers
         table.on('order.dt search.dt draw.dt', function() {
             let i = 1;
             table.column(0, {
@@ -378,134 +403,91 @@
                 cell.innerHTML = i++;
             });
         }).draw();
-    });
+        
+        // Set default date range (last 30 days)
+        const today = new Date();
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(today.getDate() - 30);
+        
+        $('#filterSampai').val(today.toISOString().split('T')[0]);
+        $('#filterDari').val(thirtyDaysAgo.toISOString().split('T')[0]);
 
-    function exportData() {
-        const table = document.getElementById('siswaTable');
-        const rows = table.querySelectorAll('tbody tr');
-        let csv = 'No,Nama,Jurusan,Status,Asal Instansi,Telepon,Email,Alamat,Info Lainnya\n';
+        // Custom filtering function
+        $.fn.dataTable.ext.search.push(
+            function(settings, data, dataIndex) {
+                var minDate = $('#filterDari').val();
+                var maxDate = $('#filterSampai').val();
+                var statusFilter = $('#filterStatus').val();
+                
+                // Get the row element
+                var row = table.row(dataIndex).nodes().to$();
+                
+                // Get the date from tgl_keluar column (column index 2)
+                var rowDateStr = row.find('td:eq(2)').text().trim();
+                var rowDate = rowDateStr ? new Date(rowDateStr) : null;
+                
+                // Get status from the row
+                var rowStatus = row.find('.status-badge').text().trim().toUpperCase();
+                
+                // Date filtering
+                var dateValid = true;
+                if (minDate || maxDate) {
+                    if (!rowDate) return false; // Skip if no date
+                    
+                    var minDateObj = minDate ? new Date(minDate) : null;
+                    var maxDateObj = maxDate ? new Date(maxDate) : null;
+                    
+                    if (minDateObj && rowDate < minDateObj) {
+                        dateValid = false;
+                    }
+                    if (maxDateObj && rowDate > maxDateObj) {
+                        dateValid = false;
+                    }
+                }
+                
+                // Status filtering
+                var statusValid = true;
+                if (statusFilter && rowStatus !== statusFilter.toUpperCase()) {
+                    statusValid = false;
+                }
+                
+                return dateValid && statusValid;
+            }
+        );
 
-        rows.forEach((row, index) => {
-            const cols = row.querySelectorAll('td');
-
-            const namaElem = cols[1].querySelector('a');
-            const jurusanElem = cols[1].querySelector('small');
-            const statusElem = cols[1].querySelector('.status-badge');
-
-            const nama = namaElem ? namaElem.textContent.trim() : '';
-            const jurusan = jurusanElem ? jurusanElem.textContent.trim() : '';
-            const status = statusElem ? statusElem.textContent.trim() : '';
-
-            const instansi = cols[2]?.textContent.trim() ?? '';
-            const telepon = cols[3]?.textContent.trim() ?? '';
-            const email = cols[4]?.textContent.trim() ?? '';
-            const alamat = cols[5]?.textContent.trim() ?? '';
-            const info = cols[6]?.textContent.trim() ?? '';
-
-            csv += `${index + 1},"${nama}","${jurusan}","${status}","${instansi}","${telepon}","${email}","${alamat}","${info}"\n`;
+        // Apply filter button
+        $('#applyFilter').on('click', function() {
+            table.draw();
+            
+            // Show notification
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+            Toast.fire({
+                icon: 'success',
+                title: 'Filter diterapkan'
+            });
         });
 
-        // Buat dan unduh file CSV
-        const blob = new Blob([csv], {
-            type: 'text/csv;charset=utf-8;'
-        });
-        const url = URL.createObjectURL(blob);
+        // Reset filter button
+            $('#resetFilter').on('click', function() {
+                $('#filterDari').val('');
+                $('#filterSampai').val('');
+                $('#filterStatus').val('');
+                table.draw();
+            });
 
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'data-siswa.csv';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
-</script>
-
-<script>
-    $(document).on('click', '.btn-hitung', function() {
-        const btn = $(this);
-        const id = btn.data('id');
-        const row = btn.closest('tr'); // Dapatkan elemen <tr> dari baris ini
-
-        // Tandai baris yang sedang diupdate
-        row.css('background-color', '#e3f2fd'); // Warna biru muda sbg indikator
-        btn.prop('disabled', true).html('<i class="spinner-border spinner-border-sm"></i>');
-
-        $.ajax({
-            url: '<?= base_url('nilai_akhir/hitung/') ?>' + id,
-            method: 'POST',
-            data: {
-                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
-            },
-            dataType: 'json', // Meskipun controller tidak kirim data, ini tetap praktik yang baik
-            success: function(res) {
-                // Jika sukses, kita panggil fungsi untuk me-reload hanya baris ini
-                reloadRow(row, id);
-            },
-            error: function() {
-                alert('Gagal menghitung nilai.');
-                btn.prop('disabled', false).html('<i class="bi bi-calculator"></i>');
-                row.css('background-color', ''); // Hapus warna indikator jika gagal
+        // Enable filter on Enter key
+        $('#filterDari, #filterSampai, #filterStatus').on('keyup', function(e) {
+            if (e.key === 'Enter') {
+                $('#applyFilter').click();
             }
         });
     });
-
-    // Fungsi baru untuk melakukan partial reload pada baris tabel
-    function reloadRow(rowElement, idSiswa) {
-        const currentUrl = window.location.href; // Dapatkan URL halaman saat ini
-        const targetSelector = ' #row-siswa-' + idSiswa; // Selector untuk baris yang sama di halaman yang di-reload
-
-        // Gunakan jQuery .load() untuk mengambil konten baris baru dan mengganti yang lama
-        // Kita tambahkan ' > *' agar hanya konten di dalam <tr> yang diganti, ini lebih stabil
-        rowElement.load(currentUrl + targetSelector + " > *", function(response, status, xhr) {
-            if (status == "error") {
-                // Handle jika gagal me-reload bagian
-                alert("Gagal memperbarui tampilan baris.");
-                rowElement.css('background-color', '');
-            } else {
-                // Sukses, kembalikan style dan re-inisialisasi tooltip
-                rowElement.css('background-color', '');
-
-                // Inisialisasi ulang tooltip Bootstrap pada elemen yang baru dimuat
-                rowElement.find('[data-bs-toggle="tooltip"]').tooltip();
-
-                // Beri notifikasi (opsional, menggunakan SweetAlert)
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Nilai berhasil diperbarui!'
-                });
-            }
-        });
-    }
-
-
-    function hitungSemuaNilai() {
-        if (!confirm('Yakin ingin menghitung ulang semua nilai?')) return;
-
-        const btns = $('.btn-hitung');
-        btns.prop('disabled', true);
-
-        $.ajax({
-            url: '<?= base_url('nilai_akhir/hitung_semua') ?>',
-            method: 'POST',
-            data: {
-                <?= csrf_token() ?>: '<?= csrf_hash() ?>'
-            },
-            success: function(res) {
-                location.reload(); // atau refresh data secara dinamis
-            },
-            error: function() {
-                alert('Gagal menghitung semua nilai.');
-                btns.prop('disabled', false);
-            }
-        });
-    }
 </script>
 
 <?= $this->endSection(); ?>

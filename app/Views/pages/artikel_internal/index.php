@@ -261,10 +261,10 @@
             language: {
                 decimal: "",
                 emptyTable: "Tidak ada data artikel yang tersedia",
-                info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                info: "Menampilkan START - END dari TOTAL data",
                 infoEmpty: "Menampilkan 0 - 0 dari 0 data",
-                infoFiltered: "(difilter dari _MAX_ total data)",
-                lengthMenu: "Tampilkan _MENU_ data",
+                infoFiltered: "(difilter dari MAX total data)",
+                lengthMenu: "Tampilkan MENU data",
                 loadingRecords: "Memuat...",
                 processing: "Memproses...",
                 search: "Cari:",
