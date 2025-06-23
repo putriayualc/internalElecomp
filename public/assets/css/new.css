@@ -460,11 +460,6 @@
         opacity: 0.7;
     }
 
-    .table-responsive-wrapper {
-        border-radius: 0.5rem;
-        overflow: hidden;
-    }
-
     .datatable-wrapper .table thead th {
         border-bottom: 2px solid #dee2e6;
         font-weight: 600;

@@ -1,45 +1,93 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
 
-<div class="app-content pt-3 p-md-3 p-lg-4">
-    <div class="container-xl">
-        <h1 class="app-page-title mb-4">Tambah Hosting</h1>
+<title>Tambah Data Hosting</title>
 
-        <?php if (session()->has('error')) : ?>
-            <div class="alert alert-danger"><?= session('error') ?></div>
-        <?php endif; ?>
+<body>
+    <div class="container-fluid">
+        <div class="form-container shadow rounded">
+            <div class="form-header">
+                <h2 class="display-7 fw-bolder mb-4 text-dark">
+                    Tambah Hosting
+                </h2>
+            </div>
+            
+            <?php if (session()->has('error')) : ?>
+                <div class="alert alert-danger"><?= session('error') ?></div>
+            <?php endif; ?>
 
-        <div class="row g-4 settings-section">
-            <div class="col-12">
-                <div class="app-card app-card-settings shadow-sm p-4">
-                    <form action="<?= base_url('hosting/simpan') ?>" method="post" id="hostingForm">
-                        <?= csrf_field() ?>
-                        <div class="mb-3">
-                            <label for="hosting" class="form-label">Hosting</label>
-                            <input type="text" class="form-control" id="hosting" name="hosting" required>
+            <form action="<?= base_url('hosting/simpan') ?>" method="POST" id="hostingForm">
+                <?= csrf_field() ?>
+                <div class="row g-4">
+                    <!-- Hosting -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="hosting" name="hosting" placeholder="Hosting" required>
+                            <label for="hosting">
+                                <i class="bi bi-server me-2"></i>Hosting
+                            </label>
+                            <div class="invalid-feedback">
+                                Hosting harus diisi
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="tgl_exp_hosting" class="form-label">Exp Hosting</label>
+                    </div>
+
+                    <!-- Exp Hosting -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
                             <input type="date" class="form-control" id="tgl_exp_hosting" name="tgl_exp_hosting" required>
+                            <label for="tgl_exp_hosting">
+                                <i class="bi bi-calendar-x me-2"></i>Exp Hosting
+                            </label>
+                            <div class="invalid-feedback">
+                                Tanggal exp hosting harus dipilih
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="domain_utama" class="form-label">Domain Utama</label>
-                            <input type="text" class="form-control" id="domain_utama" name="domain_utama" required>
+                    </div>
+
+                    <!-- Domain Utama -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="domain_utama" name="domain_utama" placeholder="Domain Utama" required>
+                            <label for="domain_utama">
+                                <i class="bi bi-globe me-2"></i>Domain Utama
+                            </label>
+                            <div class="invalid-feedback">
+                                Domain utama harus diisi
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="tgl_exp_domain" class="form-label">Exp Domain</label>
+                    </div>
+
+                    <!-- Exp Domain -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
                             <input type="date" class="form-control" id="tgl_exp_domain" name="tgl_exp_domain" required>
+                            <label for="tgl_exp_domain">
+                                <i class="bi bi-calendar-x me-2"></i>Exp Domain
+                            </label>
+                            <div class="invalid-feedback">
+                                Tanggal exp domain harus dipilih
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="username_hosting" class="form-label">Username Hosting</label>
-                            <input type="text" class="form-control" id="username_hosting" name="username_hosting" required>
+                    </div>
+
+                    <!-- Username Hosting -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="username_hosting" name="username_hosting" placeholder="Username Hosting" required>
+                            <label for="username_hosting">
+                                <i class="bi bi-person me-2"></i>Username Hosting
+                            </label>
+                            <div class="invalid-feedback">
+                                Username hosting harus diisi
+                            </div>
                         </div>
                     </div>
 
                     <!-- Password Hosting -->
-                    <div class="col-12">
+                    <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="password_hosting" name="password_hosting" placeholder="Password" required>
+                            <input type="text" class="form-control" id="password_hosting" name="password_hosting" placeholder="Password Hosting" required>
                             <label for="password_hosting">
                                 <i class="bi bi-lock me-2"></i>Password Hosting
                             </label>
@@ -59,10 +107,32 @@
                             </div>
                             
                             <div id="addon-container">
-                                <div class="input-group mb-2">
-                                    <input type="text" name="add_on_domain[]" class="form-control" placeholder="Masukkan add on domain">
-                                    <input type="date" name="tgl_exp_add_domain[]" class="form-control" placeholder="Masukkan exp add on domain">
-                                    <button type="button" class="btn btn-outline-secondary btn-add-addon">Tambah</button>
+                                <div class="row mb-3 addon-entry">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="add_on_domain[0]" placeholder="Add On Domain">
+                                            <label><i class="bi bi-globe2 me-2"></i>Add On Domain</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="row mb-3 align-items-end">
+                                            <!-- Exp Add On Domain -->
+                                            <div class="col-md-9">
+                                                <div class="form-floating">
+                                                    <input type="date" class="form-control" name="tgl_exp_add_domain[0]" placeholder="Exp Add On Domain">
+                                                    <label><i class="bi bi-calendar-x me-2"></i>Exp Add On Domain</label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Tombol Tambah -->
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-info text-white w-100" onclick="tambahAddon()">
+                                                    Tambah
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -87,25 +157,94 @@
         </div>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('addon-container');
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('hostingForm');
 
-        container.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn-add-addon')) {
-                const newInputGroup = document.createElement('div');
-                newInputGroup.className = 'input-group mb-2';
-                newInputGroup.innerHTML = `
-                    <input type="text" name="add_on_domain[]" class="form-control" placeholder="Masukkan add on domain">
-                    <input type="date" name="tgl_exp_add_domain[]" class="form-control" placeholder="Masukkan Exp add on domain">
-                    <button type="button" class="btn btn-outline-danger btn-remove-addon">Hapus</button>
-                `;
-                container.appendChild(newInputGroup);
-            } else if (e.target.classList.contains('btn-remove-addon')) {
-                e.target.parentElement.remove();
+            // Pastikan form ada
+            if (form) {
+                // Form validation
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }
+
+            // Date validation
+            const tglExpHosting = document.getElementById('tgl_exp_hosting');
+            const tglExpDomain = document.getElementById('tgl_exp_domain');
+
+            if (tglExpHosting) {
+                tglExpHosting.addEventListener('change', function() {
+                    const today = new Date().toISOString().split('T')[0];
+                    if (new Date(tglExpHosting.value) <= new Date(today)) {
+                        tglExpHosting.setCustomValidity('Tanggal exp hosting harus setelah hari ini');
+                    } else {
+                        tglExpHosting.setCustomValidity('');
+                    }
+                });
+            }
+
+            if (tglExpDomain) {
+                tglExpDomain.addEventListener('change', function() {
+                    const today = new Date().toISOString().split('T')[0];
+                    if (new Date(tglExpDomain.value) <= new Date(today)) {
+                        tglExpDomain.setCustomValidity('Tanggal exp domain harus setelah hari ini');
+                    } else {
+                        tglExpDomain.setCustomValidity('');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        let addonIndex = 1;
+
+        function tambahAddon() {
+            const container = document.getElementById('addon-container');
+
+            const row = document.createElement('div');
+            row.classList.add('row', 'mb-3', 'addon-entry');
+            row.innerHTML = `
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="add_on_domain[${addonIndex}]" placeholder="Add On Domain">
+                        <label><i class="bi bi-globe2 me-2"></i>Add On Domain</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row mb-3 align-items-end">
+                        <div class="col-md-9">
+                            <div class="form-floating">
+                                <input type="date" class="form-control" name="tgl_exp_add_domain[${addonIndex}]" placeholder="Exp Add On Domain">
+                                <label><i class="bi bi-calendar-x me-2"></i>Exp Add On Domain</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-danger text-white w-100" onclick="hapusAddon(this)">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(row);
+            addonIndex++;
+        }
+
+        function hapusAddon(button) {
+            const row = button.closest('.addon-entry');
+            if (row) {
+                row.remove();
             }
         }
     </script>
+
 </body>
 
 <?= $this->endSection(); ?>

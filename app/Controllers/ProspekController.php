@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use Exception;
 use App\Models\ProspekModel;
 use App\Models\DetailProspekModel;
 
@@ -170,30 +171,52 @@ class ProspekController extends BaseController
         return redirect()->to('prospek');
     }
 
-    public function delete($id)
+    public function delete($id = null)
     {
-        $prospek = $this->prospekModel->find($id);
-
-        if (!$prospek) {
-            return redirect()->to('prospek')->with('error', 'Prospek tidak ditemukan');
+        // Pastikan request method adalah POST atau DELETE
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(404);
         }
 
         try {
-            // Hapus detail prospek terlebih dahulu (karena foreign key)
-            $this->detailProspekModel->where('id_prospek', $id)->delete();
-
-            // Kemudian hapus prospek
-            if ($this->prospekModel->delete($id)) {
-                return redirect()->to('prospek')->with('success', 'Prospek berhasil dihapus');
-            } else {
-                return redirect()->to('prospek')->with('error', 'Gagal menghapus prospek');
+            if (!$id) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'ID prospek tidak valid'
+                ]);
             }
-        } catch (\Exception $e) {
+
+            // Cek apakah prospek exists
+            $prospek = $this->prospekModel->find($id);
+            if (!$prospek) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Prospek tidak ditemukan'
+                ]);
+            }
+
+            // Hapus data prospek
+            $result = $this->prospekModel->delete($id);
+
+            if ($result) {
+                return $this->response->setJSON([
+                    'success' => true,
+                    'message' => 'Prospek berhasil dihapus'
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Gagal menghapus prospek'
+                ]);
+            }
+        } catch (Exception $e) {
             log_message('error', 'Error deleting prospek: ' . $e->getMessage());
-            return redirect()->to('prospek')->with('error', 'Terjadi kesalahan saat menghapus data');
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ]);
         }
     }
-
 
     // Detail prospek (menampilkan daftar perusahaan)
     public function detail($id_prospek)

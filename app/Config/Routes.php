@@ -195,10 +195,13 @@ $routes->group('prospek', function ($routes) {
     $routes->post('store', 'ProspekController::store', ['as' => 'prospek.store']);
     $routes->get('edit/(:num)', 'ProspekController::edit/$1', ['as' => 'prospek.edit']);
     $routes->post('update/(:num)', 'ProspekController::update/$1', ['as' => 'prospek.update']);
-    $routes->get('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
+    $routes->post('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
     $routes->get('detail/(:num)/export', 'DetailProspekController::export/$1');
     $routes->post('detail/(:num)/import', 'DetailProspekController::import/$1');
+    $routes->post('detail/delete', 'DetailProspekController::delete/$1');
     $routes->get('detail/template/download', 'DetailProspekController::downloadTemplate');
+    $routes->post('import/(:num)', 'DetailProspekController::import/$1');
+
 
     // Group untuk detail prospek
     $routes->group('(:num)/perusahaan', function ($routes) {

@@ -51,7 +51,7 @@ class DetailProspekController extends BaseController
 
         try {
             $detail_prospek = $this->detailProspekModel->where('id_prospek', $id_prospek)->findAll();
-            
+
             return $this->response->setJSON($detail_prospek);
         } catch (\Exception $e) {
             log_message('error', 'Error getting detail prospek: ' . $e->getMessage());
@@ -273,5 +273,82 @@ class DetailProspekController extends BaseController
             'success' => true,
             'data' => $detail
         ]);
+    }
+
+    public function import($id_prospek)
+    {
+        // Validasi input
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'import_file' => [
+                'rules' => 'uploaded[import_file]|ext_in[import_file,xlsx,xls]|max_size[import_file,2048]',
+                'errors' => [
+                    'uploaded' => 'Harus memilih file Excel',
+                    'ext_in' => 'Format file harus .xlsx atau .xls',
+                    'max_size' => 'Ukuran file maksimal 2MB'
+                ]
+            ]
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return $this->response->setJSON([
+                'success' => false,
+                'errors' => $validation->getErrors()
+            ]);
+        }
+
+        $file = $this->request->getFile('import_file');
+        $overwrite = $this->request->getPost('overwrite_data') == 'on';
+
+        try {
+            // Load file Excel
+            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file->getTempName());
+            $sheet = $spreadsheet->getActiveSheet();
+            $rows = $sheet->toArray();
+
+            // Hapus header
+            array_shift($rows);
+
+            // Jika opsi overwrite dipilih, hapus data lama
+            if ($overwrite) {
+                $this->detailProspekModel->where('id_prospek', $id_prospek)->delete();
+            }
+
+            // Proses setiap baris data
+            $imported = 0;
+            foreach ($rows as $row) {
+                // Skip baris kosong
+                if (empty(array_filter($row))) continue;
+
+                $data = [
+                    'id_prospek' => $id_prospek,
+                    'nama_perusahaan' => $row[0] ?? null,
+                    'alamat' => $row[1] ?? null,
+                    'email' => $row[2] ?? null,
+                    'no_hp' => $row[3] ?? null,
+                    'website' => $row[4] ?? null,
+                    'keterangan_lainnya' => $row[5] ?? null,
+                    'tanggal' => $row[6] ?? date('Y-m-d'),
+                    'status_email' => 'Belum',
+                    'status_wa' => 'Belum',
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
+
+                // Simpan ke database
+                $this->detailProspekModel->insert($data);
+                $imported++;
+            }
+
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => "Berhasil mengimpor $imported data perusahaan"
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memproses file: ' . $e->getMessage()
+            ]);
+        }
     }
 }

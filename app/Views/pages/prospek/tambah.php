@@ -1,253 +1,493 @@
 <?= $this->extend('layout/template'); ?>
-<?= $this->Section('content'); ?>
+<?= $this->section('content'); ?>
 
-<div class="app-content pt-3 p-md-3 p-lg-4">
-    <div class="container-xl">
-        <!-- Judul Halaman -->
-        <div class="row g-3 mb-4 align-items-center justify-content-between">
-            <div class="col-auto">
-                <h1 class="app-page-title mb-0">Tambah Prospek Elecomp</h1>
+<div class="container-fluid py-3">
+    <div class="rounded-3 shadow-sm mb-4"
+        style="background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
+        <div class="d-flex justify-content-between align-items-center p-4 text-white">
+            <div>
+                <h1 class="h1 fw-bold"><?= $title ?></h1>
+                <p class="text-white-70 small mb-0">Kelola data prospek perusahaan untuk pemasaran</p>
             </div>
-            <div class="col-auto">
-                <a href="<?= route_to('prospek.index') ?>" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left me-2"></i>Kembali
+
+            <div class="d-flex gap-2">
+                <a href="<?= base_url('whatsapp') ?>" class="btn btn-outline-light px-4 py-2 fs-6 d-flex align-items-center gap-2">
+                    <i class="fab fa-whatsapp"></i>
+                    <span class="d-none d-sm-inline">Prospek WhatsApp</span>
                 </a>
+
+                <a href="<?= base_url('email') ?>" class="btn btn-outline-light px-4 py-2 fs-6 d-flex align-items-center gap-2">
+                    <i class="fas fa-envelope"></i>
+                    <span class="d-none d-sm-inline">Prospek Email</span>
+                </a>
+
+                <button type="button" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addProspekModal">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    <span class="d-none d-sm-inline">Tambah Prospek</span>
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Form Card -->
-        <div class="app-card app-card-settings shadow-sm mb-4">
-            <div class="app-card-header p-3">
-                <div class="row justify-content-between align-items-center">
-                    <div class="col-auto">
-                        <h4 class="app-card-title">Formulir Prospek Baru</h4>
+    <!-- Notifikasi -->
+    <?php if (session()->has('success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?= session('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('error')) : ?>
+        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i><?= session('error') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+</div>
+
+<!-- Main Content Card -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body px-1">
+        <div class="card-header bg-white">
+            <div class="row align-items-start">
+                <div class="col">
+                    <!-- Custom Toolbar -->
+                    <div class="row" id="custom-toolbar">
+                        <div class="col-md-6 d-flex align-items-center" id="custom-length"></div>
+                        <div class="col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0" id="custom-search"></div>
                     </div>
                 </div>
             </div>
-            <div class="app-card-body p-4">
-                <form action="<?= route_to('prospek.index') ?>" method="POST">
-                    <!-- CSRF Token (untuk keamanan) -->
-                    <?= csrf_field() ?>
-                    
-                    <!-- Informasi Umum -->
-                    <div class="mb-4">
-                        <h5 class="mb-3">Informasi Umum</h5>
-                        <div class="row mb-3">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="judul" class="form-label">Judul Prospek <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="judul" name="judul" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="kategori" class="form-label">Kategori <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="kategori" name="kategori" required>
-                                        <option value="" selected disabled>Pilih Kategori</option>
-                                        <option value="1">Pengembangan Aplikasi</option>
-                                        <option value="2">Implementasi Sistem</option>
-                                        <option value="3">Instalasi Jaringan</option>
-                                        <option value="4">Konsultasi IT</option>
-                                        <option value="5">Lainnya</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-3">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="tanggal_dibuat" class="form-label">Tanggal Dibuat <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="tanggal_dibuat" name="tanggal_dibuat" value="<?= date('Y-m-d') ?>" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status Prospek <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="status" name="status" required>
-                                        <option value="" selected disabled>Pilih Status</option>
-                                        <option value="1">Potensial</option>
-                                        <option value="2">Sedang Berjalan</option>
-                                        <option value="3">Selesai</option>
-                                        <option value="4">Batal</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="deskripsi" class="form-label">Deskripsi Prospek <span class="text-danger">*</span></label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="4" required></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Informasi Klien -->
-                    <div class="mb-4">
-                        <h5 class="mb-3">Informasi Klien</h5>
-                        <div class="row mb-3">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="nama_klien" class="form-label">Nama Perusahaan/Klien <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="nama_klien" name="nama_klien" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="email_kien" class="form-label">Email Klien</label>
-                                    <input type="email" class="form-control" id="email_klien" name="email_klien">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-3">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="telepon_klien" class="form-label">Telepon Klien</label>
-                                    <input type="text" class="form-control" id="telepon_klien" name="telepon_klien">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="kontak_person" class="form-label">Nama Kontak Person</label>
-                                    <input type="text" class="form-control" id="kontak_person" name="kontak_person">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="alamat_klien" class="form-label">Alamat Klien</label>
-                                    <textarea class="form-control" id="alamat_klien" name="alamat_klien" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Detail Proyek -->
-                    <div class="mb-4">
-                        <h5 class="mb-3">Detail Proyek</h5>
-                        <div class="row mb-3">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="nilai_proyek" class="form-label">Estimasi Nilai Proyek (Rp)</label>
-                                    <input type="text" class="form-control" id="nilai_proyek" name="nilai_proyek">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="estimasi_waktu" class="form-label">Estimasi Waktu (hari)</label>
-                                    <input type="number" class="form-control" id="estimasi_waktu" name="estimasi_waktu" min="1">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-3">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="tanggal_target" class="form-label">Tanggal Target Penyelesaian</label>
-                                    <input type="date" class="form-control" id="tanggal_target" name="tanggal_target">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="prioritas" class="form-label">Prioritas</label>
-                                    <select class="form-select" id="prioritas" name="prioritas">
-                                        <option value="" selected disabled>Pilih Prioritas</option>
-                                        <option value="1">Rendah</option>
-                                        <option value="2">Sedang</option>
-                                        <option value="3">Tinggi</option>
-                                        <option value="4">Urgent</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Catatan Tambahan -->
-                    <div class="mb-4">
-                        <h5 class="mb-3">Catatan Tambahan</h5>
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="catatan" class="form-label">Catatan</label>
-                                    <textarea class="form-control" id="catatan" name="catatan" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="perlu_tindak_lanjut" name="perlu_tindak_lanjut">
-                                    <label class="form-check-label" for="perlu_tindak_lanjut">
-                                        Perlu tindak lanjut segera
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Dokumen Pendukung -->
-                    <div class="mb-4">
-                        <h5 class="mb-3">Dokumen Pendukung</h5>
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="file_dokumen" class="form-label">Upload Dokumen (opsional)</label>
-                                    <input type="file" class="form-control" id="file_dokumen" name="file_dokumen" multiple>
-                                    <div class="form-text">Format yang didukung: PDF, DOC, DOCX, XLS, XLSX (Maks. 5MB)</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Tombol Submit dan Reset -->
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="d-flex justify-content-end gap-2">
-                                <button type="reset" class="btn btn-secondary">
-                                    <i class="fas fa-undo me-1"></i> Reset
-                                </button>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save me-1"></i> Simpan Prospek
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+        </div>
+
+        <!-- DataTable Container -->
+        <div class="datatable-wrapper">
+            <div class="table-responsive">
+                <div class="table-responsive-wrapper">
+                    <table id="prospekTable" class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center border-end" style="width: 60px;">
+                                    <span class="fw-semibold">No</span>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 200px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-primary bg-opacity-10 text-primary">
+                                            <i class="fas fa-bullseye"></i>
+                                        </span>
+                                        <span class="fw-semibold">Judul Prospek</span>
+                                    </div>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 150px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-success bg-opacity-10 text-success">
+                                            <i class="fas fa-database"></i>
+                                        </span>
+                                        <span class="fw-semibold">Sumber Data</span>
+                                    </div>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 120px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-info bg-opacity-10 text-info">
+                                            <i class="fas fa-building"></i>
+                                        </span>
+                                        <span class="fw-semibold">Total Perusahaan</span>
+                                    </div>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 100px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-primary bg-opacity-10 text-primary">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <span class="fw-semibold">Email Sent</span>
+                                    </div>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 100px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-success bg-opacity-10 text-success">
+                                            <i class="fab fa-whatsapp"></i>
+                                        </span>
+                                        <span class="fw-semibold">WA Sent</span>
+                                    </div>
+                                </th>
+                                <th class="text-center border-end" style="min-width: 150px;">
+                                    <div class="d-flex align-items-center justify-content-center gap-2">
+                                        <span class="icon-circle bg-warning bg-opacity-10 text-warning">
+                                            <i class="fas fa-comments"></i>
+                                        </span>
+                                        <span class="fw-semibold">Status Komunikasi</span>
+                                    </div>
+                                </th>
+                                <th class="text-center" style="width: 120px;">
+                                    <span class="fw-semibold">Aksi</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($prospek)): ?>
+                                <?php foreach ($prospek as $index => $row): ?>
+                                    <tr>
+                                        <td class="text-center border-end">
+                                            <span class="text-muted fw-medium"><?= $index + 1 ?></span>
+                                        </td>
+                                        <td class="border-end">
+                                            <div class="d-flex align-items-center py-2">
+
+                                                <div class="flex-grow-1 min-width-0">
+                                                    <div class="mb-1">
+                                                        <a href="<?= base_url('prospek/detail/' . $row['id_prospek']) ?>"
+                                                            class="text-decoration-none text-dark fw-semibold user-name-link">
+                                                            <?= esc($row['judul']) ?>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center border-end">
+                                            <span class="text-truncate d-inline-block fw-medium" style="max-width: 150px;"
+                                                title="<?= esc($row['sumber_data']) ?>">
+                                                <?= esc($row['sumber_data']) ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center border-end">
+                                            <span class="status-badge" style="background-color: #e3f2fd; color: #1565c0; border: 1px solid #1565c0;">
+                                                <?= $row['total_perusahaan'] ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center border-end">
+                                            <span class="status-badge" style="background-color: #e8f5e8; color: #2e7d32; border: 1px solid #2e7d32;">
+                                                <?= $row['total_email_sent'] ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center border-end">
+                                            <span class="status-badge" style="background-color: #e8f5e8; color: #388e3c; border: 1px solid #388e3c;">
+                                                <?= $row['total_whatsapp_sent'] ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center border-end">
+                                            <?php
+                                            $badgeClass = match ($row['status_komunikasi']) {
+                                                'Email & WA' => 'status-badge' . ' ' . 'status-active',
+                                                'Email Only' => 'status-badge' . ' ' . 'status-completed',
+                                                'WA Only' => 'status-badge' . ' ' . 'status-completed',
+                                                default => 'status-badge' . ' ' . 'status-inactive'
+                                            };
+                                            ?>
+                                            <span class="<?= $badgeClass ?>">
+                                                <?= $row['status_komunikasi'] ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle action-btn"
+                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center text-info"
+                                                            href="<?= base_url('prospek/detail/' . $row['id_prospek']) ?>">
+                                                            <i class="fas fa-eye text-info me-2"></i>
+                                                            <span>Detail</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center text-warning"
+                                                            href="#" onclick="editProspek(<?= $row['id_prospek'] ?>)">
+                                                            <i class="fas fa-edit text-warning me-2"></i>
+                                                            <span>Edit</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center text-danger"
+                                                            href="#" onclick="hapusProspek(<?= $row['id_prospek'] ?>, '<?= esc($row['judul']) ?>')">
+                                                            <i class="fas fa-trash text-danger me-2"></i>
+                                                            <span>Hapus</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="8" class="text-center py-5">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <i class="fas fa-inbox text-muted mb-3" style="font-size: 3rem;"></i>
+                                            <h5 class="text-muted">Tidak ada data prospek</h5>
+                                            <p class="text-muted mb-0">Silakan tambah prospek baru untuk memulai</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Script untuk menangani form secara statis -->
+<!-- Modal Tambah/Edit Prospek -->
+<div class="modal fade" id="addProspekModal" tabindex="-1" aria-labelledby="addProspekModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-semibold" id="addProspekModalLabel">
+                    <i class="fas fa-plus-circle me-2"></i> Tambah Prospek
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="prospekForm">
+                <div class="modal-body">
+                    <input type="hidden" id="prospek_id" name="prospek_id">
+                    <div class="mb-3">
+                        <label for="judul" class="form-label fw-semibold">
+                            Judul Prospek <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="judul" name="judul" required
+                            placeholder="Masukkan judul prospek">
+                        <div class="invalid-feedback" id="error-judul"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sumber_data" class="form-label fw-semibold">
+                            Sumber Data <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="sumber_data" name="sumber_data" required
+                            placeholder="Masukkan sumber data">
+                        <div class="invalid-feedback" id="error-sumber_data"></div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-semibold" id="modalHapusLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i> Konfirmasi Hapus
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">Apakah Anda yakin ingin menghapus prospek <strong id="namaProspekHapus"></strong>?</p>
+                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <small>Semua data detail perusahaan dalam prospek ini juga akan terhapus!</small>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Batal
+                </button>
+                <button type="button" class="btn btn-danger" id="btnKonfirmasiHapus">
+                    <i class="fas fa-trash me-1"></i> Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Hilangkan semua indikator sorting pada header tabel */
+    #prospekTable thead th {
+        cursor: default !important;
+    }
+
+    #prospekTable thead th:hover {
+        background-color: inherit !important;
+    }
+
+    /* Hilangkan ikon sorting DataTables */
+    table.dataTable thead th,
+    table.dataTable thead td {
+        border-bottom: 1px solid #ddd;
+    }
+
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc,
+    table.dataTable thead .sorting_asc_disabled,
+    table.dataTable thead .sorting_desc_disabled {
+        background-image: none !important;
+        cursor: default !important;
+    }
+
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_desc:after {
+        display: none !important;
+    }
+
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_desc:before {
+        display: none !important;
+    }
+</style>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form');
-    
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Validasi sederhana
-        const judul = document.getElementById('judul').value;
-        const kategori = document.getElementById('kategori').value;
-        const deskripsi = document.getElementById('deskripsi').value;
-        const namaKlien = document.getElementById('nama_klien').value;
-        
-        if (!judul || !kategori || !deskripsi || !namaKlien) {
-            alert('Mohon lengkapi semua field yang wajib diisi (bertanda *)');
-            return;
-        }
-        
-        // Redirect ke halaman daftar dengan parameter success
-        window.location.href = '<?= route_to('prospek.index') ?>?status=success&message=Data+prospek+berhasil+disimpan';
+    // Ganti JavaScript yang ada di file HTML dengan kode ini:
+
+    $(document).ready(function() {
+        // Handle form submission
+        $('#prospekForm').on('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const prospekId = $('#prospek_id').val();
+            const url = prospekId ? '<?= base_url('prospek/update') ?>/' + prospekId : '<?= base_url('prospek/store') ?>';
+
+            // Clear previous errors
+            $('.form-control').removeClass('is-invalid');
+            $('.invalid-feedback').text('');
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        $('#addProspekModal').modal('hide');
+                        location.reload();
+                    } else {
+                        if (response.errors) {
+                            // Display validation errors
+                            $.each(response.errors, function(field, message) {
+                                $('#' + field).addClass('is-invalid');
+                                $('#error-' + field).text(message);
+                            });
+                        }
+                        alert(response.message || 'Terjadi kesalahan');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan pada server');
+                }
+            });
+        });
+
+        // Reset form when modal is closed
+        $('#addProspekModal').on('hidden.bs.modal', function() {
+            $('#prospekForm')[0].reset();
+            $('#prospek_id').val('');
+            $('#addProspekModalLabel').text('Tambah Prospek');
+            $('.form-control').removeClass('is-invalid');
+            $('.invalid-feedback').text('');
+        });
+
+        // Search functionality
+        $('#searchData').on('keyup', function() {
+            const value = $(this).val().toLowerCase();
+            $('table tbody tr').filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
     });
-});
+
+    // Edit function
+    function editProspek(id) {
+        $.ajax({
+            url: '<?= base_url('prospek/edit') ?>/' + id,
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    $('#prospek_id').val(response.data.id_prospek);
+                    $('#judul').val(response.data.judul);
+                    $('#sumber_data').val(response.data.sumber_data);
+                    $('#addProspekModalLabel').text('Edit Prospek');
+                    $('#addProspekModal').modal('show');
+                } else {
+                    alert(response.message || 'Terjadi kesalahan');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan pada server');
+            }
+        });
+    }
+
+    // FUNGSI DELETE YANG DIPERBAIKI
+    function hapusProspek(id, judul) {
+        $('#namaProspekHapus').text(judul);
+        $('#modalHapus').modal('show');
+
+        // Set event handler untuk tombol konfirmasi hapus
+        $('#btnKonfirmasiHapus').off('click').on('click', function() {
+            hapusProspekKonfirmasi(id);
+        });
+    }
+
+    function hapusProspekKonfirmasi(id) {
+        // Show loading
+        $('#loadingOverlay').show();
+
+        $.ajax({
+            url: '<?= base_url('prospek/delete') ?>/' + id,
+            type: 'POST', // UBAH KE POST
+            dataType: 'json',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                $('#loadingOverlay').hide();
+                $('#modalHapus').modal('hide');
+
+                if (response.success) {
+                    alert('Prospek berhasil dihapus');
+                    window.location.reload();
+                } else {
+                    alert(response.message || 'Gagal menghapus prospek');
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#loadingOverlay').hide();
+                $('#modalHapus').modal('hide');
+
+                console.error('Error:', error);
+                console.log('Status:', status);
+                console.log('Response:', xhr.responseText);
+
+                let errorMessage = 'Terjadi kesalahan pada server';
+                try {
+                    const errorResponse = JSON.parse(xhr.responseText);
+                    if (errorResponse.message) {
+                        errorMessage = errorResponse.message;
+                    }
+                } catch (e) {
+                    // Jika tidak bisa parse JSON, gunakan pesan default
+                }
+
+                alert(errorMessage);
+            }
+        });
+    }
 </script>
 
-<?= $this->endSection('content') ?>
+<?= $this->endSection();?>

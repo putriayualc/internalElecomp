@@ -12,12 +12,14 @@ class HostingModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['hosting', 'tgl_exp_hosting', 'domain_utama', 'tgl_exp_domain', 'username_hosting', 'password_hosting'];
+    protected $allowedFields    = ['hosting', 'tgl_exp_hosting', 'domain_utama', 'tgl_exp_domain', 'username_hosting', 'password_hosting', 'tgl_exp_add_domain'];
 
     //Join dengan tb_domains
     public function getAllWithAddon()
     {
-        return $this->select('tb_hosting.*, GROUP_CONCAT(tb_domains.add_on_domain SEPARATOR ", ") as add_on_domain')
+        return $this->select('tb_hosting.*, 
+                             GROUP_CONCAT(tb_domains.add_on_domain SEPARATOR ", ") as add_on_domain,
+                             GROUP_CONCAT(tb_domains.tgl_exp_add_domain SEPARATOR ", ") as tgl_exp_add_domain')
             ->join('tb_domains', 'tb_domains.id_hosting = tb_hosting.id_hosting', 'left')
             ->groupBy('tb_hosting.id_hosting')
             ->findAll();
@@ -43,7 +45,7 @@ class HostingModel extends Model
             ->getResultArray();
     }
 
-public function getHostingWithAddonCount()
+    public function getHostingWithAddonCount()
     {
         return $this->db->table('tb_hosting')
             ->select('tb_hosting.id_hosting, tb_hosting.domain_utama, COUNT(tb_domains.id_domains) as total_addon')

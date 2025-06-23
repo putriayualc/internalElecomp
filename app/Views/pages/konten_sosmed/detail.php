@@ -1,88 +1,49 @@
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('css') ?>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
 <style>
-    .container {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1rem;
+    /* ----- Variabel & Gaya Dasar ----- */
+    :root {
+        --primary-color: #00b8f1; /* Diubah agar sesuai dengan gradien baru */
+        --secondary-color: #006b94; /* Diubah agar sesuai dengan gradien baru */
+        --bg-color: #f4f7fc;
+        --card-bg-color: #ffffff;
+        --text-color: #4f5d75;
+        --heading-color: #2d3748;
+        --border-color: #e2e8f0;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+        --font-family: 'Poppins', sans-serif;
     }
 
-    /* === HEADER SECTION === */
-    .header-card {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        border-radius: 16px;
+    body {
+        font-family: var(--font-family);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
+    .detail-container {
         padding: 2rem;
-        margin-bottom: 2rem;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+        max-width: 1400px;
+        margin: auto;
     }
 
-    .header-card::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-        pointer-events: none;
-    }
-
-    .back-button {
-        position: absolute;
-        top: 1.5rem;
-        left: 1.5rem;
-        background: rgba(255, 255, 255, 0.15);
-        color: white;
-        padding: 0.75rem 1.25rem;
-        border-radius: 50px;
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .back-button:hover {
-        background: rgba(255, 255, 255, 0.25);
-        color: white;
-        text-decoration: none;
-        transform: translateY(-2px);
-    }
-
-    .header-content {
-        text-align: center;
-        position: relative;
-        z-index: 1;
-    }
-
-    .header-content h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 0.5rem;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .business-name {
-        font-size: 1.25rem;
-        color: rgba(255, 255, 255, 0.9);
-        font-weight: 500;
-    }
-
-    /* === MAIN LAYOUT === */
+    /* ----- Layout Grid Utama ----- */
     .content-grid {
         display: grid;
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: 1fr;
         gap: 2rem;
-        align-items: start;
+    }
+
+    @media (min-width: 1024px) {
+        .content-grid {
+            grid-template-columns: 2fr 1fr;
+        }
     }
 
     .main-content {
@@ -91,190 +52,123 @@
         gap: 2rem;
     }
 
-    /* === COVER IMAGE === */
-    .cover-section {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e2e8f0;
-    }
-
-    .cover-image {
-        width: 100%;
-        height: 350px;
-        border-radius: 12px;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .cover-image:hover {
-        transform: scale(1.02);
-    }
-
-    /* === CAPTION SECTION === */
-    .caption-card {
-        background: white;
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e2e8f0;
-    }
-
-    .caption-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .caption-header i {
-        color: #3b82f6;
-        font-size: 1.25rem;
-    }
-
-    .caption-header h3 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #1e293b;
-    }
-
-    .caption-text {
-        font-size: 1.1rem;
-        line-height: 1.7;
-        color: #475569;
-    }
-
-    /* === GALLERY SECTION === */
-    .gallery-card {
-        background: white;
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e2e8f0;
-    }
-
-    .gallery-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .gallery-header i {
-        color: #3b82f6;
-        font-size: 1.25rem;
-    }
-
-    .gallery-header h4 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #1e293b;
-    }
-
-    .gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 1rem;
-    }
-
-    .gallery-item {
-        position: relative;
-        aspect-ratio: 9/16;
-        border-radius: 12px;
-        overflow: hidden;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .gallery-item:hover {
-        transform: translateY(-4px);
-    }
-
-    .gallery-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .video-overlay {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.8);
+    /* ----- Header Section (DIPERBARUI) ----- */
+    .header-card {
+        background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1611926653458-09294b3142bf?auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        border-radius: 0.5rem; /* Mirip .rounded-3 */
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Mirip .shadow-sm */
+        margin-bottom: 2rem;
         color: white;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
+    }
+
+    .header-content {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-        backdrop-filter: blur(5px);
+        padding: 1.5rem; /* Mirip .p-4 */
+    }
+    
+    .header-content h1 {
+        margin: 0;
+        font-weight: 700; /* Mirip .fw-bold */
+        font-size: 2.25rem;
     }
 
-    /* === SIDEBAR === */
-    .sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        position: sticky;
-        top: 2rem;
-    }
 
-    .info-card {
-        background: white;
-        border-radius: 16px;
+    /* ----- Gaya Kartu Umum ----- */
+    .styled-card {
+        background-color: var(--card-bg-color);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px var(--shadow-color);
         padding: 1.5rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e2e8f0;
-        transition: all 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .info-card:hover {
-        transform: translateY(-2px);
+    .styled-card:hover {
+        transform: translateY(-5px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
     }
 
     .card-header {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1.25rem;
+        gap: 0.8rem;
+        margin-bottom: 1.2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--heading-color);
     }
-
+    
     .card-header i {
-        color: #3b82f6;
-        font-size: 1.125rem;
+        font-size: 1.2rem;
+        color: var(--primary-color);
     }
 
-    .card-header h4 {
-        font-size: 1.25rem;
+    .card-header h3, .card-header h4 {
+        margin: 0;
         font-weight: 600;
-        color: #1e293b;
+        font-size: 1.2rem;
     }
 
-    /* === DATE CARD === */
-    .upload-date {
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white;
-        padding: 1rem 1.5rem;
+    /* ----- Konten Utama ----- */
+    .cover-section .cover-image {
+        width: 100%;
+        height: auto;
         border-radius: 12px;
-        font-weight: 600;
-        text-align: center;
-        margin-bottom: 0.75rem;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        object-fit: cover;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .caption-card .caption-text {
+        line-height: 1.8;
+        font-style: italic;
     }
 
-    .upload-time {
-        color: #64748b;
-        font-size: 0.9rem;
+    /* ----- Galeri ----- */
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+
+    .gallery-item {
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+    
+    .gallery-item:hover {
+        transform: scale(1.05);
+    }
+    
+    .gallery-item img, .gallery-item video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* ----- Sidebar ----- */
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        position: sticky;
+        top: 2rem;
+    }
+    
+    .upload-date {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--heading-color);
         text-align: center;
     }
 
-    /* === PLATFORM CARDS === */
+    /* ----- Platform Media Sosial ----- */
     .platform-list {
         display: flex;
         flex-direction: column;
@@ -285,231 +179,183 @@
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding: 1rem;
-        background: #f8fafc;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        border: 1px solid #e2e8f0;
-    }
-
-    .platform-item:hover {
-        background: #f1f5f9;
-        transform: translateX(4px);
     }
 
     .platform-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.25rem;
         flex-shrink: 0;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: white;
+        font-size: 1.4rem;
     }
-
-    .instagram {
-        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    }
-
-    .tiktok {
-        background: #000000;
-    }
-
-    .facebook {
-        background: #1877f2;
-    }
-
-    .twitter {
-        background: #1da1f2;
-    }
-
+    
+    /* Warna Khas Platform */
+    .platform-icon.instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+    .platform-icon.facebook { background: #1877F2; }
+    .platform-icon.twitter { background: #1DA1F2; }
+    .platform-icon.tiktok { background: #000000; }
+    .platform-icon.youtube { background: #FF0000; }
+    .platform-icon.linkedin { background: #0A66C2; }
+    
     .platform-info h5 {
-        font-weight: 600;
-        color: #1e293b;
-        margin-bottom: 0.25rem;
+        margin: 0 0 2px 0;
         font-size: 1rem;
+        font-weight: 600;
+        color: var(--heading-color);
     }
 
     .platform-info span {
-        color: #64748b;
         font-size: 0.9rem;
+        color: var(--text-color);
     }
-
-    /* === STATS SECTION === */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
+    
+    /* ----- Tombol Kembali ----- */
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.8rem 1.5rem;
+        background: var(--card-bg-color);
+        color: var(--secondary-color);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
         margin-top: 1rem;
+        align-self: flex-start;
     }
 
-    .stat-item {
-        text-align: center;
-        padding: 1rem;
-        background: #f8fafc;
+    .back-button:hover {
+        background: var(--secondary-color);
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 107, 148, 0.4);
+    }
+
+    /* ----- Lightbox (Popup Media) ----- */
+    .media-lightbox {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        backdrop-filter: blur(8px);
+    }
+
+    .media-lightbox.show {
+        opacity: 1;
+    }
+
+    .media-lightbox-content {
+        max-width: 90vw;
+        max-height: 90vh;
+        object-fit: contain;
         border-radius: 12px;
-        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        transform: scale(0.8);
+        transition: transform 0.4s ease;
+    }
+
+    .media-lightbox.show .media-lightbox-content {
+        transform: scale(1);
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 2rem; right: 2rem;
+        background: rgba(255,255,255,0.1);
+        color: white;
+        border: none;
+        width: 45px; height: 45px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
         transition: all 0.3s ease;
     }
 
-    .stat-item:hover {
-        background: #f1f5f9;
-        transform: translateY(-2px);
+    .lightbox-close:hover {
+        background: rgba(255,255,255,0.3);
+        transform: rotate(90deg);
     }
 
-    .stat-number {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: #3b82f6;
-        display: block;
-        margin-bottom: 0.25rem;
-    }
-
-    .stat-label {
-        color: #64748b;
-        font-size: 0.9rem;
-        font-weight: 500;
-    }
-
-    /* === RESPONSIVE DESIGN === */
-    @media (max-width: 768px) {
-        .container {
-            margin: 1rem auto;
-            padding: 0 0.75rem;
-        }
-
-        .header-card {
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .header-content h1 {
-            font-size: 2rem;
-        }
-
-        .back-button {
-            position: static;
-            margin-bottom: 1rem;
-            align-self: flex-start;
-        }
-
-        .content-grid {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        .gallery-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .stats-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-        }
-
-        .stat-item {
-            padding: 0.75rem;
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .header-content h1 {
-            font-size: 1.75rem;
-        }
-
-        .business-name {
-            font-size: 1.1rem;
-        }
-
-        .gallery-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
-
-        .stats-grid {
-            grid-template-columns: 1fr;
-            gap: 0.75rem;
-        }
-    }
 </style>
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
-<div class="container">
-    <!-- Header Section -->
+<div class="detail-container">
     <div class="header-card">
         <div class="header-content">
-            <h1><?= $konten['judul'] ?></h1>
-        </div>
+            <div>
+                 <h1><?= $konten['judul'] ?></h1>
+            </div>
+            </div>
     </div>
 
-    <!-- Main Content Grid -->
     <div class="content-grid">
-        <!-- Main Content -->
         <div class="main-content">
-            <!-- Cover Image -->
             <div class="cover-section">
                 <img src="<?= base_url('assets/sosmed/cover/' . $konten['cover']) ?>"
-                    alt="Cover Image" class="cover-image">
+                     alt="Cover Image" class="cover-image">
             </div>
 
-            <!-- Caption Section -->
-            <div class="caption-card">
-                <div class="caption-header">
+            <div class="caption-card styled-card">
+                <div class="card-header">
                     <i class="fas fa-quote-left"></i>
                     <h3>Caption</h3>
                 </div>
                 <div class="caption-text">
-                    <?= $konten['caption'] ?>
+                    <?= nl2br($konten['caption']) /* nl2br untuk menjaga format baris baru */ ?>
                 </div>
             </div>
 
-            <!-- Gallery Section -->
-            <div class="gallery-card">
-                <div class="gallery-header">
+            <div class="gallery-card styled-card">
+                <div class="card-header">
                     <i class="fas fa-images"></i>
                     <h4>Konten yang Diupload</h4>
                 </div>
                 <div class="gallery-grid">
-                    <div class="gallery-grid">
-                        <?php foreach ($konten['detail_konten'] as $detail): ?>
-                            <?php if ($detail['tipe_media'] === 'foto'): ?>
-                                <div class="gallery-item">
-                                    <img src="<?= base_url('assets/sosmed/konten/' . $detail['media']) ?>" alt="Foto Konten">
-                                </div>
-                            <?php elseif ($detail['tipe_media'] === 'video'): ?>
-                                <div class="gallery-item">
-                                    <video controls style="max-width: 100%; border-radius: 12px;">
-                                        <source src="<?= base_url('assets/sosmed/konten/' . $detail['media']) ?>" type="video/mp4">
-                                        Browser tidak mendukung video.
-                                    </video>
-                                </div>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </div>
+                    <?php foreach ($konten['detail_konten'] as $detail): ?>
+                        <?php if ($detail['tipe_media'] === 'foto'): ?>
+                            <div class="gallery-item" data-media-type="image" data-media-src="<?= base_url('assets/sosmed/konten/' . $detail['media']) ?>">
+                                <img src="<?= base_url('assets/sosmed/konten/' . $detail['media']) ?>" alt="Foto Konten">
+                            </div>
+                        <?php elseif ($detail['tipe_media'] === 'video'): ?>
+                            <div class="gallery-item" data-media-type="video" data-media-src="<?= base_url('assets/sosmed/konten/' . $detail['media']) ?>">
+                                <video>
+                                    <source src="<?= base_url('assets/sosmed/konten/' . $detail['media']) ?>" type="video/mp4">
+                                </video>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
+            
+            <a href="<?= route_to('konten.index') ?>" class="back-button">
+                <i class="fas fa-arrow-left"></i> Kembali ke Daftar Konten
+            </a>
         </div>
 
-        <!-- Sidebar -->
         <div class="sidebar">
-            <!-- Date Card -->
-            <div class="info-card">
+            <div class="info-card styled-card">
                 <div class="card-header">
                     <i class="fas fa-calendar-alt"></i>
                     <h4>Tanggal Upload</h4>
                 </div>
-                <div class="upload-date"><?= $konten['tgl_upload'] ?></div>
+                <div class="upload-date"><?= date('d F Y', strtotime($konten['tgl_upload'])) ?></div>
             </div>
 
-            <!-- Platform Card -->
-            <div class="info-card">
+            <div class="info-card styled-card">
                 <div class="card-header">
                     <i class="fas fa-share-alt"></i>
                     <h4>Platform Media Sosial</h4>
@@ -517,146 +363,111 @@
                 <div class="platform-list">
                     <?php foreach ($konten['sosmed'] as $sosmed) : ?>
                         <div class="platform-item">
-                            <div class="platform-icon <?= $sosmed['platform']?>">
-                                <i class="fab fa-<?= $sosmed['platform']?>"></i>
+                            <div class="platform-icon <?= strtolower($sosmed['platform']) ?>">
+                                <i class="fab fa-<?= strtolower($sosmed['platform']) ?>"></i>
                             </div>
                             <div class="platform-info">
-                                <h5><?= $sosmed['platform']?></h5>
-                                <span>@<?= $sosmed['username']?></span>
+                                <h5><?= ucfirst($sosmed['platform']) ?></h5>
+                                <span>@<?= $sosmed['username'] ?></span>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
             </div>
+            
+            <?php if(isset($konten['bisnis'])): ?>
+            <div class="info-card styled-card">
+                <div class="card-header">
+                    <i class="fas fa-briefcase"></i>
+                    <h4>Jenis Bisnis</h4>
+                </div>
+                <div class="platform-item">
+                    <div class="platform-icon" style="background: #6a11cb;">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="platform-info">
+                        <h5><?= $konten['bisnis']['nama_bisnis'] ?></h5>
+                        <span><?= $konten['bisnis']['deskripsi'] ?></span>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Lightbox functionality untuk gallery
-        const galleryItems = document.querySelectorAll('.gallery-item');
+document.addEventListener('DOMContentLoaded', function() {
+    const galleryItems = document.querySelectorAll('.gallery-item');
 
-        galleryItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const img = this.querySelector('img');
-                if (!img) return;
+    galleryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const mediaType = this.dataset.mediaType;
+            const mediaSrc = this.dataset.mediaSrc;
 
-                // Create lightbox
-                const lightbox = document.createElement('div');
-                lightbox.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0,0,0,0.95);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 9999;
-                    cursor: pointer;
-                    opacity: 0;
-                    transition: opacity 0.3s ease;
-                `;
+            if (!mediaType || !mediaSrc) return;
 
-                // Create image
-                const lightboxImg = document.createElement('img');
-                lightboxImg.src = img.src;
-                lightboxImg.alt = img.alt;
-                lightboxImg.style.cssText = `
-                    max-width: 90%;
-                    max-height: 90%;
-                    object-fit: contain;
-                    border-radius: 12px;
-                    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-                    transform: scale(0.8);
-                    transition: transform 0.3s ease;
-                `;
+            // --- Create Lightbox Elements ---
+            const lightbox = document.createElement('div');
+            lightbox.className = 'media-lightbox';
 
-                // Create close button
-                const closeBtn = document.createElement('button');
-                closeBtn.innerHTML = '<i class="fas fa-times"></i>';
-                closeBtn.style.cssText = `
-                    position: absolute;
-                    top: 2rem;
-                    right: 2rem;
-                    background: rgba(255,255,255,0.2);
-                    color: white;
-                    border: none;
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    backdrop-filter: blur(10px);
-                    transition: all 0.3s ease;
-                `;
+            let lightboxMedia;
+            if (mediaType === 'image') {
+                lightboxMedia = document.createElement('img');
+                lightboxMedia.src = mediaSrc;
+            } else {
+                lightboxMedia = document.createElement('video');
+                lightboxMedia.src = mediaSrc;
+                lightboxMedia.controls = true;
+                lightboxMedia.autoplay = true;
+            }
+            lightboxMedia.className = 'media-lightbox-content';
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'lightbox-close';
+            closeBtn.innerHTML = '<i class="fas fa-times"></i>';
 
-                // Add elements to lightbox
-                lightbox.appendChild(lightboxImg);
-                lightbox.appendChild(closeBtn);
-                document.body.appendChild(lightbox);
+            // --- Append Elements ---
+            lightbox.appendChild(lightboxMedia);
+            lightbox.appendChild(closeBtn);
+            document.body.appendChild(lightbox);
+            
+            // --- Show with Animation ---
+            requestAnimationFrame(() => {
+                lightbox.classList.add('show');
+            });
 
-                // Animate in
-                requestAnimationFrame(() => {
-                    lightbox.style.opacity = '1';
-                    lightboxImg.style.transform = 'scale(1)';
-                });
-
-                // Close functionality
-                const closeLightbox = () => {
-                    lightbox.style.opacity = '0';
-                    lightboxImg.style.transform = 'scale(0.8)';
-                    setTimeout(() => {
-                        if (lightbox.parentNode) {
-                            document.body.removeChild(lightbox);
-                        }
-                    }, 300);
-                };
-
-                lightbox.addEventListener('click', closeLightbox);
-                closeBtn.addEventListener('click', closeLightbox);
-
-                // Close on escape key
-                const handleEscape = (e) => {
-                    if (e.key === 'Escape') {
-                        closeLightbox();
-                        document.removeEventListener('keydown', handleEscape);
+            // --- Close Functionality ---
+            const closeLightbox = () => {
+                lightbox.classList.remove('show');
+                lightbox.addEventListener('transitionend', () => {
+                    if (lightbox.parentNode) {
+                        document.body.removeChild(lightbox);
                     }
-                };
-                document.addEventListener('keydown', handleEscape);
+                    document.removeEventListener('keydown', handleEscape);
+                }, { once: true });
+            };
 
-                // Prevent image click from closing lightbox
-                lightboxImg.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                });
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+            
+            closeBtn.addEventListener('click', closeLightbox);
+
+            const handleEscape = (e) => {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                }
+            };
+            document.addEventListener('keydown', handleEscape);
+            
+            lightboxMedia.addEventListener('click', (e) => {
+                e.stopPropagation();
             });
         });
-
-        // Enhanced hover effects for cards
-        const cards = document.querySelectorAll('.info-card, .gallery-item, .platform-item, .stat-item');
-
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-            });
-        });
-
-        // Smooth scroll for back button
-        const backButton = document.querySelector('.back-button');
-        if (backButton) {
-            backButton.addEventListener('click', function(e) {
-                // Add smooth transition effect if needed
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 150);
-            });
-        }
     });
+});
 </script>
 <?= $this->endSection(); ?>
