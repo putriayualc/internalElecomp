@@ -24,6 +24,27 @@
 
         </div>
     </div>
+    <!-- Notifikasi -->
+    <?php if (session()->has('success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?= session('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('edit_success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?= session('edit_success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('delete_success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-trash me-2"></i><?= session('delete_success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
 </div>
 
 

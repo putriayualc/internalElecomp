@@ -456,12 +456,6 @@
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                     <li>
-                                                        <a class="dropdown-item d-flex align-items-center text-info"
-                                                            href="<?= route_to('sosmed.detail', $sosmed['id_sosmed']) ?>">
-                                                            <i class="fas fa-eye text-info me-2"></i> <span>Detail</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
                                                         <a class="dropdown-item d-flex align-items-center text-primary"
                                                             href="<?= route_to('sosmed.edit', $sosmed['id_sosmed']) ?>">
                                                             <i class="fas fa-edit text-primary me-2"></i> <span>Edit</span>
@@ -515,11 +509,11 @@
                         <?php
                         $iconClass = '';
                         switch (strtolower($sosmed['platform'])) {
-                            case 'fb':
+                            case 'facebook':
                                 $iconClass = 'fab fa-facebook';
                                 break;
-                            case 'ig':
-                                $iconClass = 'fab fa-instagram';
+                            case 'instagram':
+                                $iconClass = 'fab fa-instagram'; // Dibuat konsisten menggunakan fab
                                 break;
                             case 'linkedin':
                                 $iconClass = 'fab fa-linkedin';

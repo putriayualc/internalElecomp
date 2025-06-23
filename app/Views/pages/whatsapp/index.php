@@ -8,7 +8,7 @@
         <div class="d-flex justify-content-between align-items-center p-4 text-white">
             <div>
                 <h1 class="h1 fw-bold"><i class="fab fa-whatsapp me-2"></i><?= $title ?></h1>
-                <p class="text-white-70 small mb-0">Kelola data prospek WhatsApp untuk pemasaran</p>
+                <p class="text-white-70 small mb-0">Kelola data prospek Whatsapp untuk pemasaran</p>
             </div>
 
             <div class="d-flex gap-2">
@@ -19,26 +19,11 @@
 
                 <button type="button" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addProspekWhatsappModal">
                     <i class="fas fa-plus-circle me-2"></i>
-                    <span class="d-none d-sm-inline">Tambah Prospek WhatsApp</span>
+                    <span class="d-none d-sm-inline">Tambah Prospek Whatsapp</span>
                 </button>
             </div>
         </div>
     </div>
-
-    <!-- Notifikasi -->
-    <?php if (session()->has('success')) : ?>
-        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-            <i class="fas fa-check-circle me-2"></i><?= session('success') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
-
-    <?php if (session()->has('error')) : ?>
-        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-            <i class="fas fa-exclamation-circle me-2"></i><?= session('error') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
 </div>
 
 <!-- Main Content Card -->
@@ -48,12 +33,12 @@
             <div class="row align-items-start">
                 <div class="col">
                     <h5 class="card-title mb-0">
-                        <i class="fas fa-list me-2"></i>Prospek yang Sudah Dikirim WhatsApp
+                        <i class="fas fa-list me-2"></i>Prospek yang Sudah Dikirim Whatsapp
                     </h5>
                 </div>
                 <div class="col-auto">
                     <div class="input-group">
-                        <input type="text" class="form-control form-control-sm" placeholder="Cari prospek WhatsApp..." id="searchWhatsappData">
+                        <input type="text" class="form-control form-control-sm" placeholder="Cari prospek Whatsapp..." id="searchWhatsappData">
                         <button class="btn btn-primary btn-sm" type="button">
                             <i class="fas fa-search"></i>
                         </button>
@@ -172,8 +157,8 @@
                             <td colspan="6" class="text-center py-5">
                                 <div class="d-flex flex-column align-items-center">
                                     <i class="fab fa-whatsapp text-muted mb-3" style="font-size: 3rem;"></i>
-                                    <h5 class="text-muted">Belum ada prospek yang dikirim WhatsApp</h5>
-                                    <p class="text-muted mb-0">Silakan tambah prospek WhatsApp baru untuk memulai</p>
+                                    <h5 class="text-muted">Belum ada prospek yang dikirim Whatsapp</h5>
+                                    <p class="text-muted mb-0">Silakan tambah prospek Whatsapp baru untuk memulai</p>
                                 </div>
                             </td>
                         </tr>
@@ -184,12 +169,12 @@
     </div>
 </div>
 
-<!-- Prospek yang tersedia untuk dikirim WhatsApp -->
+<!-- Prospek yang tersedia untuk dikirim Whatsapp -->
 <div class="card border-0 shadow-sm">
     <div class="card-body px-1">
         <div class="card-header bg-white">
             <h5 class="card-title mb-0">
-                <i class="fas fa-paper-plane me-2"></i>Prospek Tersedia untuk WhatsApp
+                <i class="fas fa-paper-plane me-2"></i>Prospek Tersedia untuk Whatsapp
             </h5>
         </div>
 
@@ -225,7 +210,7 @@
                 <div class="text-center py-5">
                     <div class="d-flex flex-column align-items-center">
                         <i class="fas fa-check-circle text-muted mb-3" style="font-size: 3rem;"></i>
-                        <h5 class="text-muted">Semua prospek sudah dikirim WhatsApp</h5>
+                        <h5 class="text-muted">Semua prospek sudah dikirim Whatsapp</h5>
                         <p class="text-muted mb-0">Tidak ada prospek dengan No. HP yang valid tersedia</p>
                     </div>
                 </div>
@@ -234,13 +219,13 @@
     </div>
 </div>
 
-<!-- Modal Tambah Prospek WhatsApp -->
+<!-- Modal Tambah Prospek Whatsapp -->
 <div class="modal fade" id="addProspekWhatsappModal" tabindex="-1" aria-labelledby="addProspekWhatsappModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-info text-white">
                 <h5 class="modal-title fw-semibold" id="addProspekWhatsappModalLabel">
-                    <i class="fab fa-whatsapp me-2"></i>Tambah Prospek WhatsApp
+                    <i class="fab fa-whatsapp me-2"></i>Tambah Prospek Whatsapp
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -287,7 +272,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="pesan" class="form-label fw-semibold">Pesan WhatsApp <span class="text-danger">*</span></label>
+                            <label for="pesan" class="form-label fw-semibold">Pesan Whatsapp <span class="text-danger">*</span></label>
                             <textarea class="form-control" id="pesan" name="pesan" rows="5"
                                 placeholder="Tulis pesan yang akan dikirim ke perusahaan..." required></textarea>
                             <div class="form-text">Minimal 10 karakter</div>
@@ -297,8 +282,8 @@
                         <div class="mb-3">
                             <label for="status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
                             <select class="form-select" id="status" name="status" required>
-                                <option value="pending" selected>Pending</option>
-                                <option value="terkirim">Terkirim</option>
+                                <option value="pending">Pending</option>
+                                <option value="terkirim" selected>Terkirim</option>
                                 <option value="gagal">Gagal</option>
                             </select>
                         </div>
@@ -315,7 +300,7 @@
                             <div>
                                 <span class="me-2" id="selectedCount">0 perusahaan dipilih</span>
                                 <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
-                                    <i class="fab fa-whatsapp me-2"></i>Tambah ke Prospek WhatsApp
+                                    <i class="fab fa-whatsapp me-2"></i>Tambah ke Prospek Whatsapp
                                 </button>
                             </div>
                         </div>
@@ -337,10 +322,10 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="mb-2">Apakah Anda yakin ingin menghapus prospek WhatsApp <strong id="namaProspekHapus"></strong>?</p>
+                <p class="mb-2">Apakah Anda yakin ingin menghapus prospek Whatsapp <strong id="namaProspekHapus"></strong>?</p>
                 <div class="alert alert-warning d-flex align-items-center" role="alert">
                     <i class="fas fa-exclamation-triangle me-2"></i>
-                    <small>Semua riwayat WhatsApp terkait prospek ini juga akan terhapus!</small>
+                    <small>Semua riwayat Whatsapp terkait prospek ini juga akan terhapus!</small>
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
@@ -453,32 +438,29 @@
             });
         });
 
-        // --- TAMBAHKAN EVENT LISTENER UNTUK TOMBOL HAPUS ---
+        // Event listener untuk tombol hapus
         $('.table').on('click', '.btn-hapus', function(e) {
-            e.preventDefault(); // Mencegah link berpindah halaman
-
-            // Ambil data dari atribut data-*
+            e.preventDefault();
             const prospekId = $(this).data('id');
             const prospekJudul = $(this).data('judul');
-
-            // Panggil fungsi untuk menampilkan modal
             tampilkanModalHapus(prospekId, prospekJudul);
         });
 
-        // Fungsi ini sekarang bisa berada di dalam document.ready
+        // Fungsi untuk menampilkan modal hapus
         function tampilkanModalHapus(id, judul) {
             $('#namaProspekHapus').text(judul);
             $('#modalHapus').modal('show');
 
-            // Atur event untuk tombol konfirmasi HANYA SEKALI
+            // Set event untuk tombol konfirmasi hapus (hapus event sebelumnya)
             $('#btnKonfirmasiHapus').off('click').on('click', function() {
                 prosesHapus(id);
             });
         }
 
-        // Fungsi ini juga bisa di dalam
+        // Fungsi untuk memproses hapus
         function prosesHapus(id) {
             $('#loadingOverlay').show();
+
             $.ajax({
                 url: '<?= base_url('whatsapp/delete') ?>/' + id,
                 type: 'POST',
@@ -489,62 +471,24 @@
                 success: function(response) {
                     $('#loadingOverlay').hide();
                     $('#modalHapus').modal('hide');
+
                     if (response.success) {
-                        alert('Prospek WhatsApp berhasil dihapus');
-                        window.location.reload();
+                        // Tampilkan notifikasi sukses
+                        showNotification('success', response.message || 'Prospek Whatsapp berhasil dihapus');
+
+                        // Reload page setelah delay singkat
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1500);
                     } else {
-                        alert(response.message || 'Gagal menghapus prospek WhatsApp');
+                        showNotification('error', response.message || 'Gagal menghapus prospek Whatsapp');
                     }
                 },
                 error: function(xhr, status, error) {
                     $('#loadingOverlay').hide();
                     $('#modalHapus').modal('hide');
+
                     console.error('Error:', error, 'Status:', status, 'Response:', xhr.responseText);
-                    alert('Terjadi kesalahan pada server. Lihat console untuk detail.');
-                }
-            });
-        }
-
-        // Function untuk hapus prospek WhatsApp
-        function hapusProspekWhatsapp(id, judul) {
-            $('#namaProspekHapus').text(judul);
-            $('#modalHapus').modal('show');
-
-            // Set event handler untuk tombol konfirmasi hapus
-            $('#btnKonfirmasiHapus').off('click').on('click', function() {
-                hapusProspekWhatsappKonfirmasi(id);
-            });
-        }
-
-        function hapusProspekWhatsappKonfirmasi(id) {
-            // Show loading
-            $('#loadingOverlay').show();
-
-            $.ajax({
-                url: '<?= base_url('whatsapp/delete') ?>/' + id,
-                type: 'POST',
-                dataType: 'json',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                success: function(response) {
-                    $('#loadingOverlay').hide();
-                    $('#modalHapus').modal('hide');
-
-                    if (response.success) {
-                        alert('Prospek WhatsApp berhasil dihapus');
-                        window.location.reload();
-                    } else {
-                        alert(response.message || 'Gagal menghapus prospek WhatsApp');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    $('#loadingOverlay').hide();
-                    $('#modalHapus').modal('hide');
-
-                    console.error('Error:', error);
-                    console.log('Status:', status);
-                    console.log('Response:', xhr.responseText);
 
                     let errorMessage = 'Terjadi kesalahan pada server';
                     try {
@@ -553,10 +497,10 @@
                             errorMessage = errorResponse.message;
                         }
                     } catch (e) {
-                        // Jika tidak bisa parse JSON, gunakan pesan default
+                        // Gunakan pesan default jika tidak bisa parse JSON
                     }
 
-                    alert(errorMessage);
+                    showNotification('error', errorMessage);
                 }
             });
         }
@@ -576,13 +520,13 @@
                         $('#step1').hide();
                         $('#step2').show();
                     } else {
-                        alert('Tidak ada perusahaan dengan No. HP yang tersedia atau semua sudah dikirim WhatsApp');
+                        showNotification('warning', 'Tidak ada perusahaan dengan whatsapp yang tersedia');
                         $('#loadProspekDetails').prop('disabled', false).html('<i class="fas fa-arrow-right me-2"></i>Lanjutkan');
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error loading details:', textStatus, errorThrown);
-                    alert('Terjadi kesalahan saat memuat data: ' + errorThrown);
+                    showNotification('error', 'Terjadi kesalahan saat memuat data: ' + errorThrown);
                     $('#loadProspekDetails').prop('disabled', false).html('<i class="fas fa-arrow-right me-2"></i>Lanjutkan');
                 }
             });
@@ -603,7 +547,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <strong>${company.nama_perusahaan}</strong><br>
-                <small class="text-muted">${company.no_hp}</small>
+                <small class="text-muted">${company.whatsapp}</small>
             </div>
             <span class="badge bg-secondary">Belum Dikirim</span>
         </div>
@@ -623,7 +567,7 @@
             $('#submitBtn').prop('disabled', selectedCount === 0);
         }
 
-        // Function untuk submit prospek WhatsApp
+        // Function untuk submit prospek Whatsapp
         function submitProspekWhatsapp(selectedCompanies, pesan) {
             const status = $('#status').val();
             const keterangan = $('#keterangan').val();
@@ -644,31 +588,73 @@
                 },
                 success: function(response) {
                     if (response.success) {
+                        // Tutup modal
                         $('#addProspekWhatsappModal').modal('hide');
-                        // Show success message
-                        const alertHtml = `
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>${response.message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                `;
-                        $('.container-fluid').prepend(alertHtml);
-                        // Reload page after short delay
+
+                        // Tampilkan notifikasi sukses
+                        showNotification('success', response.message || 'Prospek Whatsapp berhasil ditambahkan');
+
+                        // Reload page setelah delay singkat
                         setTimeout(function() {
-                            location.reload();
+                            window.location.reload();
                         }, 1500);
                     } else {
-                        alert('Error: ' + response.message);
+                        showNotification('error', response.message || 'Gagal menambahkan prospek Whatsapp');
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error submitting:', textStatus, errorThrown);
-                    alert('Terjadi kesalahan saat menyimpan: ' + errorThrown);
+                    showNotification('error', 'Terjadi kesalahan saat menyimpan: ' + errorThrown);
                 },
                 complete: function() {
-                    $('#submitBtn').prop('disabled', false).html('<i class="fab fa-whatsapp me-2"></i>Tambah ke Prospek WhatsApp');
+                    $('#submitBtn').prop('disabled', false).html('<i class="fab fa-whatsapp me-2"></i>Tambah ke Prospek Whatsapp');
                 }
             });
+        }
+
+        // Function untuk menampilkan notifikasi
+        // Function untuk menampilkan notifikasi
+        function showNotification(type, message) {
+            // Hapus notifikasi yang ada
+            $('.alert').remove();
+
+            let alertClass = '';
+            let icon = '';
+
+            switch (type) {
+                case 'success':
+                    alertClass = 'alert-success';
+                    icon = 'fas fa-check-circle';
+                    break;
+                case 'error':
+                    alertClass = 'alert-danger';
+                    icon = 'fas fa-exclamation-circle';
+                    break;
+                case 'warning':
+                    alertClass = 'alert-warning';
+                    icon = 'fas fa-exclamation-triangle';
+                    break;
+                default:
+                    alertClass = 'alert-info';
+                    icon = 'fas fa-info-circle';
+            }
+
+            const alertHtml = `
+        <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+            <i class="${icon} me-2"></i>${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+
+            // Tambahkan notifikasi di dalam container-fluid setelah div pertama (header dengan gradient)
+            $('.container-fluid.py-3 .rounded-3.shadow-sm.mb-4').after(alertHtml);
+
+            // Auto dismiss setelah 5 detik
+            setTimeout(function() {
+                $('.alert').fadeOut('slow', function() {
+                    $(this).remove();
+                });
+            }, 5000);
         }
 
         // Function untuk reset form
@@ -676,10 +662,13 @@
             $('#prospek_select').val('');
             $('#companiesList').empty();
             $('#pesan').val('');
+            $('#status').val('terkirim');
+            $('#keterangan').val('');
             $('#selectedCount').text('0 perusahaan dipilih');
             $('#submitBtn').prop('disabled', true);
             $('.form-control').removeClass('is-invalid');
             $('.invalid-feedback').text('');
+            $('#loadProspekDetails').prop('disabled', false).html('<i class="fas fa-arrow-right me-2"></i>Lanjutkan');
         }
 
         // Reset form saat modal ditutup

@@ -61,14 +61,16 @@ class BisnisController extends BaseController
         ];
 
         $this->bisnisModel->update($id_bisnis, $data);
-
+        session()->setFlashdata('edit_success', 'Data berhasil diperbarui');
         return redirect()->to(route_to('bisnis'));
     }
+
     public function delete($id_bisnis = false)
     {
 
         $this->bisnisModel->delete($id_bisnis);
 
+        session()->setFlashdata('delete_success', 'Data berhasil dihapus');
         return redirect()->to(route_to('bisnis'));
     }
 }

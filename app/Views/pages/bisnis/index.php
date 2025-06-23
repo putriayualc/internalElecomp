@@ -35,8 +35,8 @@
     <?php endif; ?>
 
     <?php if (session()->has('delete_success')) : ?>
-        <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
-            <i class="fas fa-trash me-2"></i><?= session('delete_success') ?>
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?= session('delete_success') ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
@@ -220,7 +220,7 @@
     <div class="modal fade" id="editBisnisModal<?= $bisnis['id_bisnis'] ?>" tabindex="-1" aria-labelledby="editBisnisModalLabel<?= $bisnis['id_bisnis'] ?>" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-info text-white">
                     <h5 class="modal-title fw-semibold" id="editBisnisModalLabel<?= $bisnis['id_bisnis'] ?>">
                         <i class="fas fa-edit me-2"></i> Edit Bisnis
                     </h5>
@@ -241,7 +241,7 @@
                             <input type="url" class="form-control" name="website" id="website<?= $bisnis['id_bisnis'] ?>" value="<?= esc($bisnis['website']) ?>" placeholder="https://example.com">
                         </div>
                     </div>
-                    <div class="modal-footer justify-content-center">
+                    <div class="modal-footer justify-content-end">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             <i class="fas fa-times me-1"></i> Batal
                         </button>

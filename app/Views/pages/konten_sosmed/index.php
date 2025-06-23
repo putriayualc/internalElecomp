@@ -11,7 +11,7 @@
             </div>
 
             <div class="d-flex gap-2">
-                <a href="<?= route_to('konten.tambah') ?>" class="btn btn-light text-primary px-4 py-2 fs-6 d-flex align-items-center gap-2">
+                <a href="<?= route_to('konten.tambah') ?>" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2">
                     <i class="fas fa-plus-circle me-2"></i>
                     <span class="d-none d-sm-inline">Tambah Konten</span>
                 </a>

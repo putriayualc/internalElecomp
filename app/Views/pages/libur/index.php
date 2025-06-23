@@ -319,8 +319,11 @@ $daysOfWeek = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa',
 <div class="modal fade" id="tambahLiburModal" tabindex="-1" aria-labelledby="tambahLiburModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="tambahLiburModalLabel">Tambah Hari Libur Baru</h5>
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="tambahLiburModalLabel">
+                    <i class="fas fa-plus-circle me-1"></i>
+                    Tambah Hari Libur Baru
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="formTambahLibur" action="<?= base_url('libur/simpan') // Ganti dengan URL action Anda ?>" method="post">
@@ -367,8 +370,11 @@ $daysOfWeek = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa',
 <div class="modal fade" id="editLiburModal" tabindex="-1" aria-labelledby="editLiburModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editLiburModalLabel">Edit Hari Libur</h5>
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="editLiburModalLabel">
+                    <i class="fas fa-edit me-1"></i>
+                    Edit Hari Libur
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="formEditLibur" method="post">
@@ -395,8 +401,11 @@ $daysOfWeek = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa',
 <div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Penghapusan</h5>
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalHapusLabel">
+                    <i class="fas fa-trash me-1"></i>
+                    Konfirmasi Penghapusan
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -406,7 +415,7 @@ $daysOfWeek = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa',
                 <form id="formHapus" method="post" class="w-100 d-flex justify-content-end gap-2">
                     <?= csrf_field() // Penting untuk keamanan ?>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                    <button type="submit" class="btn btn-danger">Hapus</button>
                 </form>
             </div>
         </div>

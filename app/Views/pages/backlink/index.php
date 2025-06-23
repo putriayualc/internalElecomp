@@ -1,17 +1,15 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
-
 <div class="container-fluid py-3">
     <div class="rounded-3 shadow-sm mb-4"
         style="background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
         <div class="d-flex justify-content-between align-items-center p-4 text-white">
             <div>
-                <h1 class="h1 fw-bold">Manajemen Backlink</h1>
+                <h1 class="h1 fw-bold">Backlink</h1>
                 <p class="text-white-70 small mb-0">Kelola email dan blog untuk kampanye backlink</p>
             </div>
-
             <div class="d-flex gap-2">
-                <a href="<?= route_to('email.tambah') ?>" class="btn btn-light text-primary px-4 py-2 fs-6 d-flex align-items-center gap-2">
+                <a href="<?= route_to('email.tambah') ?>" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2">
                     <i class="fas fa-plus-circle me-2"></i>
                     <span class="d-none d-sm-inline">Tambah Email</span>
                 </a>
@@ -33,6 +31,13 @@
         <i class="fas fa-check-circle me-2"></i>
         <?= session()->getFlashdata('success') ?: session('success') ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+    </div>
+<?php endif; ?>
+
+<?php if (session()->has('delete_success')) : ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-trash me-2"></i><?= session('delete_success') ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <?php endif; ?>
 
@@ -87,7 +92,7 @@
                                         </div>
                                     </th>
                                 <?php endif; ?>
-                                <th class="text-center border-end" style="min-width: 200px;">
+                                <th class="text-center border-end" style="min-width: 250px;">
                                     <div class="d-flex align-items-center justify-content-center gap-2">
                                         <span class="icon-circle bg-success bg-opacity-10 text-success">
                                             <i class="fas fa-globe"></i>
@@ -100,7 +105,7 @@
                                         <span class="icon-circle bg-secondary bg-opacity-10 text-secondary">
                                             <i class="fas fa-file-alt"></i>
                                         </span>
-                                        <span class="fw-semibold">Artikel</span>
+                                        <span class="fw-semibold">Total Artikel</span>
                                     </div>
                                 </th>
                                 <th class="text-center" style="width: 200px;">
@@ -108,226 +113,159 @@
                                 </th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            <?php if (!empty($allEmail)): ?>
-                                <?php $counter = 1; ?>
-                                <?php foreach ($allEmail as $email) : ?>
-                                    <?php
-                                    $emailHasBlogs = false;
-                                    if (isset($allBlogs) && !empty($allBlogs)) {
-                                        $emailBlogs = array_filter($allBlogs, function ($blog) use ($email) {
-                                            return $blog['id_email'] == $email['id_email'];
-                                        });
-                                        $emailHasBlogs = !empty($emailBlogs);
+                            <?php foreach ($allEmail as $email) : ?>
+                                <?php
+                                // Ambil semua blog untuk email ini
+                                $emailBlogs = [];
+                                $totalArtikel = 0;
+                                $firstBlogId = null; // Untuk link total artikel
+                                if (isset($allBlogs) && !empty($allBlogs)) {
+                                    $emailBlogs = array_filter($allBlogs, function ($blog) use ($email) {
+                                        return $blog['id_email'] == $email['id_email'];
+                                    });
+                                    // Hitung total artikel dan ambil ID blog pertama
+                                    foreach ($emailBlogs as $blog) {
+                                        $totalArtikel += isset($blog['jumlah_artikel']) ? $blog['jumlah_artikel'] : 0;
+                                        if ($firstBlogId === null) {
+                                            $firstBlogId = $blog['id_blog'];
+                                        }
                                     }
-                                    ?>
-
-                                    <?php if ($emailHasBlogs) : ?>
-                                        <?php
-                                        $rowCount = count($emailBlogs);
-                                        ?>
-                                        <?php $blogIndex = 0; ?>
-                                        <?php foreach ($emailBlogs as $blog) : ?>
-                                            <tr>
-                                                <td class="text-center border-end">
-                                                    <span class="text-muted fw-medium"><?= $counter++ ?></span>
-                                                </td>
-                                                <?php if ($blogIndex === 0) : ?>
-                                                    <td class="border-end" style="vertical-align: top;" rowspan="<?= $rowCount ?>">
-                                                        <div class="d-flex align-items-center py-2">
-                                                            <div class="flex-shrink-0 me-3">
-                                                                <div class="position-relative">
-                                                                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center"
-                                                                        style="width: 60px; height: 60px;">
-                                                                        <i class="fas fa-envelope fs-5"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="flex-grow-1 min-width-0">
-                                                                <div class="mb-1">
-                                                                    <span class="text-dark fw-semibold"><?= esc($email['email']) ?></span>
-                                                                </div>
-                                                                <div class="text-muted small">
-                                                                    Email Account
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-center border-end" style="vertical-align: top;" rowspan="<?= $rowCount ?>">
-                                                        <div class="d-flex align-items-center justify-content-center">
-                                                            <span class="password-mask me-2">••••••••</span>
-                                                            <button class="btn btn-sm btn-outline-primary toggle-password" data-password="<?= esc($email['password']) ?>" type="button">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                    <?php if (session()->get('role') === 'admin') : ?>
-                                                        <td class="text-center border-end" style="vertical-align: top;" rowspan="<?= $rowCount ?>">
-                                                            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2">
-                                                                <i class="fas fa-user me-1"></i>
-                                                                <?= esc($email['nama_user']) ?>
-                                                            </span>
-                                                        </td>
-                                                    <?php endif; ?>
-                                                <?php endif; ?>
-
-                                                <td class="text-center border-end">
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                        <a href="https://<?= esc($blog['domain_blog']) ?>"
-                                                            target="_blank"
-                                                            class="text-decoration-none text-success fw-medium">
-                                                            <i class="fas fa-external-link-alt me-1"></i>
-                                                            <?= esc($blog['domain_blog']) ?>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                <td class="text-center border-end">
-                                                    <a href="<?= route_to('artikel', $email['id_email'], $blog['id_blog']) ?>"
-                                                        class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 text-decoration-none hover-badge">
-                                                        <i class="fas fa-file-alt me-1"></i>
-                                                        <?= isset($blog['jumlah_artikel']) ? $blog['jumlah_artikel'] : 0 ?>
-                                                    </a>
-                                                </td>
-
-                                                <?php if ($blogIndex === 0) : ?>
-                                                    <td class="text-center" rowspan="<?= $rowCount ?>" style="vertical-align: top;">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle action-btn"
-                                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="bi bi-three-dots-vertical"></i>
-                                                            </button>
-                                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                                                <li>
-                                                                    <button type="button" class="dropdown-item d-flex align-items-center text-primary"
-                                                                        data-bs-toggle="modal" data-bs-target="#addBlogModal<?= $email['id_email'] ?>">
-                                                                        <i class="fas fa-plus-circle text-primary me-2"></i>
-                                                                        <span>Tambah Blog</span>
-                                                                    </button>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item d-flex align-items-center text-warning"
-                                                                        href="<?= route_to('email.edit', $email['id_email']) ?>">
-                                                                        <i class="fas fa-edit text-warning me-2"></i>
-                                                                        <span>Edit</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <hr class="dropdown-divider">
-                                                                </li>
-                                                                <li>
-                                                                    <button type="button" class="dropdown-item d-flex align-items-center text-danger"
-                                                                        data-bs-toggle="modal" data-bs-target="#deleteEmailModal<?= $email['id_email'] ?>">
-                                                                        <i class="fas fa-trash text-danger me-2"></i>
-                                                                        <span>Hapus</span>
-                                                                    </button>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                <?php endif; ?>
-                                            </tr>
-                                            <?php $blogIndex++; ?>
-                                        <?php endforeach; ?>
-                                    <?php else : ?>
-                                        <tr>
-                                            <td class="text-center border-end">
-                                                <span class="text-muted fw-medium"><?= $counter++ ?></span>
-                                            </td>
-                                            <td class="border-end">
-                                                <div class="d-flex align-items-center py-2">
-                                                    <div class="flex-shrink-0 me-3">
-                                                        <div class="position-relative">
-                                                            <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center"
-                                                                style="width: 60px; height: 60px;">
-                                                                <i class="fas fa-envelope fs-5"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 min-width-0">
-                                                        <div class="mb-1">
-                                                            <span class="text-dark fw-semibold"><?= esc($email['email']) ?></span>
-                                                        </div>
-                                                        <div class="text-muted small">
-                                                            Email Account
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-center border-end">
-                                                <div class="d-flex align-items-center justify-content-center">
-                                                    <span class="password-mask me-2">••••••••</span>
-                                                    <button class="btn btn-sm btn-outline-primary toggle-password" data-password="<?= esc($email['password']) ?>" type="button">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <?php if (session()->get('role') === 'admin') : ?>
-                                                <td class="text-center border-end">
-                                                    <span class="badge bg-info bg-opacity-10 text-info px-3 py-2">
-                                                        <i class="fas fa-user me-1"></i>
-                                                        <?= esc($email['nama_user']) ?>
-                                                    </span>
-                                                </td>
-                                            <?php endif; ?>
-                                            <td class="text-center border-end">
-                                                <div class="py-3 text-muted">
-                                                    <i class="fas fa-info-circle me-1"></i>
-                                                    Tidak ada blog
-                                                </div>
-                                            </td>
-                                            <td class="text-center border-end">
-                                                <div class="py-3 text-muted">
-                                                    <i class="fas fa-info-circle me-1"></i>
-                                                    Tidak ada artikel
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle action-btn"
-                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="bi bi-three-dots-vertical"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                                        <li>
-                                                            <button type="button" class="dropdown-item d-flex align-items-center text-primary"
-                                                                data-bs-toggle="modal" data-bs-target="#addBlogModal<?= $email['id_email'] ?>">
-                                                                <i class="fas fa-plus-circle text-primary me-2"></i>
-                                                                <span>Tambah Blog</span>
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center text-warning"
-                                                                href="<?= route_to('email.edit', $email['id_email']) ?>">
-                                                                <i class="fas fa-edit text-warning me-2"></i>
-                                                                <span>Edit</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <hr class="dropdown-divider">
-                                                        </li>
-                                                        <li>
-                                                            <button type="button" class="dropdown-item d-flex align-items-center text-danger"
-                                                                data-bs-toggle="modal" data-bs-target="#deleteEmailModal<?= $email['id_email'] ?>">
-                                                                <i class="fas fa-trash text-danger me-2"></i>
-                                                                <span>Hapus</span>
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            <?php else: ?>
+                                }
+                                ?>
                                 <tr>
-                                    <td colspan="<?= session()->get('role') === 'admin' ? 7 : 6 ?>" class="text-center py-5">
-                                        <div class="text-muted">
-                                            <i class="fas fa-inbox fa-3x mb-3"></i>
-                                            <p class="mb-0">Tidak ada data yang tersedia</p>
+                                    <td class="text-center border-end">
+                                        <span class="text-muted fw-medium"></span>
+                                    </td>
+
+                                    <!-- Email Info -->
+                                    <td class="border-end">
+                                        <div class="d-flex align-items-center py-2">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="position-relative">
+                                                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center"
+                                                        style="width: 60px; height: 60px;">
+                                                        <i class="fas fa-envelope fs-5"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1 min-width-0">
+                                                <div class="mb-1">
+                                                    <span class="text-dark fw-semibold"><?= esc($email['email']) ?></span>
+                                                </div>
+                                                <div class="text-muted small">
+                                                    Email Account
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <!-- Password -->
+                                    <td class="text-center border-end">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <span class="password-mask me-2">••••••••</span>
+                                            <button class="btn btn-sm btn-outline-primary toggle-password" data-password="<?= esc($email['password']) ?>" type="button">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+
+                                    <!-- User (jika admin) -->
+                                    <?php if (session()->get('role') === 'admin') : ?>
+                                        <td class="text-center border-end">
+                                            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2">
+                                                <i class="fas fa-user me-1"></i>
+                                                <?= esc($email['nama_user']) ?>
+                                            </span>
+                                        </td>
+                                    <?php endif; ?>
+
+                                    <!-- Blog List -->
+                                    <td class="border-end">
+                                        <?php if (!empty($emailBlogs)) : ?>
+                                            <div class="blog-list">
+                                                <?php foreach ($emailBlogs as $index => $blog) : ?>
+                                                    <div class="blog-item <?= $index > 0 ? 'mt-2 pt-2 border-top border-light' : '' ?>">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="flex-grow-1">
+                                                                <a href="https://<?= esc($blog['domain_blog']) ?>"
+                                                                    target="_blank"
+                                                                    class="text-decoration-none text-success fw-medium d-flex align-items-center">
+                                                                    <i class="fas fa-external-link-alt me-2"></i>
+                                                                    <span class="text-truncate"><?= esc($blog['domain_blog']) ?></span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="ms-2">
+                                                                <a href="<?= route_to('artikel', $email['id_email'], $blog['id_blog']) ?>"
+                                                                    class="badge bg-secondary bg-opacity-10 text-secondary text-decoration-none hover-badge">
+                                                                    <i class="fas fa-file-alt me-1"></i>
+                                                                    <?= isset($blog['jumlah_artikel']) ? $blog['jumlah_artikel'] : 0 ?>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php else : ?>
+                                            <div class="py-3 text-muted text-center">
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Tidak ada blog
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <!-- Total Artikel -->
+                                    <td class="text-center border-end">
+                                        <?php if ($totalArtikel > 0 && $firstBlogId !== null) : ?>
+                                            <a href="<?= route_to('artikel', $email['id_email'], $firstBlogId) ?>"
+                                                class="badge bg-primary bg-opacity-10 text-primary text-decoration-none hover-total-artikel px-3 py-2 fs-6"
+                                                title="Klik untuk melihat artikel">
+                                                <i class="fas fa-file-alt me-1"></i>
+                                                <strong><?= $totalArtikel ?></strong>
+                                            </a>
+                                        <?php else : ?>
+                                            <div class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 fs-6">
+                                                <i class="fas fa-file-alt me-1"></i>
+                                                <strong><?= $totalArtikel ?></strong>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <!-- Actions -->
+                                    <td class="text-center">
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle action-btn"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li>
+                                                    <button type="button" class="dropdown-item d-flex align-items-center text-success"
+                                                        data-bs-toggle="modal" data-bs-target="#addBlogModal<?= $email['id_email'] ?>">
+                                                        <i class="fas fa-plus-circle text-success me-2"></i>
+                                                        <span>Tambah Blog</span>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center text-primary"
+                                                        href="<?= route_to('email.edit', $email['id_email']) ?>">
+                                                        <i class="fas fa-edit text-primary me-2"></i>
+                                                        <span>Edit</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <button type="button" class="dropdown-item d-flex align-items-center text-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteEmailModal<?= $email['id_email'] ?>">
+                                                        <i class="fas fa-trash text-danger me-2"></i>
+                                                        <span>Hapus</span>
+                                                    </button>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </td>
                                 </tr>
-                            <?php endif; ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -384,7 +322,6 @@
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
-
                 <form action="<?= route_to('blog.simpan', $email['id_email']) ?>" method="post">
                     <?= csrf_field() ?>
                     <div class="modal-body">
@@ -405,12 +342,11 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             <i class="fas fa-times me-1"></i> Batal
                         </button>
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save me-1"></i> Simpan
                         </button>
                     </div>
@@ -440,6 +376,17 @@
         background-color: rgb(59, 190, 255) !important;
         color: #fff !important;
         transform: translateY(-1px);
+    }
+
+    .hover-total-artikel {
+        transition: all 0.2s ease;
+    }
+
+    .hover-total-artikel:hover {
+        background-color: rgb(59, 190, 255) !important;
+        color: #fff !important;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
     .action-btn {
@@ -477,14 +424,32 @@
         font-family: monospace;
         font-size: 1.1em;
     }
+
+    .blog-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .blog-item {
+        padding: 0.25rem 0;
+    }
+
+    .blog-item:hover {
+        background-color: rgba(0, 123, 255, 0.05);
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .text-truncate {
+        max-width: 200px;
+    }
 </style>
 
 <script>
     $(document).ready(function() {
         var isAdmin = <?= session()->get('role') === 'admin' ? 'true' : 'false' ?>;
-        
-        var columnDefs = [
-            {
+
+        var columnDefs = [{
                 orderable: false,
                 searchable: false,
                 targets: 0 // Kolom No
@@ -495,7 +460,7 @@
                 targets: -1 // Kolom Aksi
             }
         ];
-        
+
         // Jika bukan admin, sembunyikan kolom User (index 3)
         if (!isAdmin) {
             columnDefs.push({
@@ -557,7 +522,7 @@
             }
         });
 
-        // Auto numbering - hanya jika ada data
+        // Auto numbering
         table.on('order.dt search.dt draw.dt', function() {
             let i = 1;
             table.column(0, {
@@ -576,7 +541,6 @@
             button.addEventListener('click', function() {
                 const passwordContainer = this.closest('td').querySelector('.password-mask');
                 const icon = this.querySelector('i');
-
                 if (passwordContainer.textContent === '••••••••') {
                     passwordContainer.textContent = this.getAttribute('data-password');
                     icon.classList.remove('fa-eye');

@@ -28,11 +28,24 @@
             </div>
         </div>
     </div>
-
     <!-- Notifikasi -->
     <?php if (session()->has('success')) : ?>
         <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
             <i class="fas fa-check-circle me-2"></i><?= session('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('edit_success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?= session('edit_success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('delete_success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-success me-2"></i><?= session('delete_success') ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
@@ -154,14 +167,22 @@
                                             </span>
                                         </td>
                                         <td class="text-center border-end">
-                                            <span class="status-badge" style="background-color: #e8f5e8; color: #2e7d32; border: 1px solid #2e7d32;">
-                                                <?= $row['total_email_sent'] ?>
-                                            </span>
+                                            <a href="<?= base_url('email/detail/' . $row['id_prospek']) ?>"
+                                                class="text-decoration-none"
+                                                title="Lihat detail email yang telah dikirim">
+                                                <span class="status-badge clickable-badge" style="background-color: #e8f5e8; color: #2e7d32; border: 1px solid #2e7d32; cursor: pointer; transition: all 0.3s ease;">
+                                                    <?= $row['total_email_sent'] ?>
+                                                </span>
+                                            </a>
                                         </td>
                                         <td class="text-center border-end">
-                                            <span class="status-badge" style="background-color: #e8f5e8; color: #388e3c; border: 1px solid #388e3c;">
-                                                <?= $row['total_whatsapp_sent'] ?>
-                                            </span>
+                                            <a href="<?= base_url('whatsapp/detail/' . $row['id_prospek']) ?>"
+                                                class="text-decoration-none"
+                                                title="Lihat detail WhatsApp yang telah dikirim">
+                                                <span class="status-badge clickable-badge" style="background-color: #e8f5e8; color: #388e3c; border: 1px solid #388e3c; cursor: pointer; transition: all 0.3s ease;">
+                                                    <?= $row['total_whatsapp_sent'] ?>
+                                                </span>
+                                            </a>
                                         </td>
                                         <td class="text-center border-end">
                                             <?php
@@ -191,9 +212,9 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item d-flex align-items-center text-warning"
+                                                        <a class="dropdown-item d-flex align-items-center text-primary"
                                                             href="#" onclick="editProspek(<?= $row['id_prospek'] ?>)">
-                                                            <i class="fas fa-edit text-warning me-2"></i>
+                                                            <i class="fas fa-edit text-primary me-2"></i>
                                                             <span>Edit</span>
                                                         </a>
                                                     </li>
@@ -232,7 +253,7 @@
 <div class="modal fade" id="addProspekModal" tabindex="-1" aria-labelledby="addProspekModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-info text-white">
                 <h5 class="modal-title fw-semibold" id="addProspekModalLabel">
                     <i class="fas fa-plus-circle me-2"></i> Tambah Prospek
                 </h5>
@@ -258,7 +279,7 @@
                         <div class="invalid-feedback" id="error-sumber_data"></div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-center">
+                <div class="modal-footer justify-content-end">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i> Batal
                     </button>
@@ -431,7 +452,7 @@
     });
 
 
-    // Handle form submission
+    // Handle form submission (AJAX untuk Add/Edit)
     $('#prospekForm').on('submit', function(e) {
         e.preventDefault();
 
@@ -452,7 +473,11 @@
             success: function(response) {
                 if (response.success) {
                     $('#addProspekModal').modal('hide');
-                    location.reload();
+
+                    // TAMBAHKAN DELAY SEBELUM RELOAD UNTUK MEMBERI WAKTU SESSION FLASH DATA TER-SET
+                    setTimeout(function() {
+                        location.reload();
+                    }, 100);
                 } else {
                     if (response.errors) {
                         // Display validation errors
@@ -470,6 +495,64 @@
             }
         });
     });
+
+    // FUNGSI DELETE YANG DIPERBAIKI
+    function hapusProspek(id, judul) {
+        $('#namaProspekHapus').text(judul);
+        $('#modalHapus').modal('show');
+
+        // Set event handler untuk tombol konfirmasi hapus
+        $('#btnKonfirmasiHapus').off('click').on('click', function() {
+            hapusProspekKonfirmasi(id);
+        });
+    }
+
+    function hapusProspekKonfirmasi(id) {
+        // Show loading
+        $('#loadingOverlay').show();
+
+        $.ajax({
+            url: '<?= base_url('prospek/delete') ?>/' + id,
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                $('#loadingOverlay').hide();
+                $('#modalHapus').modal('hide');
+
+                if (response.success) {
+                    // HAPUS alert() DAN GANTI DENGAN DELAY SEBELUM RELOAD
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 100);
+                } else {
+                    alert(response.message || 'Gagal menghapus prospek');
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#loadingOverlay').hide();
+                $('#modalHapus').modal('hide');
+
+                console.error('Error:', error);
+                console.log('Status:', status);
+                console.log('Response:', xhr.responseText);
+
+                let errorMessage = 'Terjadi kesalahan pada server';
+                try {
+                    const errorResponse = JSON.parse(xhr.responseText);
+                    if (errorResponse.message) {
+                        errorMessage = errorResponse.message;
+                    }
+                } catch (e) {
+                    // Jika tidak bisa parse JSON, gunakan pesan default
+                }
+
+                alert(errorMessage);
+            }
+        });
+    }
 
     // Reset form when modal is closed
     $('#addProspekModal').on('hidden.bs.modal', function() {
@@ -504,61 +587,61 @@
         });
     }
 
-    // FUNGSI DELETE YANG DIPERBAIKI
-    function hapusProspek(id, judul) {
-        $('#namaProspekHapus').text(judul);
-        $('#modalHapus').modal('show');
+    // // FUNGSI DELETE YANG DIPERBAIKI
+    // function hapusProspek(id, judul) {
+    //     $('#namaProspekHapus').text(judul);
+    //     $('#modalHapus').modal('show');
 
-        // Set event handler untuk tombol konfirmasi hapus
-        $('#btnKonfirmasiHapus').off('click').on('click', function() {
-            hapusProspekKonfirmasi(id);
-        });
-    }
+    //     // Set event handler untuk tombol konfirmasi hapus
+    //     $('#btnKonfirmasiHapus').off('click').on('click', function() {
+    //         hapusProspekKonfirmasi(id);
+    //     });
+    // }
 
-    function hapusProspekKonfirmasi(id) {
-        // Show loading
-        $('#loadingOverlay').show();
+    // function hapusProspekKonfirmasi(id) {
+    //     // Show loading
+    //     $('#loadingOverlay').show();
 
-        $.ajax({
-            url: '<?= base_url('prospek/delete') ?>/' + id,
-            type: 'POST', // UBAH KE POST
-            dataType: 'json',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            success: function(response) {
-                $('#loadingOverlay').hide();
-                $('#modalHapus').modal('hide');
+    //     $.ajax({
+    //         url: '<?= base_url('prospek/delete') ?>/' + id,
+    //         type: 'POST', // UBAH KE POST
+    //         dataType: 'json',
+    //         headers: {
+    //             'X-Requested-With': 'XMLHttpRequest'
+    //         },
+    //         success: function(response) {
+    //             $('#loadingOverlay').hide();
+    //             $('#modalHapus').modal('hide');
 
-                if (response.success) {
-                    alert('Prospek berhasil dihapus');
-                    window.location.reload();
-                } else {
-                    alert(response.message || 'Gagal menghapus prospek');
-                }
-            },
-            error: function(xhr, status, error) {
-                $('#loadingOverlay').hide();
-                $('#modalHapus').modal('hide');
+    //             if (response.success) {
+    //                 alert('Prospek berhasil dihapus');
+    //                 window.location.reload();
+    //             } else {
+    //                 alert(response.message || 'Gagal menghapus prospek');
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             $('#loadingOverlay').hide();
+    //             $('#modalHapus').modal('hide');
 
-                console.error('Error:', error);
-                console.log('Status:', status);
-                console.log('Response:', xhr.responseText);
+    //             console.error('Error:', error);
+    //             console.log('Status:', status);
+    //             console.log('Response:', xhr.responseText);
 
-                let errorMessage = 'Terjadi kesalahan pada server';
-                try {
-                    const errorResponse = JSON.parse(xhr.responseText);
-                    if (errorResponse.message) {
-                        errorMessage = errorResponse.message;
-                    }
-                } catch (e) {
-                    // Jika tidak bisa parse JSON, gunakan pesan default
-                }
+    //             let errorMessage = 'Terjadi kesalahan pada server';
+    //             try {
+    //                 const errorResponse = JSON.parse(xhr.responseText);
+    //                 if (errorResponse.message) {
+    //                     errorMessage = errorResponse.message;
+    //                 }
+    //             } catch (e) {
+    //                 // Jika tidak bisa parse JSON, gunakan pesan default
+    //             }
 
-                alert(errorMessage);
-            }
-        });
-    }
+    //             alert(errorMessage);
+    //         }
+    //     });
+    // }
 </script>
 
 <?= $this->endSection(); ?>

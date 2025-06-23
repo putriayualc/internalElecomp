@@ -141,29 +141,29 @@
                                                 <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center text-info btn-view-message"
-                                                            href="#" data-bs-toggle="modal" data-bs-target="#messageModal" 
-                                                            data-company="<?= esc($row['nama_perusahaan']) ?>" 
-                                                            data-date="<?= date('d/m/Y H:i', strtotime($row['tanggal'])) ?>" 
+                                                            href="#" data-bs-toggle="modal" data-bs-target="#messageModal"
+                                                            data-company="<?= esc($row['nama_perusahaan']) ?>"
+                                                            data-date="<?= date('d/m/Y H:i', strtotime($row['tanggal'])) ?>"
                                                             data-message="<?= esc($row['pesan']) ?>">
                                                             <i class="fas fa-eye text-info me-2"></i>
-                                                            <span>Lihat Pesan</span>
+                                                            <span>Detail</span>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item d-flex align-items-center text-warning btn-edit-whatsapp"
-                                                            href="#" data-id="<?= $row['id_prospek_whatsapp'] ?>" 
-                                                            data-id-detail="<?= $row['id_detail_prospek'] ?? '' ?>" 
-                                                            data-company="<?= esc($row['nama_perusahaan']) ?>" 
-                                                            data-message="<?= esc($row['pesan']) ?>" 
-                                                            data-status="<?= esc($row['status']) ?>" 
+                                                        <a class="dropdown-item d-flex align-items-center text-primary btn-edit-whatsapp"
+                                                            href="#" data-id="<?= $row['id_prospek_whatsapp'] ?>"
+                                                            data-id-detail="<?= $row['id_detail_prospek'] ?? '' ?>"
+                                                            data-company="<?= esc($row['nama_perusahaan']) ?>"
+                                                            data-message="<?= esc($row['pesan']) ?>"
+                                                            data-status="<?= esc($row['status']) ?>"
                                                             data-keterangan="<?= esc($row['keterangan'] ?? '') ?>">
-                                                            <i class="fas fa-edit text-warning me-2"></i>
+                                                            <i class="fas fa-edit text-primary me-2"></i>
                                                             <span>Edit</span>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center text-danger btn-delete-whatsapp"
-                                                            href="#" data-id="<?= $row['id_prospek_whatsapp'] ?>" 
+                                                            href="#" data-id="<?= $row['id_prospek_whatsapp'] ?>"
                                                             data-company="<?= esc($row['nama_perusahaan']) ?>">
                                                             <i class="fas fa-trash text-danger me-2"></i>
                                                             <span>Hapus</span>
@@ -174,16 +174,6 @@
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="5" class="text-center py-5">
-                                        <div class="d-flex flex-column align-items-center">
-                                            <i class="fas fa-inbox text-muted mb-3" style="font-size: 3rem;"></i>
-                                            <h5 class="text-muted">Tidak ada data WhatsApp</h5>
-                                            <p class="text-muted mb-0">Silakan tambah WhatsApp baru untuk memulai</p>
-                                        </div>
-                                    </td>
-                                </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
@@ -197,7 +187,7 @@
 <div class="modal fade" id="addMultipleWhatsappsModal" tabindex="-1" aria-labelledby="addMultipleWhatsappsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-info text-white">
                 <h5 class="modal-title fw-semibold" id="addMultipleWhatsappsModalLabel">
                     <i class="fas fa-plus-circle me-2"></i> Tambah WhatsApp
                 </h5>
@@ -223,7 +213,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="pesan_multiple" class="form-label fw-semibold">Pesan WhatsApp <span class="text-danger">*</span></label>
-                        <textarea class="form-control" id="pesan_multiple" name="pesan" rows="6" required 
+                        <textarea class="form-control" id="pesan_multiple" name="pesan" rows="6" required
                             placeholder="Tulis template pesan whatsapp di sini..."></textarea>
                         <div class="form-text">Minimal 10 karakter.</div>
                     </div>
@@ -238,7 +228,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="keterangan_multiple" class="form-label fw-semibold">Keterangan</label>
-                            <input type="text" class="form-control" id="keterangan_multiple" name="keterangan" 
+                            <input type="text" class="form-control" id="keterangan_multiple" name="keterangan"
                                 placeholder="Opsional (misal: Follow Up ke-2)">
                         </div>
                     </div>
@@ -261,7 +251,7 @@
 <div class="modal fade" id="editWhatsappModal" tabindex="-1" aria-labelledby="editWhatsappModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-warning text-dark">
+            <div class="modal-header bg-primary text-dark">
                 <h5 class="modal-title fw-semibold" id="editWhatsappModalLabel">
                     <i class="fas fa-edit me-2"></i> Edit WhatsApp
                 </h5>
@@ -289,7 +279,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="edit_keterangan" class="form-label fw-semibold">Keterangan</label>
-                            <input type="text" class="form-control" id="edit_keterangan" name="keterangan" 
+                            <input type="text" class="form-control" id="edit_keterangan" name="keterangan"
                                 placeholder="Opsional">
                         </div>
                     </div>
@@ -298,7 +288,7 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i> Batal
                     </button>
-                    <button type="submit" class="btn btn-warning" id="btnUpdateWhatsapp">
+                    <button type="submit" class="btn btn-primary" id="btnUpdateWhatsapp">
                         <i class="fas fa-save me-1"></i> Simpan Perubahan
                     </button>
                 </div>
@@ -418,7 +408,7 @@
         height: 30px;
         border-radius: 50%;
     }
-    
+
     .status-badge {
         display: inline-block;
         padding: 0.35em 0.65em;
@@ -430,19 +420,19 @@
         vertical-align: baseline;
         border-radius: 0.25rem;
     }
-    
+
     .status-active {
         background-color: #e8f5e8;
         color: #2e7d32;
         border: 1px solid #2e7d32;
     }
-    
+
     .status-completed {
         background-color: #fff3e0;
         color: #ef6c00;
         border: 1px solid #ef6c00;
     }
-    
+
     .status-inactive {
         background-color: #ffebee;
         color: #c62828;
@@ -618,19 +608,14 @@
                 success: function(response) {
                     if (response.success) {
                         addMultipleWhatsappsModal.hide();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: response.message,
-                            timer: 1500,
-                            showConfirmButton: false
-                        }).then(() => location.reload());
+                        showNotification('success', response.message);
+                        setTimeout(() => location.reload(), 1500);
                     } else {
-                        Swal.fire('Gagal!', response.message || 'Terjadi kesalahan.', 'error');
+                        showNotification('error', response.message || 'Terjadi kesalahan.');
                     }
                 },
                 error: function() {
-                    Swal.fire('Error!', 'Tidak dapat terhubung ke server.', 'error');
+                    showNotification('error', 'Tidak dapat terhubung ke server.');
                 },
                 complete: function() {
                     $('#btnSaveMultipleWhatsapps').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Simpan & Kirim');
@@ -667,13 +652,23 @@
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
+                beforeSend: function() {
+                    $('#btnUpdateWhatsapp').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...');
+                },
                 success: function(response) {
                     if (response.success) {
                         editWhatsappModal.hide();
-                        Swal.fire('Berhasil!', response.message, 'success').then(() => location.reload());
+                        showNotification('success', response.message);
+                        setTimeout(() => location.reload(), 1500);
                     } else {
-                        Swal.fire('Gagal!', response.message || 'Gagal memperbarui.', 'error');
+                        showNotification('error', response.message || 'Gagal memperbarui.');
                     }
+                },
+                error: function() {
+                    showNotification('error', 'Tidak dapat terhubung ke server.');
+                },
+                complete: function() {
+                    $('#btnUpdateWhatsapp').prop('disabled', false).html('<i class="fas fa-save me-1"></i> Simpan Perubahan');
                 }
             });
         });
@@ -693,21 +688,72 @@
                     '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
                 },
                 dataType: 'json',
+                beforeSend: function() {
+                    $('#btnConfirmDelete').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Menghapus...');
+                },
                 success: function(response) {
                     if (response.success) {
                         deleteConfirmModal.hide();
-                        Swal.fire('Dihapus!', response.message, 'success').then(() => location.reload());
+                        showNotification('success', response.message);
+                        setTimeout(() => location.reload(), 1500);
                     } else {
                         deleteConfirmModal.hide();
-                        Swal.fire('Gagal!', response.message || 'Gagal menghapus.', 'error');
+                        showNotification('error', response.message || 'Gagal menghapus.');
                     }
                 },
                 error: function() {
                     deleteConfirmModal.hide();
-                    Swal.fire('Error!', 'Tidak dapat terhubung ke server.', 'error');
+                    showNotification('error', 'Tidak dapat terhubung ke server.');
+                },
+                complete: function() {
+                    $('#btnConfirmDelete').prop('disabled', false).html('<i class="fas fa-trash me-1"></i> Ya, Hapus');
                 }
             });
         });
+
+        // Function untuk menampilkan notifikasi
+        function showNotification(type, message) {
+            // Hapus notifikasi yang ada
+            $('.alert').remove();
+
+            let alertClass = '';
+            let icon = '';
+
+            switch (type) {
+                case 'success':
+                    alertClass = 'alert-success';
+                    icon = 'fas fa-check-circle';
+                    break;
+                case 'error':
+                    alertClass = 'alert-danger';
+                    icon = 'fas fa-exclamation-circle';
+                    break;
+                case 'warning':
+                    alertClass = 'alert-warning';
+                    icon = 'fas fa-exclamation-triangle';
+                    break;
+                default:
+                    alertClass = 'alert-info';
+                    icon = 'fas fa-info-circle';
+            }
+
+            const alertHtml = `
+                <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                    <i class="${icon} me-2"></i>${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+
+            // Tambahkan notifikasi di dalam container-fluid setelah div pertama (header dengan gradient)
+            $('.container-fluid.py-3 .rounded-3.shadow-sm.mb-4').after(alertHtml);
+
+            // Auto dismiss setelah 5 detik
+            setTimeout(function() {
+                $('.alert').fadeOut('slow', function() {
+                    $(this).remove();
+                });
+            }, 5000);
+        }
     });
 </script>
 

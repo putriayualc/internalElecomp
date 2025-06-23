@@ -1,13 +1,14 @@
 <?= $this->extend('layout/template'); ?>
+
 <?= $this->section('content'); ?>
 
 <div class="container-fluid py-3">
     <div class="rounded-3 shadow-sm mb-4"
-        style="background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
+        style="background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center;">
         <div class="d-flex justify-content-between align-items-center p-4 text-white">
             <div>
-                <h1 class="h1 fw-bold"><i class="fas fa-envelope me-2"></i><?= $title ?></h1>
-                <p class="text-white-70 small mb-0">Kelola data prospek email untuk pemasaran</p>
+                <h1 class="h1 fw-bold"><i class="fab fa-email me-2"></i><?= $title ?></h1>
+                <p class="text-white-70 small mb-0">Kelola data prospek Email untuk pemasaran</p>
             </div>
 
             <div class="d-flex gap-2">
@@ -23,21 +24,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Notifikasi -->
-    <?php if (session()->has('success')) : ?>
-        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-            <i class="fas fa-check-circle me-2"></i><?= session('success') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
-
-    <?php if (session()->has('error')) : ?>
-        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-            <i class="fas fa-exclamation-circle me-2"></i><?= session('error') ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
 </div>
 
 <!-- Main Content Card -->
@@ -52,7 +38,7 @@
                 </div>
                 <div class="col-auto">
                     <div class="input-group">
-                        <input type="text" class="form-control form-control-sm" placeholder="Cari prospek email..." id="searchEmailData">
+                        <input type="text" class="form-control form-control-sm" placeholder="Cari prospek Email..." id="searchEmailData">
                         <button class="btn btn-primary btn-sm" type="button">
                             <i class="fas fa-search"></i>
                         </button>
@@ -95,9 +81,9 @@
                         <th class="text-center border-end" style="min-width: 100px;">
                             <div class="d-flex align-items-center justify-content-center gap-2">
                                 <span class="icon-circle bg-primary bg-opacity-10 text-primary">
-                                    <i class="fas fa-envelope"></i>
+                                    <i class="fab fa-email"></i>
                                 </span>
-                                <span class="fw-semibold">Email Sent</span>
+                                <span class="fw-semibold">WA Terkirim</span>
                             </div>
                         </th>
                         <th class="text-center" style="width: 120px;">
@@ -155,8 +141,8 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center text-danger"
-                                                    href="#" onclick="hapusProspekEmail(<?= $prospek['id_prospek'] ?>, '<?= esc($prospek['judul']) ?>')">
+                                                <a class="dropdown-item d-flex align-items-center text-danger btn-hapus"
+                                                    href="#" data-id="<?= $prospek['id_prospek'] ?>" data-judul="<?= esc($prospek['judul']) ?>">
                                                     <i class="fas fa-trash text-danger me-2"></i>
                                                     <span>Hapus</span>
                                                 </a>
@@ -170,9 +156,9 @@
                         <tr>
                             <td colspan="6" class="text-center py-5">
                                 <div class="d-flex flex-column align-items-center">
-                                    <i class="fas fa-inbox text-muted mb-3" style="font-size: 3rem;"></i>
-                                    <h5 class="text-muted">Belum ada prospek yang dikirim email</h5>
-                                    <p class="text-muted mb-0">Silakan tambah prospek email baru untuk memulai</p>
+                                    <i class="fab fa-email text-muted mb-3" style="font-size: 3rem;"></i>
+                                    <h5 class="text-muted">Belum ada prospek yang dikirim Email</h5>
+                                    <p class="text-muted mb-0">Silakan tambah prospek Email baru untuk memulai</p>
                                 </div>
                             </td>
                         </tr>
@@ -183,7 +169,7 @@
     </div>
 </div>
 
-<!-- Prospek yang tersedia untuk dikirim email -->
+<!-- Prospek yang tersedia untuk dikirim Email -->
 <div class="card border-0 shadow-sm">
     <div class="card-body px-1">
         <div class="card-header bg-white">
@@ -191,7 +177,7 @@
                 <i class="fas fa-paper-plane me-2"></i>Prospek Tersedia untuk Email
             </h5>
         </div>
-        
+
         <div class="card-body">
             <?php if (!empty($available_prospek)): ?>
                 <div class="row">
@@ -205,7 +191,7 @@
                                             <i class="fas fa-tag me-1"></i><?= esc($prospek['sumber_data']) ?>
                                         </small><br>
                                         <span class="badge bg-warning text-dark">
-                                            <?= $prospek['total_perusahaan_dengan_email'] ?> perusahaan dengan email
+                                            <?= $prospek['total_perusahaan_dengan_email'] ?> perusahaan dengan No. HP
                                         </span>
                                     </p>
                                 </div>
@@ -224,8 +210,8 @@
                 <div class="text-center py-5">
                     <div class="d-flex flex-column align-items-center">
                         <i class="fas fa-check-circle text-muted mb-3" style="font-size: 3rem;"></i>
-                        <h5 class="text-muted">Semua prospek sudah dikirim email</h5>
-                        <p class="text-muted mb-0">Tidak ada prospek dengan email yang valid tersedia</p>
+                        <h5 class="text-muted">Semua prospek sudah dikirim Email</h5>
+                        <p class="text-muted mb-0">Tidak ada prospek dengan No. HP yang valid tersedia</p>
                     </div>
                 </div>
             <?php endif; ?>
@@ -237,9 +223,9 @@
 <div class="modal fade" id="addProspekEmailModal" tabindex="-1" aria-labelledby="addProspekEmailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-info text-white">
                 <h5 class="modal-title fw-semibold" id="addProspekEmailModalLabel">
-                    <i class="fas fa-plus-circle me-2"></i>Tambah Prospek Email
+                    <i class="fab fa-email me-2"></i>Tambah Prospek Email
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -296,8 +282,8 @@
                         <div class="mb-3">
                             <label for="status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
                             <select class="form-select" id="status" name="status" required>
-                                <option value="pending" selected>Pending</option>
-                                <option value="terkirim">Terkirim</option>
+                                <option value="pending">Pending</option>
+                                <option value="terkirim" selected>Terkirim</option>
                                 <option value="gagal">Gagal</option>
                             </select>
                         </div>
@@ -313,8 +299,8 @@
                             </button>
                             <div>
                                 <span class="me-2" id="selectedCount">0 perusahaan dipilih</span>
-                                <button type="submit" class="btn btn-success" id="submitBtn" disabled>
-                                    <i class="fas fa-paper-plane me-2"></i>Tambah ke Prospek Email
+                                <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+                                    <i class="fab fa-email me-2"></i>Tambah ke Prospek Email
                                 </button>
                             </div>
                         </div>
@@ -336,10 +322,10 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="mb-2">Apakah Anda yakin ingin menghapus prospek email <strong id="namaProspekHapus"></strong>?</p>
+                <p class="mb-2">Apakah Anda yakin ingin menghapus prospek Email <strong id="namaProspekHapus"></strong>?</p>
                 <div class="alert alert-warning d-flex align-items-center" role="alert">
                     <i class="fas fa-exclamation-triangle me-2"></i>
-                    <small>Semua riwayat email terkait prospek ini juga akan terhapus!</small>
+                    <small>Semua riwayat Email terkait prospek ini juga akan terhapus!</small>
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
@@ -452,46 +438,57 @@
             });
         });
 
-        // Function untuk hapus prospek email
-        function hapusProspekEmail(id, judul) {
+        // Event listener untuk tombol hapus
+        $('.table').on('click', '.btn-hapus', function(e) {
+            e.preventDefault();
+            const prospekId = $(this).data('id');
+            const prospekJudul = $(this).data('judul');
+            tampilkanModalHapus(prospekId, prospekJudul);
+        });
+
+        // Fungsi untuk menampilkan modal hapus
+        function tampilkanModalHapus(id, judul) {
             $('#namaProspekHapus').text(judul);
             $('#modalHapus').modal('show');
 
-            // Set event handler untuk tombol konfirmasi hapus
+            // Set event untuk tombol konfirmasi hapus (hapus event sebelumnya)
             $('#btnKonfirmasiHapus').off('click').on('click', function() {
-                hapusProspekEmailKonfirmasi(id);
+                prosesHapus(id);
             });
         }
 
-        function hapusProspekEmailKonfirmasi(id) {
-            // Show loading
+        // Fungsi untuk memproses hapus
+        function prosesHapus(id) {
             $('#loadingOverlay').show();
 
             $.ajax({
                 url: '<?= base_url('email/delete') ?>/' + id,
                 type: 'POST',
                 dataType: 'json',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
+                data: {
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
                 },
                 success: function(response) {
                     $('#loadingOverlay').hide();
                     $('#modalHapus').modal('hide');
 
                     if (response.success) {
-                        alert('Prospek email berhasil dihapus');
-                        window.location.reload();
+                        // Tampilkan notifikasi sukses
+                        showNotification('success', response.message || 'Prospek Email berhasil dihapus');
+
+                        // Reload page setelah delay singkat
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1500);
                     } else {
-                        alert(response.message || 'Gagal menghapus prospek email');
+                        showNotification('error', response.message || 'Gagal menghapus prospek Email');
                     }
                 },
                 error: function(xhr, status, error) {
                     $('#loadingOverlay').hide();
                     $('#modalHapus').modal('hide');
 
-                    console.error('Error:', error);
-                    console.log('Status:', status);
-                    console.log('Response:', xhr.responseText);
+                    console.error('Error:', error, 'Status:', status, 'Response:', xhr.responseText);
 
                     let errorMessage = 'Terjadi kesalahan pada server';
                     try {
@@ -500,10 +497,10 @@
                             errorMessage = errorResponse.message;
                         }
                     } catch (e) {
-                        // Jika tidak bisa parse JSON, gunakan pesan default
+                        // Gunakan pesan default jika tidak bisa parse JSON
                     }
 
-                    alert(errorMessage);
+                    showNotification('error', errorMessage);
                 }
             });
         }
@@ -523,13 +520,13 @@
                         $('#step1').hide();
                         $('#step2').show();
                     } else {
-                        alert('Tidak ada perusahaan dengan email yang tersedia atau semua sudah dikirim email');
+                        showNotification('warning', 'Tidak ada perusahaan dengan email yang tersedia');
                         $('#loadProspekDetails').prop('disabled', false).html('<i class="fas fa-arrow-right me-2"></i>Lanjutkan');
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error loading details:', textStatus, errorThrown);
-                    alert('Terjadi kesalahan saat memuat data: ' + errorThrown);
+                    showNotification('error', 'Terjadi kesalahan saat memuat data: ' + errorThrown);
                     $('#loadProspekDetails').prop('disabled', false).html('<i class="fas fa-arrow-right me-2"></i>Lanjutkan');
                 }
             });
@@ -570,7 +567,7 @@
             $('#submitBtn').prop('disabled', selectedCount === 0);
         }
 
-        // Function untuk submit prospek email
+        // Function untuk submit prospek Email
         function submitProspekEmail(selectedCompanies, pesan) {
             const status = $('#status').val();
             const keterangan = $('#keterangan').val();
@@ -591,31 +588,73 @@
                 },
                 success: function(response) {
                     if (response.success) {
+                        // Tutup modal
                         $('#addProspekEmailModal').modal('hide');
-                        // Show success message
-                        const alertHtml = `
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>${response.message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                `;
-                        $('.container-fluid').prepend(alertHtml);
-                        // Reload page after short delay
+
+                        // Tampilkan notifikasi sukses
+                        showNotification('success', response.message || 'Prospek Email berhasil ditambahkan');
+
+                        // Reload page setelah delay singkat
                         setTimeout(function() {
-                            location.reload();
+                            window.location.reload();
                         }, 1500);
                     } else {
-                        alert('Error: ' + response.message);
+                        showNotification('error', response.message || 'Gagal menambahkan prospek Email');
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error submitting:', textStatus, errorThrown);
-                    alert('Terjadi kesalahan saat menyimpan: ' + errorThrown);
+                    showNotification('error', 'Terjadi kesalahan saat menyimpan: ' + errorThrown);
                 },
                 complete: function() {
-                    $('#submitBtn').prop('disabled', false).html('<i class="fas fa-paper-plane me-2"></i>Tambah ke Prospek Email');
+                    $('#submitBtn').prop('disabled', false).html('<i class="fab fa-email me-2"></i>Tambah ke Prospek Email');
                 }
             });
+        }
+
+        // Function untuk menampilkan notifikasi
+        // Function untuk menampilkan notifikasi
+        function showNotification(type, message) {
+            // Hapus notifikasi yang ada
+            $('.alert').remove();
+
+            let alertClass = '';
+            let icon = '';
+
+            switch (type) {
+                case 'success':
+                    alertClass = 'alert-success';
+                    icon = 'fas fa-check-circle';
+                    break;
+                case 'error':
+                    alertClass = 'alert-danger';
+                    icon = 'fas fa-exclamation-circle';
+                    break;
+                case 'warning':
+                    alertClass = 'alert-warning';
+                    icon = 'fas fa-exclamation-triangle';
+                    break;
+                default:
+                    alertClass = 'alert-info';
+                    icon = 'fas fa-info-circle';
+            }
+
+            const alertHtml = `
+        <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+            <i class="${icon} me-2"></i>${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+
+            // Tambahkan notifikasi di dalam container-fluid setelah div pertama (header dengan gradient)
+            $('.container-fluid.py-3 .rounded-3.shadow-sm.mb-4').after(alertHtml);
+
+            // Auto dismiss setelah 5 detik
+            setTimeout(function() {
+                $('.alert').fadeOut('slow', function() {
+                    $(this).remove();
+                });
+            }, 5000);
         }
 
         // Function untuk reset form
@@ -623,10 +662,13 @@
             $('#prospek_select').val('');
             $('#companiesList').empty();
             $('#pesan').val('');
+            $('#status').val('terkirim');
+            $('#keterangan').val('');
             $('#selectedCount').text('0 perusahaan dipilih');
             $('#submitBtn').prop('disabled', true);
             $('.form-control').removeClass('is-invalid');
             $('.invalid-feedback').text('');
+            $('#loadProspekDetails').prop('disabled', false).html('<i class="fas fa-arrow-right me-2"></i>Lanjutkan');
         }
 
         // Reset form saat modal ditutup

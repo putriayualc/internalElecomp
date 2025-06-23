@@ -18,6 +18,27 @@
             </div>
         </div>
     </div>
+    <!-- Notifikasi -->
+    <?php if (session()->has('success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?= session('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('edit_success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?= session('edit_success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('delete_success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-trash me-2"></i><?= session('delete_success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
 </div>
 
 <!-- Modal Tambah Tugas -->
@@ -25,7 +46,8 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header text-white" style="background-color:rgba(0, 175, 228, 0.99)">
-                <h5 class="modal-title" id="modalTambahLabel">
+                <h5 class="modal-title fw-semibold" id="modalTambahLabel">
+                    <i class="fas fa-plus-circle me-2"></i>
                     Tambah Tugas Piket
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -116,7 +138,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item d-flex align-items-center text-danger"href="#" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $tugas['id_tugas_piket'] ?>">
+                                                    <a class="dropdown-item d-flex align-items-center text-danger" href="#" data-bs-toggle="modal" data-bs-target="#modalHapus<?= $tugas['id_tugas_piket'] ?>">
                                                         <i class="bi bi-trash text-danger me-2"></i>
                                                         <span>Hapus</span>
                                                     </a>
@@ -140,7 +162,8 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header text-white" style="background-color:rgba(0, 175, 228, 0.99)">
-                    <h5 class="modal-title" id="editLabel<?= $tugas['id_tugas_piket'] ?>">
+                    <h5 class="modal-title fw-semibold" id="editLabel<?= $tugas['id_tugas_piket'] ?>">
+                        <i class="fas fa-edit me-2"></i>
                         Edit Tugas Piket
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>

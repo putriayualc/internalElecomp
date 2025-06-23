@@ -31,16 +31,33 @@
                         </li>
                     </ul>
                 </div>
-                <a href="<?= base_url('prospek') ?>" class="btn btn-outline-light px-4 py-2 fs-6 d-flex align-items-center gap-2">
+                <!-- <a href="<?= base_url('prospek') ?>" class="btn btn-outline-light px-4 py-2 fs-6 d-flex align-items-center gap-2">
                     <i class="fas fa-arrow-left me-2"></i>
                     <span class="d-none d-sm-inline">Kembali</span>
-                </a>
+                </a> -->
                 <button type="button" class="btn btn-light text-info px-4 py-2 fs-6 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addModal">
                     <i class="fas fa-plus-circle me-2"></i>
                     <span class="d-none d-sm-inline">Tambah Perusahaan</span>
                 </button>
             </div>
         </div>
+    </div>
+
+    <div id="alertContainer">
+        <?php if (session()->getFlashdata('success')) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                <?= session()->getFlashdata('success') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        <?php if (session()->getFlashdata('error')) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <?= session()->getFlashdata('error') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -222,27 +239,28 @@
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                     <li>
-                                                        <a class="dropdown-item d-flex align-items-center text-primary"
+                                                        <a class="dropdown-item d-flex align-items-center text-info"
                                                             href="#" onclick="viewDetail(<?= $detail['id_detail_prospek'] ?>)">
-                                                            <i class="bi bi-eye text-primary me-2"></i>
-                                                            <span>Lihat</span>
+                                                            <i class="fas fa-eye text-info me-2"></i>
+                                                            <span>Detail</span>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item d-flex align-items-center text-warning"
+                                                        <a class="dropdown-item d-flex align-items-center text-primary"
                                                             href="#" onclick="editDetail(<?= $detail['id_detail_prospek'] ?>)">
-                                                            <i class="bi bi-pencil-square text-warning me-2"></i>
+                                                            <i class="fas fa-edit text-primary me-2"></i>
                                                             <span>Edit</span>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center text-danger"
                                                             href="#"
-                                                            onclick="konfirmasiHapus('<?= route_to('prospek.delete', $prospek['id_prospek'], $detail['id_detail_prospek']) ?>', '<?= esc($detail['nama_perusahaan']) ?>')">
-                                                            <i class="bi bi-trash text-danger me-2"></i>
+                                                            onclick="konfirmasiHapus('<?= site_url('prospek/' . $prospek['id_prospek'] . '/perusahaan/delete/' . $detail['id_detail_prospek']) ?>', '<?= esc($detail['nama_perusahaan']) ?>')">
+                                                            <i class="fas fa-trash text-danger me-2"></i>
                                                             <span>Hapus</span>
                                                         </a>
                                                     </li>
+
                                                 </ul>
                                             </div>
                                         </td>
@@ -273,7 +291,7 @@
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-info text-white">
                 <h5 class="modal-title fw-semibold" id="addModalLabel">
                     <i class="fas fa-plus-circle me-2"></i> Tambah Perusahaan
                 </h5>
@@ -348,7 +366,7 @@
                         <div class="invalid-feedback"></div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-center">
+                <div class="modal-footer justify-content-end">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle me-1"></i> Batal
                     </button>
@@ -364,7 +382,7 @@
 <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-info text-white">
                 <h5 class="modal-title fw-semibold" id="importModalLabel">
                     <i class="bi bi-file-earmark-arrow-up me-2"></i> Impor Data Perusahaan
                 </h5>
@@ -409,7 +427,7 @@
 <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-info text-white">
                 <h5 class="modal-title fw-semibold" id="viewModalLabel">
                     <i class="fas fa-eye me-2"></i> Detail Perusahaan
                 </h5>
@@ -525,77 +543,77 @@
         // AWAL PERBAIKAN: Inisialisasi DataTable hanya jika data ada
         // =================================================================
         <?php if (!empty($detail_prospek)): ?>
-        var table = $('#companyTable').DataTable({
-            responsive: false,
-            pageLength: 10,
-            lengthMenu: [
-                [5, 10, 25, 50, -1],
-                [5, 10, 25, 50, "Semua"]
-            ],
-            language: {
-                decimal: "",
-                emptyTable: "Tidak ada data perusahaan yang tersedia",
-                info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
-                infoEmpty: "Menampilkan 0 - 0 dari 0 data",
-                infoFiltered: "(difilter dari _MAX_ total data)",
-                lengthMenu: "Tampilkan _MENU_ data",
-                loadingRecords: "Memuat...",
-                processing: "Memproses...",
-                search: "Cari:",
-                searchPlaceholder: "Ketik untuk mencari...",
-                zeroRecords: "Tidak ada data yang cocok",
-                paginate: {
-                    first: "❮❮",
-                    last: "❯❯",
-                    next: "❯",
-                    previous: "❮"
+            var table = $('#companyTable').DataTable({
+                responsive: false,
+                pageLength: 10,
+                lengthMenu: [
+                    [5, 10, 25, 50, -1],
+                    [5, 10, 25, 50, "Semua"]
+                ],
+                language: {
+                    decimal: "",
+                    emptyTable: "Tidak ada data perusahaan yang tersedia",
+                    info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                    infoEmpty: "Menampilkan 0 - 0 dari 0 data",
+                    infoFiltered: "(difilter dari _MAX_ total data)",
+                    lengthMenu: "Tampilkan _MENU_ data",
+                    loadingRecords: "Memuat...",
+                    processing: "Memproses...",
+                    search: "Cari:",
+                    searchPlaceholder: "Ketik untuk mencari...",
+                    zeroRecords: "Tidak ada data yang cocok",
+                    paginate: {
+                        first: "❮❮",
+                        last: "❯❯",
+                        next: "❯",
+                        previous: "❮"
+                    }
+                },
+                dom: '<"dt-temp-toolbar"lf>rt<"row g-3 mt-2 pt-2 border-top"' +
+                    '<"col-md-5 d-flex align-items-center"i>' +
+                    '<"col-md-7 d-flex justify-content-md-end"p>>',
+                columnDefs: [{
+                    orderable: false,
+                    searchable: false,
+                    targets: 0
+                }],
+                order: [
+                    [1, 'asc']
+                ],
+                autoWidth: false,
+                stateSave: true,
+
+                initComplete: function() {
+                    // Tambahkan styling bootstrap
+                    $('.dataTables_length select').addClass('form-select form-select-sm me-2');
+                    $('.dataTables_filter input').addClass('form-control form-control-sm').attr('placeholder', 'Ketik untuk mencari...');
+                    $('.dataTables_length').addClass('d-flex align-items-center');
+                    $('.dataTables_filter').addClass('d-flex align-items-center justify-content-end');
+                    $('.dataTables_filter label').addClass('d-flex align-items-center mb-0');
+
+                    // Pindahkan kontrol ke tempat custom
+                    $('#companyTable_length').appendTo('#custom-length');
+                    $('#companyTable_filter').appendTo('#custom-search');
+
+                    // FIX tampilan "Tampilkan 10 data"
+                    $('.dataTables_length label').addClass('d-flex align-items-center gap-2 mb-0');
+                },
+
+                drawCallback: function() {
+                    $('[data-bs-toggle="tooltip"]').tooltip();
                 }
-            },
-            dom: '<"dt-temp-toolbar"lf>rt<"row g-3 mt-2 pt-2 border-top"' +
-                '<"col-md-5 d-flex align-items-center"i>' +
-                '<"col-md-7 d-flex justify-content-md-end"p>>',
-            columnDefs: [{
-                orderable: false,
-                searchable: false,
-                targets: 0
-            }],
-            order: [
-                [1, 'asc']
-            ],
-            autoWidth: false,
-            stateSave: true,
-
-            initComplete: function() {
-                // Tambahkan styling bootstrap
-                $('.dataTables_length select').addClass('form-select form-select-sm me-2');
-                $('.dataTables_filter input').addClass('form-control form-control-sm').attr('placeholder', 'Ketik untuk mencari...');
-                $('.dataTables_length').addClass('d-flex align-items-center');
-                $('.dataTables_filter').addClass('d-flex align-items-center justify-content-end');
-                $('.dataTables_filter label').addClass('d-flex align-items-center mb-0');
-
-                // Pindahkan kontrol ke tempat custom
-                $('#companyTable_length').appendTo('#custom-length');
-                $('#companyTable_filter').appendTo('#custom-search');
-
-                // FIX tampilan "Tampilkan 10 data"
-                $('.dataTables_length label').addClass('d-flex align-items-center gap-2 mb-0');
-            },
-
-            drawCallback: function() {
-                $('[data-bs-toggle="tooltip"]').tooltip();
-            }
-        });
-
-        // Tambahkan penomoran otomatis di kolom pertama
-        table.on('order.dt search.dt draw.dt', function() {
-            let i = 1;
-            table.column(0, {
-                search: 'applied',
-                order: 'applied'
-            }).nodes().each(function(cell) {
-                cell.innerHTML = i++;
             });
-        }).draw();
+
+            // Tambahkan penomoran otomatis di kolom pertama
+            table.on('order.dt search.dt draw.dt', function() {
+                let i = 1;
+                table.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell) {
+                    cell.innerHTML = i++;
+                });
+            }).draw();
         <?php endif; ?>
         // =================================================================
         // AKHIR PERBAIKAN
@@ -610,7 +628,7 @@
         rows.forEach((row, index) => {
             const cols = row.querySelectorAll('td');
             if (cols.length < 10) return; // Skip baris 'data kosong'
-            
+
             const nama = `"${(cols[1]?.textContent || '').trim()}"`;
             const alamat = `"${(cols[2]?.textContent || '').trim()}"`;
             const email = `"${(cols[3]?.textContent || '').trim()}"`;
@@ -761,7 +779,7 @@
         const url = formMode === 'add' ?
             `<?= site_url('prospek') ?>/${id_prospek}/perusahaan/store` :
             `<?= site_url('prospek') ?>/${id_prospek}/perusahaan/update/${$('#edit_id').val()}`;
-        
+
         $('.form-control').removeClass('is-invalid');
         $('.invalid-feedback').text('');
         $('#submitBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...');

@@ -1,114 +1,212 @@
 <?= $this->extend('layout/template'); ?>
 <?= $this->section('content'); ?>
 
-<div class="app-content pt-3 p-md-3 p-lg-4">
-    <div class="container-xl">
-        <h1 class="app-page-title">Tambahkan Artikel</h1>
-        <hr class="mb-4">
+<title>Tambah Artikel</title>
 
-        <div class="app-card app-card-settings shadow-sm p-4">
-            <div class="card-body">
+<body>
+    <div class="container-fluid">
+        <div class="form-container shadow rounded">
+            <div class="form-header">
+                <h2 class="display-7 fw-bolder mb-4 text-dark">
+                    Tambah Artikel
+                </h2>
+            </div>
 
-                <?php if (!empty(session()->getFlashdata('error'))) : ?>
-                    <div class="alert alert-danger" role="alert">
-                        <h4>Error</h4>
-                        <p><?= session()->getFlashdata('error'); ?></p>
+            <?php if (!empty(session()->getFlashdata('error'))) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <h4>Error</h4>
+                    <p><?= session()->getFlashdata('error'); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <form action="<?= route_to('artikel.simpan', $id_email, $id_blog) ?>" method="POST">
+                <?= csrf_field(); ?>
+                <input type="hidden" name="id_blog" value="<?= esc($id_blog) ?>">
+                
+                <div class="row g-4">
+                    <!-- Judul Artikel -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="judul_artikel" name="judul_artikel" placeholder="Judul Artikel" value="<?= old('judul_artikel') ?>" required>
+                            <label for="judul_artikel">
+                                <i class="bi bi-journal-text me-2"></i>Judul Artikel
+                            </label>
+                            <div class="invalid-feedback">
+                                Judul artikel harus diisi
+                            </div>
+                        </div>
                     </div>
-                <?php endif; ?>
 
-                <form action="<?= route_to('artikel.simpan', $id_email, $id_blog) ?>" method="POST">
-                    <?= csrf_field(); ?>
-                    <input type="hidden" name="id_blog" value="<?= esc($id_blog) ?>">
-
-                    <!-- Judul -->
-                    <div class="mb-3">
-                        <label class="form-label">Judul Artikel</label>
-                        <input type="text" class="form-control" name="judul_artikel" value="<?= old('judul_artikel') ?>" required>
+                    <!-- Jenis Artikel -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select" id="jenis" name="jenis" required>
+                                <option value="">Pilih Jenis Artikel</option>
+                                <?php foreach ($jenis as $j) : ?>
+                                    <option value="<?= $j ?>" <?= old('jenis') == $j ? 'selected' : '' ?>>
+                                        <?= ucfirst($j) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <label for="jenis">
+                                <i class="bi bi-tag me-2"></i>Jenis Artikel
+                            </label>
+                            <div class="invalid-feedback">
+                                Jenis artikel harus dipilih
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Jenis -->
-                    <div class="mb-3">
-                        <label class="form-label">Jenis Artikel</label>
-                        <select class="form-select" name="jenis" required>
-                            <?php foreach ($jenis as $j) : ?>
-                                <option value="<?= $j ?>" <?= old('jenis') == $j ? 'selected' : '' ?>><?= ucfirst($j) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <!-- Link -->
-                    <div class="mb-3">
-                        <label class="form-label">Link Artikel</label>
-                        <input type="url" class="form-control" name="link" value="<?= old('link') ?>">
+                    <!-- Link Artikel -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="url" class="form-control" id="link" name="link" placeholder="Link Artikel" value="<?= old('link') ?>">
+                            <label for="link">
+                                <i class="bi bi-link-45deg me-2"></i>Link Artikel
+                            </label>
+                            <div class="invalid-feedback">
+                                Format URL tidak valid
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Link To -->
-                    <div class="mb-3">
-                        <label class="form-label">Link To</label>
-                        <input type="url" class="form-control" name="link_to" value="<?= old('link_to') ?>">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="url" class="form-control" id="link_to" name="link_to" placeholder="Link To" value="<?= old('link_to') ?>">
+                            <label for="link_to">
+                                <i class="bi bi-arrow-up-right-square me-2"></i>Link To
+                            </label>
+                            <div class="invalid-feedback">
+                                Format URL tidak valid
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Link Type -->
-                    <div class="mb-3">
-                        <label class="form-label">Link Type</label>
-                        <select class="form-select" name="link_type">
-                            <option value="">-- Pilih --</option>
-                            <option value="img" <?= old('link_type') == 'img' ? 'selected' : '' ?>>image</option>
-                            <option value="video" <?= old('link_type') == 'video' ? 'selected' : '' ?>>video</option>
-                            <option value="naked_url" <?= old('link_type') == 'naked_url' ? 'selected' : '' ?>>naked url</option>
-                            <option value="text" <?= old('link_type') == 'text' ? 'selected' : '' ?>>text</option>
-                        </select>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select" id="link_type" name="link_type">
+                                <option value="">Pilih Link Type</option>
+                                <option value="img" <?= old('link_type') == 'img' ? 'selected' : '' ?>>Image</option>
+                                <option value="video" <?= old('link_type') == 'video' ? 'selected' : '' ?>>Video</option>
+                                <option value="naked_url" <?= old('link_type') == 'naked_url' ? 'selected' : '' ?>>Naked URL</option>
+                                <option value="text" <?= old('link_type') == 'text' ? 'selected' : '' ?>>Text</option>
+                            </select>
+                            <label for="link_type">
+                                <i class="bi bi-file-earmark-text me-2"></i>Link Type
+                            </label>
+                        </div>
                     </div>
 
                     <!-- Keywords -->
-                    <div class="mb-3">
-                        <label class="form-label">Keywords</label>
-                        <input type="text" class="form-control" name="keywords" value="<?= old('keywords') ?>">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Keywords" value="<?= old('keywords') ?>">
+                            <label for="keywords">
+                                <i class="bi bi-key me-2"></i>Keywords
+                            </label>
+                        </div>
                     </div>
 
                     <!-- Anchor Text -->
-                    <div class="mb-3">
-                        <label class="form-label">Anchor Text</label>
-                        <input type="text" class="form-control" name="anchor_text" value="<?= old('anchor_text') ?>">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="anchor_text" name="anchor_text" placeholder="Anchor Text" value="<?= old('anchor_text') ?>">
+                            <label for="anchor_text">
+                                <i class="bi bi-cursor-text me-2"></i>Anchor Text
+                            </label>
+                        </div>
                     </div>
 
                     <!-- Tanggal Upload -->
-                    <div class="mb-3">
-                        <label class="form-label">Tanggal Upload</label>
-                        <input type="date" class="form-control" name="tgl_upload" value="<?= old('tgl_upload') ?>" required>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="date" class="form-control" id="tgl_upload" name="tgl_upload" value="<?= old('tgl_upload') ?>" required>
+                            <label for="tgl_upload">
+                                <i class="bi bi-calendar-check me-2"></i>Tanggal Upload
+                            </label>
+                            <div class="invalid-feedback">
+                                Tanggal upload harus dipilih
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Indexed -->
-                    <div class="mb-3">
-                        <label class="form-label">Indexed</label>
-                        <select class="form-select" name="indexed">
-                            <option value="">-- Pilih --</option>
-                            <option value="sudah" <?= old('indexed') == 'sudah' ? 'selected' : '' ?>>Sudah</option>
-                            <option value="belum" <?= old('indexed') == 'belum' ? 'selected' : '' ?>>Belum</option>
-                        </select>
-                    </div>
-
-                    <!-- Tombol Aksi -->
-                    <div class="mt-4 d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-1"></i> Simpan
-                        </button>
-                        <a href="<?= route_to('artikel', $id_email, $id_blog) ?>" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-1"></i> Kembali
-                        </a>
-                    </div>
-
-                    <?php if (!empty(session()->getFlashdata('success'))) : ?>
-                        <div class="alert alert-success mt-3" role="alert">
-                            <?= session()->getFlashdata('success') ?>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select" id="indexed" name="indexed">
+                                <option value="">Pilih Status Indexed</option>
+                                <option value="sudah" <?= old('indexed') == 'sudah' ? 'selected' : '' ?>>Sudah</option>
+                                <option value="belum" <?= old('indexed') == 'belum' ? 'selected' : '' ?>>Belum</option>
+                            </select>
+                            <label for="indexed">
+                                <i class="bi bi-check-circle me-2"></i>Status Indexed
+                            </label>
                         </div>
-                    <?php endif; ?>
+                    </div>
 
-                </form>
-            </div>
-        </div><!--//app-card-->
-        <hr class="my-4">
-    </div><!--//container-->
-</div><!--//app-content-->
+                    <!-- Submit Button -->
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="<?= route_to('artikel', $id_email, $id_blog) ?>" class="btn btn-secondary btn-lg d-flex align-items-center">
+                            <i class="bi bi-arrow-left me-2"></i>
+                            <span>Kembali</span>
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg d-flex align-items-center">
+                            <i class="bi bi-save me-2"></i>
+                            <span>Simpan</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
 
-<?= $this->endSection('content'); ?>
+            <?php if (!empty(session()->getFlashdata('success'))) : ?>
+                <div class="alert alert-success mt-3" role="alert">
+                    <i class="bi bi-check-circle me-2"></i>
+                    <?= session()->getFlashdata('success') ?>
+                </div>
+            <?php endif; ?>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+
+            // Form validation
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            }
+
+            // Date validation - set minimum date to today
+            const tglUpload = document.getElementById('tgl_upload');
+            if (tglUpload) {
+                const today = new Date().toISOString().split('T')[0];
+                tglUpload.setAttribute('min', today);
+            }
+
+            // URL validation
+            const urlInputs = document.querySelectorAll('input[type="url"]');
+            urlInputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.value && !this.checkValidity()) {
+                        this.setCustomValidity('Format URL tidak valid. Contoh: https://example.com');
+                    } else {
+                        this.setCustomValidity('');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+<?= $this->endSection();?>

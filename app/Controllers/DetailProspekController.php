@@ -216,44 +216,26 @@ class DetailProspekController extends BaseController
         }
     }
 
-    public function delete($id)
+    // app/Controllers/DetailProspekController.php
+
+    // app/Controllers/DetailProspekController.php
+
+    public function delete($id_prospek, $id)
     {
-        // Cek apakah request adalah AJAX
-        if (!$this->request->isAJAX()) {
-            return redirect()->back()->with('error', 'Method not allowed');
+        // Langsung coba hapus, karena kita tahu methodnya PASTI POST dari form.
+        // Jika ada masalah (bukan dari DB), itu pasti dari Model.
+
+        if ($this->detailProspekModel->delete($id)) {
+            // Jika delete() di model berhasil (mengembalikan true)
+            return redirect()->to('prospek/detail/' . $id_prospek)
+                ->with('success', 'Data perusahaan berhasil dihapus!');
         }
 
-        $detail = $this->detailProspekModel->find($id);
-
-        if (!$detail) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Data perusahaan tidak ditemukan'
-            ]);
-        }
-
-        try {
-            $result = $this->detailProspekModel->delete($id);
-            if ($result) {
-                return $this->response->setJSON([
-                    'success' => true,
-                    'message' => 'Data perusahaan berhasil dihapus!'
-                ]);
-            } else {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Gagal menghapus data perusahaan'
-                ]);
-            }
-        } catch (\Exception $e) {
-            log_message('error', 'Error deleting detail prospek: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage()
-            ]);
-        }
+        // Jika delete() di model gagal (mengembalikan false)
+        // Ini kemungkinan besar karena ada event $beforeDelete di model yang membatalkan.
+        return redirect()->to('prospek/detail/' . $id_prospek)
+            ->with('error', 'Gagal menghapus data. Proses dibatalkan oleh Model. Silakan periksa event "beforeDelete" di file DetailProspekModel.php');
     }
-
     public function getDetail($id)
     {
         if (!$this->request->isAJAX()) {

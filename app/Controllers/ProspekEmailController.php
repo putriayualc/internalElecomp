@@ -157,6 +157,7 @@ class ProspekEmailController extends BaseController
             log_message('error', 'Error deleting email prospek: ' . $e->getMessage());
             return $this->response->setStatusCode(500)->setJSON(['success' => false, 'message' => 'Gagal menghapus prospek email: ' . $e->getMessage()]);
         }
+        session()->setFlashdata('delete_success', 'Data berhasil dihapus');
     }
 
     // --- PERUBAHAN ---

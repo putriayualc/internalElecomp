@@ -126,7 +126,7 @@
                                                         <a class="dropdown-item d-flex align-items-center text-info"
                                                             href="<?= route_to('sop.detail', $sop['id_sop']) ?>">
                                                             <i class="fas fa-eye text-info me-2"></i>
-                                                            <span>Lihat</span>
+                                                            <span>Detail</span>
                                                         </a>
                                                     </li>
                                                     <?php if (session()->get('role') === 'admin') : ?>

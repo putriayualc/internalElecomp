@@ -164,6 +164,7 @@ class BacklinkController extends BaseController
         $allEmail = $emailModel->find($id);
         // dd($allEmail);
         $emailModel->delete($id);
+        session()->setFlashdata('delete_success', 'Data berhasil dihapus');
 
         return redirect()->to(route_to('backlink'));
     }

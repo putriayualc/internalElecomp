@@ -22,7 +22,7 @@
     }
 
     body {
-        font-family: var(--font-family);
+        /* font-family: var(--font-family); */
         background-color: var(--bg-color);
         color: var(--text-color);
     }
@@ -65,7 +65,7 @@
 
     .header-content {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         padding: 1.5rem; /* Mirip .p-4 */
     }
@@ -341,7 +341,7 @@
                 </div>
             </div>
             
-            <a href="<?= route_to('konten.index') ?>" class="back-button">
+            <a href="<?= route_to('konten') ?>" class="back-button">
                 <i class="fas fa-arrow-left"></i> Kembali ke Daftar Konten
             </a>
         </div>

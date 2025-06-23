@@ -42,7 +42,7 @@
         left: 0;
         width: 100%;
         height: 5px;
-        background: linear-gradient(to right, var(--info-color), #3b82f6);
+        /* background: linear-gradient(to right, var(--info-color), #3b82f6); */
     }
 
     .edit-card h4 {
@@ -372,5 +372,38 @@ select.form-control {
         }, 100);
     });
 </script>
+
+<script>
+    document.getElementById("piketForm").addEventListener("submit", function (e) {
+        const selects = document.querySelectorAll('select[name="nama[]"]');
+        const values = [];
+
+        for (let select of selects) {
+            const val = select.value;
+            if (values.includes(val)) {
+                alert(`Nama "${val}" tidak boleh duplikat!`);
+                e.preventDefault(); // Hentikan submit
+                return false;
+            }
+            values.push(val);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("change", function (e) {
+        if (e.target.matches('select[name="nama[]"]')) {
+            const selects = document.querySelectorAll('select[name="nama[]"]');
+            const selectedValues = Array.from(selects).map(s => s.value);
+            const duplicates = selectedValues.filter((val, idx, arr) => arr.indexOf(val) !== idx);
+
+            if (duplicates.length > 0) {
+                alert(`Nama "${duplicates[0]}" sudah dipilih. Harap pilih nama lain.`);
+                e.target.value = ""; // Reset pilihan
+            }
+        }
+    });
+</script>
+
 
 <?= $this->endSection(); ?>

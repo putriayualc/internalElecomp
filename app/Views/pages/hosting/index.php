@@ -201,9 +201,9 @@
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                     <li>
-                                                        <a class="dropdown-item d-flex align-items-center text-warning"
+                                                        <a class="dropdown-item d-flex align-items-center text-primary"
                                                             href="<?= route_to('hosting.edit', $host['id_hosting']) ?>">
-                                                            <i class="fas fa-edit text-warning me-2"></i>
+                                                            <i class="fas fa-edit text-primary me-2"></i>
                                                             <span>Edit</span>
                                                         </a>
                                                     </li>

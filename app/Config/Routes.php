@@ -106,7 +106,7 @@ $routes->group('bisnis', function ($routes) {
 
 // MENU ARTIKEL
 $routes->group('artikel_internal', function ($routes) {
-    $routes->get('/', 'ArtikelInternalController::index', ['as' => 'artikel_internal.index']);
+    $routes->get('/', 'ArtikelInternalController::index', ['as' => 'artikel_internal']);
     $routes->get('tambah', 'ArtikelInternalController::tambah', ['as' => 'artikel_internal.tambah']);
     $routes->post('simpan', 'ArtikelInternalController::simpan', ['as' => 'artikel_internal.simpan']);
     $routes->get('edit/(:num)', 'ArtikelInternalController::edit/$1', ['as' => 'artikel_internal.edit']);
@@ -198,7 +198,7 @@ $routes->group('prospek', function ($routes) {
     $routes->post('delete/(:num)', 'ProspekController::delete/$1', ['as' => 'prospek.delete']);
     $routes->get('detail/(:num)/export', 'DetailProspekController::export/$1');
     $routes->post('detail/(:num)/import', 'DetailProspekController::import/$1');
-    $routes->post('detail/delete', 'DetailProspekController::delete/$1');
+    // $routes->post('detail/delete/(:num)', 'DetailProspekController::delete/$1', ['as' => 'detail.delete']);
     $routes->get('detail/template/download', 'DetailProspekController::downloadTemplate');
     $routes->post('import/(:num)', 'DetailProspekController::import/$1');
 
@@ -207,7 +207,7 @@ $routes->group('prospek', function ($routes) {
     $routes->group('(:num)/perusahaan', function ($routes) {
         $routes->post('store', 'DetailProspekController::store/$1');
         $routes->post('update/(:num)', 'DetailProspekController::update/$2/$1');
-        $routes->post('delete/(:num)', 'DetailProspekController::delete/$2/$1');
+        $routes->post('delete/(:num)', 'DetailProspekController::delete/$1/$2');
         $routes->get('get/(:num)', 'DetailProspekController::getDetail/$2/$1');
     });
 });

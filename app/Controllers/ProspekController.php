@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
@@ -67,6 +66,9 @@ class ProspekController extends BaseController
 
             try {
                 if ($this->prospekModel->insert($data)) {
+                    // SET SESSION FLASH DATA
+                    session()->setFlashdata('success', 'Prospek berhasil ditambahkan!');
+                    
                     return $this->response->setJSON([
                         'success' => true,
                         'message' => 'Prospek berhasil ditambahkan!'
@@ -149,6 +151,9 @@ class ProspekController extends BaseController
 
             try {
                 if ($this->prospekModel->update($id, $data)) {
+                    // SET SESSION FLASH DATA
+                    session()->setFlashdata('edit_success', 'Prospek berhasil diperbarui!');
+                    
                     return $this->response->setJSON([
                         'success' => true,
                         'message' => 'Prospek berhasil diperbarui!'
@@ -199,6 +204,9 @@ class ProspekController extends BaseController
             $result = $this->prospekModel->delete($id);
 
             if ($result) {
+                // SET SESSION FLASH DATA
+                session()->setFlashdata('delete_success', 'Prospek berhasil dihapus!');
+                
                 return $this->response->setJSON([
                     'success' => true,
                     'message' => 'Prospek berhasil dihapus'

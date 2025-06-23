@@ -23,23 +23,44 @@
             </div>
         </div>
     </div>
+
+    <!-- Notifikasi -->
+    <?php if (session()->has('success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?= session('success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('edit_success')) : ?>
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i><?= session('edit_success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('delete_success')) : ?>
+        <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-trash me-2"></i><?= session('delete_success') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('error')) : ?>
+        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i><?= session('error') ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
 </div>
 
-<!-- Flash Success -->
-<?php if (session()->has('success')) : ?>
-    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-        <i class="fas fa-check-circle me-2"></i> <?= session('success') ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
+<!--  -->
 
-<!-- Main Content Card -->
 <div class="card border-0 shadow-sm">
     <div class="card-body px-1">
         <div class="card-header bg-white">
             <div class="row align-items-start">
                 <div class="col">
-                    <!-- Custom Toolbar -->
                     <div class="row" id="custom-toolbar">
                         <div class="col-md-6 d-flex align-items-center" id="custom-length"></div>
                         <div class="col-md-6 d-flex justify-content-md-end justify-content-start mt-2 mt-md-0" id="custom-search"></div>
@@ -48,7 +69,6 @@
             </div>
         </div>
 
-        <!-- DataTable Container -->
         <div class="datatable-wrapper">
             <div class="table-responsive">
                 <div class="table-responsive-wrapper">
@@ -114,94 +134,87 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (empty($allArtikel)) : ?>
+                            <?php // KODE YANG DIPERBAIKI: Menghapus kondisi if/else untuk data kosong.
+                            // Cukup lakukan looping. Jika $allArtikel kosong, tbody akan kosong
+                            // dan DataTables akan menanganinya secara otomatis.
+                            ?>
+                            <?php foreach ($allArtikel as $i => $artikel) : ?>
                                 <tr>
-                                    <td colspan="<?= session()->get('role') === 'admin' ? '8' : '7' ?>" class="text-center py-5">
-                                        <div class="d-flex flex-column align-items-center text-muted">
-                                            <i class="bi bi-inbox fs-1 mb-3 opacity-50"></i>
-                                            <p class="mb-0 fs-6">Belum ada artikel yang ditambahkan</p>
+                                    <td class="text-center border-end">
+                                        <span class="text-muted fw-medium"><?= $i + 1 ?></span>
+                                    </td>
+                                    <td class="border-end">
+                                        <div class="d-flex align-items-center py-2">
+                                            <div class="flex-grow-1 min-width-0">
+                                                <div class="mb-1">
+                                                    <span class="text-dark fw-semibold d-block" style="line-height: 1.4;">
+                                                        <?= esc($artikel['judul_artikel']); ?>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center border-end">
+                                        <span class="badge bg-light text-dark px-3 py-2">
+                                            <?= date('d M Y', strtotime($artikel['tgl_upload'])) ?>
+                                        </span>
+                                    </td>
+                                    <td class="border-end">
+                                        <a href="<?= esc($artikel['link']) ?>" target="_blank"
+                                            class="text-decoration-none text-primary fw-medium text-truncate d-inline-block"
+                                            style="max-width: 200px;" title="<?= esc($artikel['link']) ?>">
+                                            <i class="bi bi-box-arrow-up-right me-1"></i>
+                                            <?= esc($artikel['link']) ?>
+                                        </a>
+                                    </td>
+                                    <td class="text-center border-end">
+                                        <span class="text-truncate d-inline-block fw-medium" style="max-width: 150px;">
+                                            <?= esc($artikel['keyword']) ?>
+                                        </span>
+                                    </td>
+                                    <td class="text-center border-end">
+                                        <span class="text-truncate d-inline-block fw-medium" style="max-width: 150px;"
+                                            title="<?= esc($artikel['nama_bisnis']) ?>">
+                                            <?= esc($artikel['nama_bisnis']) ?>
+                                        </span>
+                                    </td>
+                                    <?php if (session()->get('role') === 'admin') : ?>
+                                        <td class="text-center border-end">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="d-flex align-items-center justify-content-center bg-secondary bg-opacity-10 text-secondary rounded-circle me-2" style="width: 32px; height: 32px;">
+                                                    <i class="bi bi-person fs-6"></i>
+                                                </div>
+                                                <span class="fw-medium"><?= esc($artikel['username']) ?></span>
+                                            </div>
+                                        </td>
+                                    <?php endif; ?>
+                                    <td class="text-center">
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle action-btn"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center text-primary"
+                                                        href="<?= base_url('artikel_internal/edit/' . $artikel['id_artikel_internal']) ?>">
+                                                        <i class="bi bi-pencil-square text-primary me-2"></i>
+                                                        <span>Edit</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center text-danger"
+                                                        href="#"
+                                                        onclick="konfirmasiHapus('<?= base_url('artikel_internal/delete/' . $artikel['id_artikel_internal']) ?>')">
+                                                        <i class="bi bi-trash text-danger me-2"></i>
+                                                        <span>Hapus</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </td>
                                 </tr>
-                            <?php else : ?>
-                                <?php foreach ($allArtikel as $i => $artikel) : ?>
-                                    <tr>
-                                        <td class="text-center border-end">
-                                            <span class="text-muted fw-medium"><?= $i + 1 ?></span>
-                                        </td>
-                                        <td class="border-end">
-                                            <div class="d-flex align-items-center py-2">
-                                                <div class="flex-grow-1 min-width-0">
-                                                    <div class="mb-1">
-                                                        <span class="text-dark fw-semibold d-block" style="line-height: 1.4;">
-                                                            <?= esc($artikel['judul_artikel']); ?>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center border-end">
-                                            <span class="badge bg-light text-dark px-3 py-2">
-                                                <?= date('d M Y', strtotime($artikel['tgl_upload'])) ?>
-                                            </span>
-                                        </td>
-                                        <td class="border-end">
-                                            <a href="<?= esc($artikel['link']) ?>" target="_blank"
-                                                class="text-decoration-none text-primary fw-medium text-truncate d-inline-block"
-                                                style="max-width: 200px;" title="<?= esc($artikel['link']) ?>">
-                                                <i class="bi bi-box-arrow-up-right me-1"></i>
-                                                <?= esc($artikel['link']) ?>
-                                            </a>
-                                        </td>
-                                        <td class="text-center border-end" style="max-width: 50px;">
-                                            <span class="text-truncate d-inline-block fw-medium">
-                                                <?= esc($artikel['keyword']) ?>
-                                            </span>
-                                        </td>
-                                        <td class="text-center border-end">
-                                            <span class="text-truncate d-inline-block fw-medium" style="max-width: 150px;"
-                                                title="<?= esc($artikel['nama_bisnis']) ?>">
-                                                <?= esc($artikel['nama_bisnis']) ?>
-                                            </span>
-                                        </td>
-                                        <?php if (session()->get('role') === 'admin') : ?>
-                                            <td class="text-center border-end">
-                                                <div class="d-flex align-items-center justify-content-center">
-                                                    <div class="d-flex align-items-center justify-content-center bg-secondary bg-opacity-10 text-secondary rounded-circle me-2" style="width: 32px; height: 32px;">
-                                                        <i class="bi bi-person fs-6"></i>
-                                                    </div>
-                                                    <span class="fw-medium"><?= esc($artikel['username']) ?></span>
-                                                </div>
-                                            </td>
-                                        <?php endif; ?>
-                                        <td class="text-center">
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle action-btn"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bi bi-three-dots-vertical"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                                    <li>
-                                                        <a class="dropdown-item d-flex align-items-center text-primary"
-                                                            href="<?= base_url('artikel_internal/edit/' . $artikel['id_artikel_internal']) ?>">
-                                                            <i class="bi bi-pencil-square text-primary me-2"></i>
-                                                            <span>Edit</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item d-flex align-items-center text-danger"
-                                                            href="#"
-                                                            onclick="konfirmasiHapus('<?= base_url('artikel_internal/delete/' . $artikel['id_artikel_internal']) ?>')">
-                                                            <i class="bi bi-trash text-danger me-2"></i>
-                                                            <span>Hapus</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -210,7 +223,6 @@
     </div>
 </div>
 
-<!-- Modal Konfirmasi Hapus -->
 <div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
@@ -238,11 +250,9 @@
     </div>
 </div>
 
-<!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
 
-<!-- jQuery and DataTables JS -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
@@ -260,7 +270,7 @@
             ],
             language: {
                 decimal: "",
-                emptyTable: "Tidak ada data artikel yang tersedia",
+                emptyTable: "<div class='text-center py-5'><div class='d-flex flex-column align-items-center text-muted'><i class='bi bi-inbox fs-1 mb-3 opacity-50'></i><p class='mb-0 fs-6'>Belum ada artikel yang ditambahkan</p></div></div>",
                 info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
                 infoEmpty: "Menampilkan 0 - 0 dari 0 data",
                 infoFiltered: "(difilter dari _MAX_ total data)",
@@ -281,12 +291,19 @@
                 '<"col-md-5 d-flex align-items-center"i>' +
                 '<"col-md-7 d-flex justify-content-md-end"p>>',
             columnDefs: [{
-                orderable: false,
-                searchable: false,
-                targets: 0
-            }],
+                    orderable: false,
+                    searchable: false,
+                    targets: 0 // Kolom "No" tidak bisa di-sort dan di-search
+                },
+                {
+                    // Menonaktifkan sorting dan searching untuk kolom 'Aksi'
+                    orderable: false,
+                    searchable: false,
+                    targets: -1 // Target kolom terakhir
+                }
+            ],
             order: [
-                [1, 'asc']
+                [1, 'asc'] // Default order berdasarkan Judul Artikel
             ],
             autoWidth: false,
             stateSave: true,
@@ -318,8 +335,8 @@
             table.column(0, {
                 search: 'applied',
                 order: 'applied'
-            }).nodes().each(function(cell) {
-                cell.innerHTML = i++;
+            }).nodes().each(function(cell, index) {
+                cell.innerHTML = table.page.info().start + index + 1;
             });
         }).draw();
     });
@@ -328,41 +345,42 @@
         const table = document.getElementById('artikelTable');
         const rows = table.querySelectorAll('tbody tr');
         const isAdmin = <?= session()->get('role') === 'admin' ? 'true' : 'false' ?>;
-        let csv = isAdmin ?
-            'No,Judul Artikel,Tanggal Upload,Link,Keyword,Bisnis,User\n' :
-            'No,Judul Artikel,Tanggal Upload,Link,Keyword,Bisnis\n';
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+        let headers = isAdmin ?
+            'No,Judul Artikel,Tanggal Upload,Link,Keyword,Bisnis,User' :
+            'No,Judul Artikel,Tanggal Upload,Link,Keyword,Bisnis';
+        csvContent += headers + "\r\n";
 
         rows.forEach((row, index) => {
-            const cols = row.querySelectorAll('td');
+            // Lewati baris "data kosong" yang mungkin dibuat oleh DataTables
+            if (row.querySelectorAll('td').length > 1) {
+                let rowData = [];
+                const no = row.cells[0].textContent.trim();
+                const judul = `"${row.cells[1].textContent.trim().replace(/"/g, '""')}"`;
+                const tanggal = `"${row.cells[2].textContent.trim()}"`;
+                const link = `"${row.cells[3].textContent.trim()}"`;
+                const keyword = `"${row.cells[4].textContent.trim()}"`;
+                const bisnis = `"${row.cells[5].textContent.trim()}"`;
 
-            if (cols.length > 1) { // Skip empty state row
-                const judul = cols[1].querySelector('.fw-semibold')?.textContent.trim() ?? '';
-                const tanggal = cols[2].querySelector('.badge')?.textContent.trim() ?? '';
-                const link = cols[3].querySelector('a')?.textContent.trim() ?? '';
-                const keyword = cols[4].querySelector('.badge')?.textContent.trim() ?? '';
-                const bisnis = cols[5]?.textContent.trim() ?? '';
+                rowData.push(no, judul, tanggal, link, keyword, bisnis);
 
                 if (isAdmin) {
-                    const user = cols[6].querySelector('.fw-medium')?.textContent.trim() ?? '';
-                    csv += `${index + 1},"${judul}","${tanggal}","${link}","${keyword}","${bisnis}","${user}"\n`;
-                } else {
-                    csv += `${index + 1},"${judul}","${tanggal}","${link}","${keyword}","${bisnis}"\n`;
+                    const user = `"${row.cells[6].textContent.trim()}"`;
+                    rowData.push(user);
                 }
+
+                csvContent += rowData.join(',') + "\r\n";
             }
         });
 
-        // Buat dan unduh file CSV
-        const blob = new Blob([csv], {
-            type: 'text/csv;charset=utf-8;'
-        });
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'data-artikel-internal.csv';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "data-artikel-internal.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     function konfirmasiHapus(url) {

@@ -87,6 +87,8 @@ class ArtikelController extends BaseController
             return redirect()->to(route_to('artikel', $id_email, $id_blog));
         }
 
+        session()->setFlashdata('edit_success', 'Data berhasil diperbarui');
+
         return view('pages/artikel/edit', [
             'artikel' => $artikel,
             'id_email' => $id_email,

@@ -41,7 +41,7 @@ class BlogController extends BaseController
                 ->withInput()
                 ->with('errors', $validation->getErrors())
                 ->with('openModal', 'tambahBlogModal'); // nama ID modal
-        }        
+        }
 
         // Simpan ke database
         $blogModel->save([
@@ -57,7 +57,6 @@ class BlogController extends BaseController
         $blogModel = new BlogModel();
 
         $blogModel->delete($id_blog);
-
         return redirect()->to(route_to('email.edit', $id_email));
     }
 }
