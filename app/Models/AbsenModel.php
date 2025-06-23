@@ -108,6 +108,7 @@ class AbsenModel extends Model
             tb_siswa.nama,
             tb_siswa.jurusan,
             tb_siswa.foto,
+            tb_siswa.status AS status_siswa,
             tb_siswa.id_siswa
         ')
             ->join('tb_siswa', 'tb_siswa.id_user = tb_absen.id_user')

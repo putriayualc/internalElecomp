@@ -75,8 +75,8 @@ class Home extends BaseController
         }
 
         if ($hariIni == 'Minggu') {
-    return; // atau redirect()->back() jika di controller
-}
+            return; // atau redirect()->back() jika di controller
+        }
 
 
         // Filter tugas berdasarkan bobot
@@ -94,6 +94,12 @@ class Home extends BaseController
         $actualSiswaList = $piketData[$hariIni] ?? [];
         $daftarAbsen     = isset($absenData[$hariIni]) ? array_map(fn($x) => $x['username'], $absenData[$hariIni]) : [];
         $siswaHadir      = array_values(array_filter($actualSiswaList, fn($s) => !in_array($s, $daftarAbsen)));
+
+        // dd($actualSiswaList, $daftarAbsen, $siswaHadir);
+
+        // dd($piketData);
+
+        // dd($taskAssignment);
 
         // Inisialisasi bobot awal siswa hadir
         foreach ($siswaHadir as $s) {
@@ -179,9 +185,11 @@ class Home extends BaseController
 
             foreach ($tugasAbsen as $tugas) {
                 usort($siswaHadir, fn($a, $b) => $bobotPerSiswa[$hariIni][$a] <=> $bobotPerSiswa[$hariIni][$b]);
-                $penerima = $siswaHadir[0];
-                $taskAssignment[$hariIni][$penerima][] = $tugas['nama_tugas'] . " (pengganti $namaAbsen)";
-                $bobotPerSiswa[$hariIni][$penerima] += $tugas['bobot'];
+                if (!empty($siswaHadir)) {
+                    $penerima = $siswaHadir[0];
+                    $taskAssignment[$hariIni][$penerima][] = $tugas['nama_tugas'] . " (pengganti $namaAbsen)";
+                    $bobotPerSiswa[$hariIni][$penerima] += $tugas['bobot'];
+                }
             }
         }
 
@@ -190,15 +198,18 @@ class Home extends BaseController
         $semuaTugasRotated = array_merge($tugasBobot4Rotated, $tugasBobot2Rotated);
         $semuaTugasYangSudahDiberikan = [];
 
-        foreach ($taskAssignment[$hariIni] as $siswa => $listTugas) {
-            foreach ($listTugas as $tugasString) {
-                $namaTugas = explode(" (", $tugasString)[0];
-                $taskObj   = array_filter($semuaTugasRotated, fn($t) => $t['nama_tugas'] === $namaTugas);
-                $taskObj   = reset($taskObj);
-                $bobot     = $taskObj['bobot'] ?? 0;
-                $semuaTugasYangSudahDiberikan[] = $namaTugas . '-' . $bobot;
+        if (isset($taskAssignment[$hariIni])) {
+            foreach ($taskAssignment[$hariIni] as $siswa => $listTugas) {
+                foreach ($listTugas as $tugasString) {
+                    $namaTugas = explode(" (", $tugasString)[0];
+                    $taskObj   = array_filter($semuaTugasRotated, fn($t) => $t['nama_tugas'] === $namaTugas);
+                    $taskObj   = reset($taskObj);
+                    $bobot     = $taskObj['bobot'] ?? 0;
+                    $semuaTugasYangSudahDiberikan[] = $namaTugas . '-' . $bobot;
+                }
             }
         }
+
 
         foreach ($semuaTugasRotated as $tugas) {
             $idUnikTugas = $tugas['nama_tugas'] . '-' . $tugas['bobot'];
@@ -208,7 +219,14 @@ class Home extends BaseController
 
                 usort($siswaKekurangan, fn($a, $b) => $bobotPerSiswa[$hariIni][$a] <=> $bobotPerSiswa[$hariIni][$b]);
 
-                $penerima = $siswaKekurangan[0] ?? $siswaHadir[0];
+                if (!empty($siswaKekurangan)) {
+                    $penerima = $siswaKekurangan[0];
+                } elseif (!empty($siswaHadir)) {
+                    $penerima = $siswaHadir[0];
+                } else {
+                    continue; // Lewati tugas ini, tidak ada penerima yang tersedia
+                }
+
                 $taskAssignment[$hariIni][$penerima][] = $tugas['nama_tugas'] . " (tugas sisa)";
                 $bobotPerSiswa[$hariIni][$penerima] += $tugas['bobot'];
             }
