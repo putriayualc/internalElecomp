@@ -263,3 +263,31 @@ $routes->group('profile', function ($routes) {
     $routes->post('update-password', 'ProfileController::updatePassword');
     $routes->post('update-foto', 'ProfileController::updateFoto');
 });
+
+// MENU NILAI HARIAN
+$routes->group('nilai', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'NilaiHarianController::index', ['as' => 'nilai']);
+    $routes->post('simpan', 'NilaiHarianController::autosave', ['as' => 'nilai.simpan']);
+});
+
+// MENU NILAI AKHIR
+$routes->group('nilai_akhir', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'NilaiAkhirController::index', ['as' => 'na']);
+    $routes->post('hitung/(:num)', 'NilaiAkhirController::hitung/$1', ['as' => 'na.hitung']);
+    $routes->post('hitung_semua', 'NilaiAkhirController::hitung_semua', ['as' => 'na.hitung_semua']);
+});
+
+// MENU NILAI untuk USER
+$routes->group('penilaian', ['filter' => 'role:user'], function ($routes) {
+    $routes->get('/', 'NilaiController::index', ['as' => 'penilaian']);
+});
+
+// MENU Libur
+$routes->group('libur', ['filter' => 'role:admin'], function ($routes) {
+    $routes->get('/', 'LiburController::index', ['as' => 'libur']);
+    $routes->get('tambah', 'LiburController::tambah', ['as' => 'libur.tambah']);
+    $routes->post('simpan', 'LiburController::simpan', ['as' => 'libur.simpan']);
+    $routes->post('update/(:num)', 'LiburController::update/$1', ['as' => 'libur.update']);
+    $routes->post('delete/(:num)', 'LiburController::delete/$1', ['as' => 'libur.delete']); // Pastikan ini ada
+
+});

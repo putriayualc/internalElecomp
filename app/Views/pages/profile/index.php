@@ -2,7 +2,6 @@
 <?= $this->section('css') ?>
 <style>
     .profile-wrapper {
-        background: linear-gradient(135deg, #fff 0%, #fff 100%);
         min-height: 100vh;
         padding: 2rem 0;
     }
@@ -544,11 +543,7 @@
                                 <i class="bi bi-calendar-x form-icon"></i>
                             </div>
 
-                            <div class="form-group full-width">
-                                <label class="form-label">Keterangan</label>
-                                <textarea name="keterangan" class="form-control-modern" rows="3"><?= esc($keterangan) ?></textarea>
-                                <i class="bi bi-chat-text form-icon"></i>
-                            </div>
+                            
                         </div>
 
                         <!-- Tombol Simpan Perubahan -->

@@ -34,7 +34,7 @@ class PiketModel extends Model
             ->join('tb_hari h', 'h.id_hari = p.id_hari')
             ->join('tb_users s', 's.id_user = p.id_siswa')
             ->join('tugas_jadwal tj', 'tj.id_piket = p.id_piket')
-            ->join('tugas_piket tp', 'tp.id_tugas_piket = tj.id_tugas_piket')
+            ->join('tb_tugas_piket tp', 'tp.id_tugas_piket = tj.id_tugas_piket')
             ->orderBy('h.hari', 'ASC')
             ->orderBy('tp.bobot', 'DESC')
             ->get()->getResultArray();
@@ -42,7 +42,7 @@ class PiketModel extends Model
 
     public function getAllTugas()
     {
-        return $this->db->table('tugas_piket')
+        return $this->db->table('tb_tugas_piket')
             ->orderBy('bobot', 'DESC')
             ->get()->getResultArray();
     }
@@ -64,7 +64,7 @@ class PiketModel extends Model
 
     public function getAllTugasOrderByBobot()
 {
-    return $this->db->table('tugas_piket')
+    return $this->db->table('tb_tugas_piket')
         ->orderBy('bobot', 'DESC')
         ->get()
         ->getResultArray();

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\NilaiAkhirModel;
 use App\Models\SiswaModel;
 use App\Models\UsersModel;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -184,6 +185,32 @@ class SiswaController extends BaseController
             }
         }
 
+        $nilaiAkhirModel = new NilaiAkhirModel();
+
+        // Validasi data
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'id_siswa' => 'required|integer',
+        ]);
+
+        $dataNA = [
+            'id_siswa'          => $id_siswa,
+            'nilai_absensi'     => 0,
+            'nilai_magang'      => 0,
+            'nilai_operasional' => 0,
+            'nilai_artikel'     => 0,
+            'total_nilai'       => 0,
+            'updated_at'        => date('Y-m-d H:i:s'),
+        ];
+
+        if (!$validation->run($dataNA)) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
+
+        // Insert ke DB
+        if (!$nilaiAkhirModel->insert($dataNA)) {
+            return redirect()->back()->withInput()->with('errors', $nilaiAkhirModel->errors());
+        }
 
         // Redirect dengan pesan sukses
         return redirect()->to('siswa')->with('success', 'Siswa berhasil ditambahkan');
