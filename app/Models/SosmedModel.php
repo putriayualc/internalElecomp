@@ -82,6 +82,9 @@ class SosmedModel extends Model
             $builder->where('tb_sosmed.id_bisnis', $id_bisnis);
         }
 
+        // Tambahkan ORDER BY jumlah konten DESC
+        $builder->orderBy('tb_sosmed.updated_at', 'DESC');
+
         return $builder->findAll();
     }
 

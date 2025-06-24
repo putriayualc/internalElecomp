@@ -339,15 +339,10 @@
                     cell.innerHTML = i++;
                 });
             }).draw();
-            
-            // Set today's date as default end date
-            const today = new Date().toISOString().split('T')[0];
-            $('#filterSampai').val(today);
-            
-            // Set start date as 7 days before today
-            const sevenDaysAgo = new Date();
-            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-            $('#filterDari').val(sevenDaysAgo.toISOString().split('T')[0]);
+
+            // Filter otomatis untuk "Mahasiswa Aktif" saat halaman dimuat
+            $('#filterStatus').val('AKTIF'); // Atur dropdown ke "Mahasiswa Aktif"
+            table.draw(); // Terapkan filter ke tabel
 
             // Custom filtering function
             $.fn.dataTable.ext.search.push(
@@ -355,14 +350,14 @@
                     var minDate = $('#filterDari').val();
                     var maxDate = $('#filterSampai').val();
                     var statusFilter = $('#filterStatus').val();
-                    
+
                     // Get the date from the row (using data-order attribute)
                     var rowDate = table.row(dataIndex).nodes().to$().find('td:eq(2)').data('order');
                     if (!rowDate) return false;
-                    
+
                     // Get status from the row
                     var rowStatus = table.row(dataIndex).nodes().to$().find('.status-badge').text().trim().toUpperCase();
-                    
+
                     // Date filtering
                     var dateValid = true;
                     if (minDate || maxDate) {
@@ -373,13 +368,13 @@
                             dateValid = false;
                         }
                     }
-                    
+
                     // Status filtering
                     var statusValid = true;
                     if (statusFilter && rowStatus !== statusFilter.toUpperCase()) {
                         statusValid = false;
                     }
-                    
+
                     return dateValid && statusValid;
                 }
             );
@@ -433,4 +428,4 @@
         });
     </script>
 
-<?= $this->endSection(); ?>
+    <?= $this->endSection(); ?>

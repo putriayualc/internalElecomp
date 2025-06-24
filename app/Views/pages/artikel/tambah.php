@@ -22,7 +22,7 @@
             <form action="<?= route_to('artikel.simpan', $id_email, $id_blog) ?>" method="POST">
                 <?= csrf_field(); ?>
                 <input type="hidden" name="id_blog" value="<?= esc($id_blog) ?>">
-                
+
                 <div class="row g-4">
                     <!-- Judul Artikel -->
                     <div class="col-md-6">
@@ -43,8 +43,18 @@
                             <select class="form-select" id="jenis" name="jenis" required>
                                 <option value="">Pilih Jenis Artikel</option>
                                 <?php foreach ($jenis as $j) : ?>
+                                    <?php
+                                    // Tentukan label tampilannya berdasarkan value
+                                    if ($j === 'artikel') {
+                                        $label = 'Artikel + Internal Link';
+                                    } elseif ($j === 'backlink') {
+                                        $label = 'Artikel + Backlink';
+                                    } else {
+                                        $label = ucfirst($j);
+                                    }
+                                    ?>
                                     <option value="<?= $j ?>" <?= old('jenis') == $j ? 'selected' : '' ?>>
-                                        <?= ucfirst($j) ?>
+                                        <?= $label ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -209,4 +219,4 @@
 
 </body>
 
-<?= $this->endSection();?>
+<?= $this->endSection(); ?>

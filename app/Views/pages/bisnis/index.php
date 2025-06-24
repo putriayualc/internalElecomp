@@ -1,4 +1,25 @@
 <?= $this->extend('layout/template'); ?>
+<?= $this->section('css'); ?>
+<style>
+    .status-badge {
+        background-color: #e3f2fd;
+        color: #1565c0;
+        border: 1px solid #1565c0;
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-weight: bold;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .status-badge:hover {
+        background-color: #bbdefb;
+        color: #0d47a1;
+        cursor: pointer;
+    }
+</style>
+<?= $this->endSection(); ?>
+
 <?= $this->section('content'); ?>
 
 <div class="container-fluid py-3">
@@ -133,9 +154,11 @@
                                             <?php endif; ?>
                                         </td>
                                         <td class="text-center border-end">
-                                            <span class="status-badge" style="background-color: #e3f2fd; color: #1565c0; border: 1px solid #1565c0;">
-                                                <?= isset($bisnis['jumlah_sosmed']) ? $bisnis['jumlah_sosmed'] : 0 ?>
-                                            </span>
+                                            <a href="<?= route_to('sosmed.filter', $bisnis['id_bisnis']) ?>">
+                                                <span class="status-badge">
+                                                    <?= isset($bisnis['jumlah_sosmed']) ? $bisnis['jumlah_sosmed'] : 0 ?>
+                                                </span>
+                                            </a>
                                         </td>
                                         <td class="text-center">
                                             <div class="dropdown">

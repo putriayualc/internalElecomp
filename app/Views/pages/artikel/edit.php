@@ -41,8 +41,8 @@
                         <div class="form-floating">
                             <select class="form-select" id="jenis" name="jenis" required>
                                 <option value="">Pilih Jenis Artikel</option>
-                                <option value="artikel" <?= old('jenis', $artikel['jenis']) == 'artikel' ? 'selected' : '' ?>>Artikel</option>
-                                <option value="backlink" <?= old('jenis', $artikel['jenis']) == 'backlink' ? 'selected' : '' ?>>Backlink</option>
+                                <option value="artikel" <?= old('jenis', $artikel['jenis']) == 'artikel' ? 'selected' : '' ?>>Artikel + Internal Link</option>
+                                <option value="backlink" <?= old('jenis', $artikel['jenis']) == 'backlink' ? 'selected' : '' ?>>Artikel + Backlink</option>
                             </select>
                             <label for="jenis">
                                 <i class="bi bi-tags me-2"></i>Jenis Artikel
@@ -118,8 +118,8 @@
                     <!-- Tanggal Upload -->
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input type="date" class="form-control" id="tanggal_upload" name="tanggal_upload" value="<?= old('tanggal_upload', date('Y-m-d', strtotime($artikel['tgl_upload']))) ?>" required>
-                            <label for="tanggal_upload">
+                            <input type="date" class="form-control" id="tgl_upload" name="tgl_upload" value="<?= old('tgl_upload', date('Y-m-d', strtotime($artikel['tgl_upload']))) ?>" required>
+                            <label for="tgl_upload">
                                 <i class="bi bi-calendar-check me-2"></i>Tanggal Upload
                             </label>
                             <div class="invalid-feedback">

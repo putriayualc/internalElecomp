@@ -97,17 +97,17 @@
                                         <span class="icon-circle bg-success bg-opacity-10 text-success">
                                             <i class="fas fa-globe"></i>
                                         </span>
-                                        <span class="fw-semibold">Blog</span>
+                                        <span class="fw-semibold">Blog dan Total Artikel</span>
                                     </div>
                                 </th>
-                                <th class="text-center border-end" style="min-width: 120px;">
+                                <!-- <th class="text-center border-end" style="min-width: 120px;">
                                     <div class="d-flex align-items-center justify-content-center gap-2">
                                         <span class="icon-circle bg-secondary bg-opacity-10 text-secondary">
                                             <i class="fas fa-file-alt"></i>
                                         </span>
                                         <span class="fw-semibold">Total Artikel</span>
                                     </div>
-                                </th>
+                                </th> -->
                                 <th class="text-center" style="width: 200px;">
                                     <span class="fw-semibold">Aksi</span>
                                 </th>
@@ -216,7 +216,7 @@
                                     </td>
 
                                     <!-- Total Artikel -->
-                                    <td class="text-center border-end">
+                                    <!-- <td class="text-center border-end">
                                         <?php if ($totalArtikel > 0 && $firstBlogId !== null) : ?>
                                             <a href="<?= route_to('artikel', $email['id_email'], $firstBlogId) ?>"
                                                 class="badge bg-primary bg-opacity-10 text-primary text-decoration-none hover-total-artikel px-3 py-2 fs-6"
@@ -230,7 +230,7 @@
                                                 <strong><?= $totalArtikel ?></strong>
                                             </div>
                                         <?php endif; ?>
-                                    </td>
+                                    </td> -->
 
                                     <!-- Actions -->
                                     <td class="text-center">

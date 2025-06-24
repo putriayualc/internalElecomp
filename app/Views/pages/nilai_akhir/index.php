@@ -403,14 +403,6 @@
                 cell.innerHTML = i++;
             });
         }).draw();
-        
-        // Set default date range (last 30 days)
-        const today = new Date();
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(today.getDate() - 30);
-        
-        $('#filterSampai').val(today.toISOString().split('T')[0]);
-        $('#filterDari').val(thirtyDaysAgo.toISOString().split('T')[0]);
 
         // Custom filtering function
         $.fn.dataTable.ext.search.push(
@@ -418,25 +410,25 @@
                 var minDate = $('#filterDari').val();
                 var maxDate = $('#filterSampai').val();
                 var statusFilter = $('#filterStatus').val();
-                
+
                 // Get the row element
                 var row = table.row(dataIndex).nodes().to$();
-                
+
                 // Get the date from tgl_keluar column (column index 2)
                 var rowDateStr = row.find('td:eq(2)').text().trim();
                 var rowDate = rowDateStr ? new Date(rowDateStr) : null;
-                
+
                 // Get status from the row
                 var rowStatus = row.find('.status-badge').text().trim().toUpperCase();
-                
+
                 // Date filtering
                 var dateValid = true;
                 if (minDate || maxDate) {
                     if (!rowDate) return false; // Skip if no date
-                    
+
                     var minDateObj = minDate ? new Date(minDate) : null;
                     var maxDateObj = maxDate ? new Date(maxDate) : null;
-                    
+
                     if (minDateObj && rowDate < minDateObj) {
                         dateValid = false;
                     }
@@ -444,13 +436,13 @@
                         dateValid = false;
                     }
                 }
-                
+
                 // Status filtering
                 var statusValid = true;
                 if (statusFilter && rowStatus !== statusFilter.toUpperCase()) {
                     statusValid = false;
                 }
-                
+
                 return dateValid && statusValid;
             }
         );
@@ -458,7 +450,7 @@
         // Apply filter button
         $('#applyFilter').on('click', function() {
             table.draw();
-            
+
             // Show notification
             const Toast = Swal.mixin({
                 toast: true,
@@ -474,12 +466,12 @@
         });
 
         // Reset filter button
-            $('#resetFilter').on('click', function() {
-                $('#filterDari').val('');
-                $('#filterSampai').val('');
-                $('#filterStatus').val('');
-                table.draw();
-            });
+        $('#resetFilter').on('click', function() {
+            $('#filterDari').val('');
+            $('#filterSampai').val('');
+            $('#filterStatus').val('');
+            table.draw();
+        });
 
         // Enable filter on Enter key
         $('#filterDari, #filterSampai, #filterStatus').on('keyup', function(e) {
@@ -487,6 +479,10 @@
                 $('#applyFilter').click();
             }
         });
+
+        // Filter otomatis untuk "Mahasiswa Aktif" saat halaman dimuat
+        $('#filterStatus').val('AKTIF'); // Atur dropdown ke "Mahasiswa Aktif"
+        table.draw(); // Terapkan filter ke tabel
     });
 </script>
 

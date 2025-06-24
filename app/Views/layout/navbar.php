@@ -231,7 +231,7 @@
 
                     <li class="nav-item">
                         <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                        <a class="nav-link" href="<?= base_url('absen/admin') ?>">
+                        <a class="nav-link <?= service('uri')->getSegment(1) == 'absen' ? 'active' : '' ?>" href="<?= base_url('absen/admin') ?>">
                             <span class="nav-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
                                     <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514" />
@@ -292,7 +292,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="<?= route_to('nilai_akhir') ?>" class="nav-link d-flex align-items-center <?= $segment == 'nilai_akhir' ? 'active' : '' ?>">
+                                    <a href="<?= route_to('na') ?>" class="nav-link d-flex align-items-center <?= $segment == 'nilai_akhir' ? 'active' : '' ?>">
                                         <i class="bi bi-envelope-fill me-2"></i> Nilai Akhir
                                     </a>
                                 </li>

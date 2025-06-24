@@ -66,7 +66,7 @@
                                         <span class="icon-circle bg-primary bg-opacity-10 text-primary">
                                             <i class="bi bi-calendar"></i>
                                         </span>
-                                        <span class="fw-semibold">Tanggal</span>
+                                        <span class="fw-semibold">Tanggal Upload</span>
                                     </div>
                                 </th>
                                 <th class="text-center border-end" style="min-width: 150px;">
@@ -110,7 +110,7 @@
                                     </div>
                                 </th>
                                 <th class="text-center border-end" style="min-width: 90px;">
-                                    <span class="fw-semibold">Status</span>
+                                    <span class="fw-semibold">Indexed</span>
                                 </th>
                                 <th class="text-center" style="width: 100px;">
                                     <span class="fw-semibold">Aksi</span>
@@ -145,9 +145,11 @@
                                                         switch ($jenis) {
                                                             case 'BACKLINK':
                                                                 $badgeClass = 'status-badge status-active';
+                                                                $jenisArtikel = 'Artikel + Backlink';
                                                                 break;
                                                             case 'ARTIKEL':
                                                                 $badgeClass = 'status-badge status-completed';
+                                                                $jenisArtikel = 'Artikel + Internal Link';
                                                                 break;
                                                             default:
                                                                 $badgeClass = 'status-badge status-inactive';
@@ -327,7 +329,7 @@
                 targets: 0
             }],
             order: [
-                [1, 'asc']
+                [2, 'desc']
             ],
             autoWidth: false,
             stateSave: true,

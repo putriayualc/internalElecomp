@@ -437,10 +437,10 @@
                                             </div>
                                         </td>
                                         <td class="text-center border-end">
-                                            <span class="hover-badge">
+                                            <a href="<?= route_to('konten.filter', $sosmed['id_bisnis']) ?>?platform=<?= strtolower($sosmed['platform']) ?>" class="hover-badge">
                                                 <i class="fas fa-file-alt me-1"></i>
                                                 <?= isset($sosmed['jumlah_konten']) ? $sosmed['jumlah_konten'] : 0 ?>
-                                            </span>
+                                            </a>
                                         </td>
                                         <td class="text-center border-end">
                                             <div class="d-flex align-items-center justify-content-center">
@@ -592,6 +592,10 @@
             ],
             autoWidth: false,
             stateSave: true,
+
+            order: [
+                [5, 'desc']
+            ], // Mengurutkan berdasarkan kolom ke-6 (Terakhir Diupdate) dari terbaru ke terlama
 
             initComplete: function() {
                 // Tambahkan styling bootstrap

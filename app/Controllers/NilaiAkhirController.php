@@ -31,6 +31,13 @@ class NilaiAkhirController extends BaseController
 
     public function index()
     {
+        // Ambil semua siswa
+        $siswaList = $this->siswaModel->findAll();
+
+        // Hitung nilai akhir untuk setiap siswa
+        foreach ($siswaList as $siswa) {
+            $this->calculateAndSave($siswa['id_siswa']);
+        }
         $data = [
             'allNilai' => $this->nilaiAkhirModel->getAllNilai(),
         ];
