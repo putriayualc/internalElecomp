@@ -119,7 +119,7 @@
 
                     <!-- Submit Button -->
                     <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="<?= base_url('artikel-internal') ?>" class="btn btn-secondary btn-lg d-flex align-items-center">
+                        <a href="<?= base_url('artikel_internal') ?>" class="btn btn-secondary btn-lg d-flex align-items-center">
                             <i class="bi bi-arrow-left me-2"></i>
                             <span>Kembali</span>
                         </a>

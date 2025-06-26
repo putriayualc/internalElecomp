@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\AbsenModel;
+use App\Models\ArtikelTrendingModel;
 use App\Models\LiburModel;
 use App\Models\NilaiAkhirModel;
 use App\Models\SiswaModel;
@@ -18,6 +19,7 @@ class NilaiController extends BaseController
         $absenModel = new AbsenModel();
         $nilaiAkhirModel = new NilaiAkhirModel();
         $liburModel = new LiburModel();
+        $artikelTrendingModel = new ArtikelTrendingModel();
 
         $siswa = $siswaModel->where('id_user', $id_user)->first();
 
@@ -67,13 +69,18 @@ class NilaiController extends BaseController
 
         $nilaiHarian = $absenModel->getNilaiHarianByUser($id_user);
 
+        $artikel = $artikelTrendingModel
+            ->where('id_siswa', $siswa['id_siswa'])
+            ->countAllResults();
+
         $data = [
             'siswa' => $siswa,
             'akumulasi' => $akumulasi,
             'nilai_akhir' => $nilai_akhir,
             'nilai_harian' => $nilaiHarian,
             'total_hari' => $totalHariMagang,
-            'hariBerjalan' => $hariBerjalan
+            'hariBerjalan' => $hariBerjalan,
+            'artikel' => $artikel
         ];
 
         // dd($data);

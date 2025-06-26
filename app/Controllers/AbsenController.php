@@ -95,11 +95,11 @@ class AbsenController extends BaseController
         $id_user = session()->get('id_user');
 
         $hariIni = date('Y-m-d');
-        $mulai = $hariIni . ' 08:00:00';
+        $mulai = $hariIni . ' 07:50:00';
         $selesai = $hariIni . ' 18:00:00';
         $waktuSekarang = date('Y-m-d H:i:s');
 
-        $mengisiKegiatan = $hariIni . ' 18:00:00';
+        $mengisiKegiatan = $hariIni . ' 16:00:00';
 
         $sudahAbsen = $absens
             ->where('id_user', $id_user)

@@ -344,7 +344,7 @@
     .angka-final-b {
         font-size: 3.5em;
         font-weight: 700;
-        color:rgb(210, 204, 25);
+        color:rgb(237, 230, 27);
         line-height: 1.1;
     }
     .angka-final-c {
@@ -365,7 +365,7 @@
         display: block;
         font-size: 1.4em;
         font-weight: 600;
-        color:rgb(175, 168, 76);
+        color:rgb(227, 219, 98);
     }
     
     .predikat-final-c {
@@ -501,9 +501,12 @@
     <div class="profile-container">
         <div class="profile-card">
 
-            <header class="profile-header">
-                <h1 class="profile-title">Laporan Nilai Magang</h1>
-                <p class="profile-subtitle">Detail Kinerja dan Pencapaian Selama Periode Magang</p>
+            <header class="profile-header rounded-3 shadow-sm mb-4 p-4 text-white text-center" 
+                    style="background: linear-gradient(rgba(0,184,241,0.9), rgba(0,107,148,0.9)), url('https://images.unsplash.com/photo-1581447109200-bf2769116351?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center;">
+                
+                <h1 class="profile-title h1 fw-bold">Laporan Nilai Magang</h1>
+                <p class="profile-subtitle text-white-70 small mb-0">Detail Kinerja dan Pencapaian Selama Periode Magang</p>
+                
             </header>
 
             <div class="profile-content">
@@ -554,6 +557,11 @@
                             <i class="stat-icon fa-solid fa-calendar-check"></i>
                             <div class="stat-label">Total Kehadiran</div>
                             <div class="stat-value"><?= $akumulasi['jumlah_masuk'] ?></div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="stat-icon fa-solid fa-file-lines"></i>
+                            <div class="stat-label">Total Artikel</div>
+                            <div class="stat-value"><?= $artikel ?></div>
                         </div>
                         <div class="stat-item">
                             <i class="stat-icon fa-solid fa-laptop-code"></i>

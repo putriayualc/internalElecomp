@@ -57,7 +57,7 @@ class PiketController extends BaseController
             if (strtolower($row['status']) !== 'aktif') continue;
 
             $hari  = $row['hari'];
-            $siswa = $row['username'];
+            $siswa = $row['nama'];
             $piketData[$hari][] = $siswa;
         }
 

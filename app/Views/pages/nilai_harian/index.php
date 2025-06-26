@@ -28,8 +28,8 @@
             <label for="filterStatus" class="form-label">Status Mahasiswa</label>
             <select id="filterStatus" class="form-select form-select-sm">
                 <option value="">Semua Status</option>
-                <option value="AKTIF">Mahasiswa Aktif</option>
-                <option value="SELESAI">Mahasiswa Selesai</option>
+                <option value="AKTIF">Siswa Aktif</option>
+                <option value="SELESAI">Siswa Selesai</option>
             </select>
         </div>
         <div class="col-md-3 d-flex gap-2">
@@ -389,7 +389,7 @@
                 $('#filterDari').val('');
                 $('#filterSampai').val('');
                 $('#filterStatus').val('');
-                table.draw();
+                table.order([2, 'desc']).draw();
             });
 
             // Tampilkan tombol simpan saat input diubah

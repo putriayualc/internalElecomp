@@ -21,7 +21,7 @@
                                 <img src="<?= base_url('assets/img/user.png') ?>" alt="user profile">
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-                                <?php if (session()->get('role')  === 'admin') : ?>
+                                <?php if (session()->get('role')  === 'user') : ?>
                                     <li><a class="dropdown-item" href="<?= base_url('profile') ?>">Profil</a></li>
                                 <?php endif; ?>
                                 <li><a class="dropdown-item" href="<?= site_url('logout') ?>">Log Out</a></li>

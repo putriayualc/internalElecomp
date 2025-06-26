@@ -77,8 +77,8 @@
             <label for="filterStatus" class="form-label">Status Mahasiswa</label>
             <select id="filterStatus" class="form-select form-select-sm">
                 <option value="">Semua Status</option>
-                <option value="AKTIF">Mahasiswa Aktif</option>
-                <option value="SELESAI">Mahasiswa Selesai</option>
+                <option value="AKTIF">Siswa Aktif</option>
+                <option value="SELESAI">Siswa Selesai</option>
             </select>
         </div>
         <div class="col-md-3 d-flex gap-2">
@@ -372,7 +372,7 @@
                 targets: 0
             }],
             order: [
-                [1, 'asc']
+                [2, 'asc']
             ],
             autoWidth: false,
             stateSave: true,
@@ -484,6 +484,94 @@
         $('#filterStatus').val('AKTIF'); // Atur dropdown ke "Mahasiswa Aktif"
         table.draw(); // Terapkan filter ke tabel
     });
+</script>
+
+<script>
+    $(document).on('click', '.btn-hitung', function() {
+        const btn = $(this);
+        const id = btn.data('id');
+        const row = btn.closest('tr'); // Dapatkan elemen <tr> dari baris ini
+
+        // Tandai baris yang sedang diupdate
+        row.css('background-color', '#e3f2fd'); // Warna biru muda sbg indikator
+        btn.prop('disabled', true).html('<i class="spinner-border spinner-border-sm"></i>');
+
+        $.ajax({
+            url: '<?= base_url('nilai_akhir/hitung/') ?>' + id,
+            method: 'POST',
+            data: {
+                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            },
+            dataType: 'json', // Meskipun controller tidak kirim data, ini tetap praktik yang baik
+            success: function(res) {
+                // Jika sukses, kita panggil fungsi untuk me-reload hanya baris ini
+                reloadRow(row, id);
+            },
+            error: function() {
+                alert('Gagal menghitung nilai.');
+                btn.prop('disabled', false).html('<i class="bi bi-calculator"></i>');
+                row.css('background-color', ''); // Hapus warna indikator jika gagal
+            }
+        });
+    });
+
+    // Fungsi baru untuk melakukan partial reload pada baris tabel
+    function reloadRow(rowElement, idSiswa) {
+        const currentUrl = window.location.href; // Dapatkan URL halaman saat ini
+        const targetSelector = ' #row-siswa-' + idSiswa; // Selector untuk baris yang sama di halaman yang di-reload
+
+        // Gunakan jQuery .load() untuk mengambil konten baris baru dan mengganti yang lama
+        // Kita tambahkan ' > *' agar hanya konten di dalam <tr> yang diganti, ini lebih stabil
+        rowElement.load(currentUrl + targetSelector + " > *", function(response, status, xhr) {
+            if (status == "error") {
+                // Handle jika gagal me-reload bagian
+                alert("Gagal memperbarui tampilan baris.");
+                rowElement.css('background-color', '');
+            } else {
+                // Sukses, kembalikan style dan re-inisialisasi tooltip
+                rowElement.css('background-color', '');
+
+                // Inisialisasi ulang tooltip Bootstrap pada elemen yang baru dimuat
+                rowElement.find('[data-bs-toggle="tooltip"]').tooltip();
+
+                // Beri notifikasi (opsional, menggunakan SweetAlert)
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Nilai berhasil diperbarui!'
+                });
+            }
+        });
+    }
+
+
+    function hitungSemuaNilai() {
+        if (!confirm('Yakin ingin menghitung ulang semua nilai?')) return;
+
+        const btns = $('.btn-hitung');
+        btns.prop('disabled', true);
+
+        $.ajax({
+            url: '<?= base_url('nilai_akhir/hitung_semua') ?>',
+            method: 'POST',
+            data: {
+                <?= csrf_token() ?>: '<?= csrf_hash() ?>'
+            },
+            success: function(res) {
+                location.reload(); // atau refresh data secara dinamis
+            },
+            error: function() {
+                alert('Gagal menghitung semua nilai.');
+                btns.prop('disabled', false);
+            }
+        });
+    }
 </script>
 
 <?= $this->endSection(); ?>

@@ -16,7 +16,7 @@ class PiketModel extends Model
 
     public function getPiketWithJoin()
 {
-    return $this->select('tb_hari.hari, tb_users.id_user, tb_users.username, tb_siswa.status') // tambahkan tb_siswa.status
+    return $this->select('tb_hari.hari, tb_users.id_user, tb_users.username, tb_siswa.status, tb_siswa.nama') // tambahkan tb_siswa.status
         ->join('tb_hari', 'tb_hari.id_hari = tb_piket.id_hari')
         ->join('tb_siswa', 'tb_siswa.id_siswa = tb_piket.id_siswa')
         ->join('tb_users', 'tb_users.id_user = tb_siswa.id_user')

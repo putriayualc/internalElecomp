@@ -381,7 +381,7 @@ $(document).ready(function() {
                 targets: -1 // Last column (Actions)
             }
         ],
-        order: [[1, 'asc']],
+        order: [[5, 'desc']],
         autoWidth: false,
         stateSave: true,
         initComplete: function() {

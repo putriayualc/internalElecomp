@@ -67,8 +67,21 @@
                         </div>
                     </div>
 
+                     <!-- Username Hosting -->
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="username_hosting" name="username_hosting" value="<?= esc($hosting['username_hosting']) ?>"  placeholder="Username Hosting" required>
+                            <label for="username_hosting">
+                                <i class="bi bi-person me-2"></i>Username Hosting
+                            </label>
+                            <div class="invalid-feedback">
+                                Username hosting harus diisi
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Password Hosting -->
-                    <div class="col-12">
+                    <div class="col-md-6">
                         <div class="form-floating">
                             <input type="text" class="form-control" id="password_hosting" name="password_hosting" value="<?= esc($hosting['password_hosting']) ?>" placeholder="Password Hosting" required>
                             <label for="password_hosting">

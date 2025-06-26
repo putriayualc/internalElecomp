@@ -461,15 +461,6 @@
             }
         ];
 
-        // Jika bukan admin, sembunyikan kolom User (index 3)
-        if (!isAdmin) {
-            columnDefs.push({
-                targets: 3,
-                visible: false,
-                searchable: false
-            });
-        }
-
         var table = $('#backlinkTable').DataTable({
             responsive: false,
             pageLength: 10,

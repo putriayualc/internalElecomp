@@ -38,7 +38,7 @@ class ProfileController extends BaseController
             'asal_instansi' => $postData['asal_instansi'],
             'tgl_masuk'     => $postData['tgl_masuk'],
             'tgl_keluar'    => $postData['tgl_keluar'],
-            'keterangan'    => $postData['keterangan'],
+            // 'keterangan'    => $postData['keterangan'],
         ]);
 
         return redirect()->to('/profile')->with('success', 'Profil berhasil diperbarui.');
